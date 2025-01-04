@@ -1,0 +1,1 @@
+enum StatusModel { active, deactive }
