@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/styles/app_colors.dart';
 
 import 'config/app_paths.dart';
 import 'features/auth/logic/bindings/auth_binding.dart';
@@ -49,7 +48,7 @@ class App extends StatelessWidget {
           binding: ReportBinding(),
         ),
         GetPage(
-          name: '/profile_page',
+          name: AppPaths.profile,
           page: () => const ProfileScreen(), // Add your logout screen here
         ),
         GetPage(
