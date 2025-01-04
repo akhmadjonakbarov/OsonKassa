@@ -15,6 +15,7 @@ import 'table/store_table.dart';
 
 class StoreView extends StatefulWidget {
   final StoreCtl storeCtl;
+
   const StoreView({super.key, required this.storeCtl});
 
   @override
@@ -73,11 +74,9 @@ class _StoreViewState extends State<StoreView> {
     reloadLists();
     Size screenSize = getScreenSize(context);
 
-    return AppContainer(
-      padding: EdgeInsets.zero,
-      decoration: const BoxDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return CustomContainer(
+
+      child: ListView(
         children: [
           HeaderTitle(
             title: "Ombor",
@@ -85,67 +84,62 @@ class _StoreViewState extends State<StoreView> {
                 fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
             isList: false,
           ),
-          AppContainer(
-            height: MediaQuery.sizeOf(context).height * 0.82,
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            decoration: containerDecoration,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      key: _sortButtonKey,
-                      onPressed: () => _showPopupMenu(context),
-                      icon: const Icon(
-                        Icons.sort_sharp,
-                        color: Colors.black,
-                      ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    key: _sortButtonKey,
+                    onPressed: () => _showPopupMenu(context),
+                    icon: const Icon(
+                      Icons.sort_sharp,
+                      color: Colors.black,
                     ),
-                    SizedBox(
-                      width: screenSize.width * 0.01,
+                  ),
+                  SizedBox(
+                    width: screenSize.width * 0.01,
+                  ),
+                  SizedBox(
+                    width: screenSize.width * 0.15,
+                    child: SearchTextField(
+                      hintText:
+                          "${ButtonTexts.search} | ${DisplayTexts.name_of_product}",
+                      onChanged: (p0) => storeCtl.searchProduct(p0),
                     ),
-                    SizedBox(
-                      width: screenSize.width * 0.15,
-                      child: SearchTextField(
-                        hintText:
-                            "${ButtonTexts.search} | ${DisplayTexts.name_of_product}",
-                        onChanged: (p0) => storeCtl.searchProduct(p0),
-                      ),
-                    ),
-                    DialogTextButton(
-                      text: ButtonTexts.statistics,
-                      onClick: () => Get.toNamed(AppPaths.storeStatistic),
-                      textStyle: textStyleBlack18,
-                    ),
-                  ],
-                ),
-                Container(
-                  height: MediaQuery.sizeOf(context).height * 0.63,
-                  child: Obx(
-                    () => DataList(
-                      isLoading: storeCtl.isLoading.value,
-                      isNotEmpty: storeCtl.list.isNotEmpty,
-                      child: StoreTable(
-                        storeCtl: storeCtl,
-                      ),
+                  ),
+                  // DialogTextButton(
+                  //   text: ButtonTexts.statistics,
+                  //   onClick: () => Get.toNamed(AppPaths.storeStatistic),
+                  //   textStyle: textStyleBlack18,
+                  // ),
+                ],
+              ),
+              Container(
+                height: MediaQuery.sizeOf(context).height * 0.63,
+                child: Obx(
+                  () => DataList(
+                    isLoading: storeCtl.isLoading.value,
+                    isNotEmpty: storeCtl.list.isNotEmpty,
+                    child: StoreTable(
+                      storeCtl: storeCtl,
                     ),
                   ),
                 ),
-                Obx(() {
-                  if (storeCtl.pagination.value.pages > 1) {
-                    return Pagination(
-                      count: storeCtl.pagination.value.pages,
-                      onClick: (index) {
-                        storeCtl.selectPage(index);
-                      },
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                })
-              ],
-            ),
+              ),
+              Obx(() {
+                if (storeCtl.pagination.value.pages > 1) {
+                  return Pagination(
+                    count: storeCtl.pagination.value.pages,
+                    onClick: (index) {
+                      storeCtl.selectPage(index);
+                    },
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              })
+            ],
           ),
         ],
       ),

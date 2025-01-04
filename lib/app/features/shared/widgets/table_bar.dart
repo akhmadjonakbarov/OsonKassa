@@ -37,7 +37,7 @@ class TableBar extends StatelessWidget {
           if (screenSize.width <= 1370)
             SizedBox(
               width: screenSize.width * 0.1,
-              child: PermissionChecker.addButton(
+              child: PermissionCheckerS.addButton(
                 role,
                 () {
                   onEdit();
@@ -48,7 +48,7 @@ class TableBar extends StatelessWidget {
           else
             SizedBox(
               width: screenSize.width * 0.08,
-              child: PermissionChecker.addButton(
+              child: PermissionCheckerS.addButton(
                 role,
                 () {
                   onEdit();

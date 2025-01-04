@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../../config/app_views.dart';
 import '../../../../styles/colors.dart';
+import '../../../action/logic/action_ctl.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../dashboard_views/category/view/category_view.dart';
 import '../../../dashboard_views/customer/view/customer_view.dart';
@@ -14,7 +15,8 @@ import '../../../dashboard_views/debt/view/debt_view.dart';
 import '../../../dashboard_views/document/view/edit_screen/edit_product_doc_item_screen.dart';
 import '../../../dashboard_views/document/view/main_screen/document_view.dart';
 import '../../../dashboard_views/item/view/item_view.dart';
-import '../../../dashboard_views/spiska/view/spiska_view.dart';
+import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
+import '../../../dashboard_views/note/view/note_view.dart';
 import '../../../dashboard_views/statistics/logic/statistics_ctl.dart';
 import '../../../dashboard_views/statistics/view/statistics_view.dart';
 import '../../../dashboard_views/store/logic/store_ctl.dart';
@@ -44,17 +46,16 @@ class _ContentBarState extends State<ContentBar> {
   final StatisticsCtl statisticsCtl = Get.find<StatisticsCtl>();
   final ReportCtl reportCtl = Get.find<ReportCtl>();
   final AuthCtl authCtl = Get.find<AuthCtl>();
+  final ActionCtl actionCtl = Get.find<ActionCtl>();
   final DocumentCtl documentCtl = Get.find<DocumentCtl>();
   final ClientCtl clientCtl = Get.find<ClientCtl>();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 10, 10, 0),
-      width: widget.sizeScreen.width * 0.80,
+      width: widget.sizeScreen.width * 0.805,
       alignment: Alignment.center,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Header(
             authCtl: authCtl,
@@ -62,6 +63,9 @@ class _ContentBarState extends State<ContentBar> {
             reportCtl: reportCtl,
             statisticsCtl: statisticsCtl,
             storeCtl: storeCtl,
+          ),
+          SizedBox(
+            height: widget.sizeScreen.height * 0.1 / 4,
           ),
           Expanded(
             child: Obx(
@@ -76,6 +80,7 @@ class _ContentBarState extends State<ContentBar> {
                     return const TradeView();
                   case AppViews.product:
                     return ItemtView(
+                      actionCtl: actionCtl,
                       authCtl: authCtl,
                     );
                   case AppViews.document:
@@ -89,10 +94,11 @@ class _ContentBarState extends State<ContentBar> {
                     );
                   case AppViews.client:
                     return CustomerView(
+                      authCtl: authCtl,
                       clientCtl: clientCtl,
                     );
                   case AppViews.spiska:
-                    return const SpiskaView();
+                    return const NoteView();
                   case AppViews.currency:
                     return const CurrencyView();
                   case AppViews.debt:

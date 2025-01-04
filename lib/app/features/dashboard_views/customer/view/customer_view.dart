@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/auth/logic/controllers/auth_ctl.dart';
+import 'package:osonkassa/app/utils/helper/permission_checker.dart';
 
 import '../../../../core/enums/filter_field.dart';
 import '../../../../core/permission_checker/permission_checker.dart';
@@ -16,9 +18,12 @@ import 'table/client_table.dart';
 
 class CustomerView extends StatefulWidget {
   final ClientCtl clientCtl;
+  final AuthCtl authCtl;
+
   CustomerView({
     Key? key,
     required this.clientCtl,
+    required this.authCtl,
   }) : super(key: key);
 
   @override
@@ -27,6 +32,7 @@ class CustomerView extends StatefulWidget {
 
 class _CustomerViewState extends State<CustomerView> {
   final GlobalKey _sortButtonKey = GlobalKey();
+
   @override
   void didChangeDependencies() {
     widget.clientCtl.fetchItems();
@@ -69,97 +75,87 @@ class _CustomerViewState extends State<CustomerView> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
-    return Stack(
-      children: [
-        AppContainer(
-          padding: EdgeInsets.zero,
-          decoration: const BoxDecoration(),
-          height: screenSize.height * 0.9,
-          child: ListView(
+    return CustomContainer(
+      child: ListView(
+        children: [
+          HeaderTitle(
+            title: DisplayTexts.builders,
+            textStyle: textStyleBlack18.copyWith(
+                fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
+          ),
+          Column(
             children: [
-              HeaderTitle(
-                title: DisplayTexts.builders,
-                textStyle: textStyleBlack18.copyWith(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
-              ),
-              AppContainer(
-                decoration: containerDecoration,
-                child: Column(
-                  children: [
-                    AppContainer(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      decoration: const BoxDecoration(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                key:
-                                    _sortButtonKey, // Assign the key to the button
-                                onPressed: () => _showPopupMenu(context),
-                                icon: const Icon(
-                                  Icons.sort_sharp,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              SizedBox(
-                                width: screenSize.width * 0.01,
-                              ),
-                              SizedBox(
-                                width: screenSize.width * 0.15,
-                                child: SearchTextField(
-                                  onChanged: (value) =>
-                                      widget.clientCtl.searchBuilder(value),
-                                ),
-                              ),
-                            ],
-                          ),
-                          if (screenSize.width <= 1370)
-                            SizedBox(
-                              width: screenSize.width * 0.1,
-                              child: PermissionChecker.addButton(
-                                'admin',
-                                () {
-                                  widget.clientCtl.editDialog(context);
-                                },
-                                Size(0, screenSize.height * 0.06),
-                              ),
-                            )
-                          else
-                            SizedBox(
-                              width: screenSize.width * 0.08,
-                              child: PermissionChecker.addButton(
-                                'admin',
-                                () {
-                                  widget.clientCtl.editDialog(context);
-                                },
-                                Size(0, screenSize.height * 0.05),
-                              ),
-                            ),
-                        ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        key: _sortButtonKey, // Assign the key to the button
+                        onPressed: () => _showPopupMenu(context),
+                        icon: const Icon(
+                          Icons.sort_sharp,
+                          color: Colors.black,
+                        ),
                       ),
+                      SizedBox(
+                        width: screenSize.width * 0.01,
+                      ),
+                      SizedBox(
+                        width: screenSize.width * 0.15,
+                        child: SearchTextField(
+                          onChanged: (value) =>
+                              widget.clientCtl.searchBuilder(value),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (PermissionChecker.hasPermission(
+                      widget.authCtl.userModel.value.roles, "create_item"))
+                    AddButton(
+                      textStyle: TextStyles.buttonTextStyle(),
+                      onClick: () {},
                     ),
-                    Obx(
-                      () {
-                        return DataList(
-                          isLoading: widget.clientCtl.isLoading.value,
-                          isNotEmpty: widget.clientCtl.list.isNotEmpty,
-                          child: ClientTable(
-                            builderController: widget.clientCtl,
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                ),
+
+                  // if (screenSize.width <= 1370)
+                  //   SizedBox(
+                  //     width: screenSize.width * 0.1,
+                  //     child: PermissionCheckerS.addButton(
+                  //       'admin',
+                  //       () {
+                  //         widget.clientCtl.editDialog(context);
+                  //       },
+                  //       Size(0, screenSize.height * 0.06),
+                  //     ),
+                  //   )
+                  // else
+                  //   SizedBox(
+                  //     width: screenSize.width * 0.08,
+                  //     child: PermissionCheckerS.addButton(
+                  //       'admin',
+                  //       () {
+                  //         widget.clientCtl.editDialog(context);
+                  //       },
+                  //       Size(0, screenSize.height * 0.05),
+                  //     ),
+                  //   ),
+                ],
               ),
+              Obx(
+                () {
+                  return DataList(
+                    isLoading: widget.clientCtl.isLoading.value,
+                    isNotEmpty: widget.clientCtl.list.isNotEmpty,
+                    child: ClientTable(
+                      builderController: widget.clientCtl,
+                    ),
+                  );
+                },
+              )
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

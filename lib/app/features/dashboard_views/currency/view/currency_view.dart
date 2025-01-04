@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/shared/widgets/pagination.dart';
+import 'package:osonkassa/app/styles/themes.dart';
 
 import '../../../../core/permission_checker/permission_checker.dart';
-import '../../../../styles/container_decoration.dart';
 
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
@@ -43,78 +43,70 @@ class _CurrencyViewState extends State<CurrencyView> {
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
 
-    return AppContainer(
-      padding: EdgeInsets.zero,
-      decoration: const BoxDecoration(),
+    return CustomContainer(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          HeaderTitle(
-            title: "Valyuta List",
-            textStyle: textStyleBlack18.copyWith(
-                fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
-          ),
-          AppContainer(
-            height: MediaQuery.sizeOf(context).height * 0.82,
-            decoration: containerDecoration,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(
+            child: ListView(
               children: [
-                AppContainer(
-                  padding: const EdgeInsets.symmetric(vertical: 30),
-                  decoration: const BoxDecoration(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: screenSize.width * 0.15,
-                        child: SearchTextField(
-                          hintText:
-                              " ${ButtonTexts.search} | ${formatUZSNumber((12600))}",
-                          onChanged: (value) =>
-                              currencyCtl.searchCurrency(value),
-                        ),
-                      ),
-                      DialogTextButton(
-                        onClick: () {},
-                        text: "Tafsilotlar",
-                        textStyle: textStyleBlack14,
-                      ),
-                      if (screenSize.width <= 1370)
-                        SizedBox(
-                          width: screenSize.width * 0.1,
-                          child: PermissionChecker.addButton(
-                            'admin',
-                            () {
-                              showCurrencyEditDialog(
-                                width: screenSize.width * 0.4,
-                                height: screenSize.height * 0.39,
-                              );
-                            },
-                            Size(0, screenSize.height * 0.05),
-                          ),
-                        )
-                      else
-                        SizedBox(
-                          width: screenSize.width * 0.08,
-                          child: PermissionChecker.addButton(
-                            'admin',
-                            () {
-                              showCurrencyEditDialog(
-                                width: screenSize.width * 0.4,
-                                height: screenSize.height * 0.39,
-                              );
-                            },
-                            Size(0, screenSize.height * 0.05),
-                          ),
-                        ),
-                    ],
-                  ),
+                HeaderTitle(
+                  title: "Valyuta List",
+                  textStyle: textStyleBlack18.copyWith(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
                 ),
-                Container(
-                  height: MediaQuery.sizeOf(context).height * 0.63,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: screenSize.width * 0.15,
+                      child: SearchTextField(
+                        hintText:
+                            " ${ButtonTexts.search} | ${formatUZSNumber((12600))}",
+                        onChanged: (value) => currencyCtl.searchCurrency(value),
+                      ),
+                    ),
+                    DialogTextButton(
+                      onClick: () {},
+                      text: "Tafsilotlar",
+                      textStyle: textStyleBlack14,
+                    ),
+                    if (screenSize.width <= 1370)
+                      SizedBox(
+                        width: screenSize.width * 0.1,
+                        child: PermissionCheckerS.addButton(
+                          'admin',
+                          () {
+                            showCurrencyEditDialog(
+                              width: screenSize.width * 0.4,
+                              height: screenSize.height * 0.39,
+                            );
+                          },
+                          Size(0, screenSize.height * 0.05),
+                        ),
+                      )
+                    else
+                      SizedBox(
+                        width: screenSize.width * 0.08,
+                        child: PermissionCheckerS.addButton(
+                          'admin',
+                          () {
+                            showCurrencyEditDialog(
+                              width: screenSize.width * 0.4,
+                              height: screenSize.height * 0.39,
+                            );
+                          },
+                          Size(0, screenSize.height * 0.05),
+                        ),
+                      ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: screenSize.height / 60,
+                  ),
                   child: Obx(
                     () => DataList(
                       isLoading: currencyCtl.isLoading.value,
@@ -128,16 +120,21 @@ class _CurrencyViewState extends State<CurrencyView> {
                       ),
                     ),
                   ),
-                ),
-                Obx(
-                  () => Pagination(
-                    count: currencyCtl.pagination.value.pages,
-                    onClick: (index) {
-                      currencyCtl.selectPage(index);
-                    },
-                  ),
                 )
               ],
+            ),
+          ),
+          CustomContainer(
+            height: screenSize.height * 0.1 / 1.8,
+            margin: const EdgeInsets.only(top: 5),
+            decoration: Decorations.decoration(),
+            child: Obx(
+              () => Pagination(
+                count: currencyCtl.pagination.value.pages,
+                onClick: (index) {
+                  currencyCtl.selectPage(index);
+                },
+              ),
             ),
           ),
         ],

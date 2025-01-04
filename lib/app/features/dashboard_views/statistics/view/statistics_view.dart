@@ -32,7 +32,6 @@ class _StatisticsViewState extends State<StatisticsView> {
   @override
   void initState() {
     fetchData();
-    loadingChanged();
 
     super.initState();
   }
@@ -91,6 +90,7 @@ class _StatisticsViewState extends State<StatisticsView> {
 
   @override
   Widget build(BuildContext context) {
+    loadingChanged();
     final screenSize = getScreenSize(context);
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: Paddings.padding8),
@@ -257,7 +257,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                 percentage: screenSize.height / 350,
               ),
             ),
-            height: screenSize.height * 0.6,
+            height: screenSize.height * 0.65,
             decoration: Decorations.decoration(
               boxShadow: BoxShadow(
                 color: Colors.black.withOpacity(0.4),

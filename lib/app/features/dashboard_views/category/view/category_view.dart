@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/shared/widgets/pagination.dart';
+import 'package:osonkassa/app/styles/themes.dart';
 
 import '../../../../styles/container_decoration.dart';
 import '../../../../styles/text_styles.dart';
@@ -32,47 +33,41 @@ class _CategoryViewState extends State<CategoryView> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
-    return AppContainer(
-      padding: EdgeInsets.zero,
-      decoration: const BoxDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return CustomContainer(
+      child: ListView(
         children: [
           HeaderTitle(
             title: "Bo'limlar Ro'yhati",
             textStyle: textStyleBlack18.copyWith(
                 fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
           ),
-          AppContainer(
-            height: MediaQuery.sizeOf(context).height * 0.82,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: containerDecoration,
+          SizedBox(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
                   children: [
-                    TableBar(
-                      screenSize: screenSize,
-                      onEdit: () => categoryCtl.editDialog(context),
-                      onSearch: (value) => categoryCtl.searchCategory(value),
-                      role: widget.authCtl.userModel.value.employee.role.role,
-                    ),
-                    Container(
-                      height: MediaQuery.sizeOf(context).height * 0.63,
-                      child: Obx(
-                        () => DataList(
-                          isLoading: categoryCtl.isLoading.value,
-                          isNotEmpty: categoryCtl.list.isNotEmpty,
-                          child: CategoryTable(
-                            categoryCtl: categoryCtl,
-                            categories: categoryCtl.list,
-                            isSeller: widget.authCtl.isSeller.value,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // TableBar(
+                    //   screenSize: screenSize,
+                    //   onEdit: () => categoryCtl.editDialog(context),
+                    //   onSearch: (value) => categoryCtl.searchCategory(value),
+                    //   role: widget.authCtl.userModel.value.employee.role.role,
+                    // ),
+                    // SizedBox(
+                    //   height: MediaQuery.sizeOf(context).height * 0.63,
+                    //   child: Obx(
+                    //     () => DataList(
+                    //       isLoading: categoryCtl.isLoading.value,
+                    //       isNotEmpty: categoryCtl.list.isNotEmpty,
+                    //       child: CategoryTable(
+                    //         categoryCtl: categoryCtl,
+                    //         categories: categoryCtl.list,
+                    //         isSeller: widget.authCtl.isSeller.value,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
                 Pagination(

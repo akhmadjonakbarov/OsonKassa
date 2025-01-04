@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:osonkassa/app/styles/app_colors.dart';
+import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 
+import '../../../styles/themes.dart';
 import '../../../utils/media/paddings.dart';
 
 class AppContainer extends StatelessWidget {
@@ -33,6 +36,38 @@ class AppContainer extends StatelessWidget {
           child: child,
         ),
       ),
+    );
+  }
+}
+
+class CustomContainer extends StatelessWidget {
+  final Widget child;
+  final EdgeInsets? padding;
+  final EdgeInsets? margin;
+  final double? height;
+  final double? width;
+  final BoxDecoration? decoration;
+
+  const CustomContainer(
+      {super.key,
+      required this.child,
+      this.padding = const EdgeInsets.all(Paddings.padding8),
+      this.margin,
+      this.height,
+      this.width,
+      this.decoration});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      padding: padding,
+      margin: margin,
+      decoration: decoration ??
+          Decorations.decoration(
+              color: AppColors.lightWhite, boxShadow: BoxShadows.custom),
+      child: child,
     );
   }
 }

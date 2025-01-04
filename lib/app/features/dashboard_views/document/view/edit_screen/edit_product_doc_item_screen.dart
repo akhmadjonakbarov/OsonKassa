@@ -22,7 +22,7 @@ import '../../../currency/logic/currency_controller.dart';
 import '../../../currency/models/models.dart';
 import '../../../item/logic/item_ctl.dart';
 import '../../../item/models/item_model.dart';
-import '../../../spiska/logic/spiska_controller.dart';
+import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
 import '../../logic/document/document_ctl.dart';
 import '../../logic/view_controller/manage_product_doc_item_ctl.dart';
 import 'widgets/cached_products_table.dart';
@@ -51,7 +51,7 @@ class _EditProductDocItemScreenState extends State<EditProductDocItemScreen> {
   final ManageProductDocItemCtl manageProductDocItemCtl =
       Get.find<ManageProductDocItemCtl>();
 
-  final SpiskaCtl spiskaCtl = Get.find<SpiskaCtl>();
+  final NoteCtl spiskaCtl = Get.find<NoteCtl>();
 
   @override
   void initState() {

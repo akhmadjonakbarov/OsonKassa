@@ -1,5 +1,6 @@
 import 'package:osonkassa/app/styles/app_colors.dart';
 import 'package:osonkassa/app/styles/chart_colors.dart';
+import 'package:osonkassa/app/styles/themes.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -64,7 +65,7 @@ class _HeaderState extends State<Header> {
       ),
       items: [
         const PopupMenuItem<String>(
-          value: 'profile_page',
+          value: AppPaths.profile,
           child: SizedBox(
             width: 150,
             child: ListTile(
@@ -87,7 +88,7 @@ class _HeaderState extends State<Header> {
     ).then((value) {
       switch (value) {
         case 'profile_page':
-          Get.toNamed('/profile_page');
+          Get.toNamed(AppPaths.profile);
           break;
         case 'logout':
           _logout();
@@ -239,12 +240,8 @@ class _HeaderState extends State<Header> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       width: double.infinity,
-      height: 60,
-      decoration: BoxDecoration(
-        color: AppColors.lightWhite,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey)
-      ),
+      height: screenSize.height * 0.1 / 1.5,
+      decoration: Decorations.decoration(boxShadow: BoxShadows.custom),
       alignment: Alignment.center,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -259,16 +256,16 @@ class _HeaderState extends State<Header> {
                   onEnter: (_) {
                     _showOverlay();
                   },
-                  child: DialogTextButton(
-                    onClick: () {},
-                    text: ButtonTexts.statistics,
-                    textStyle: textStyleWhite18,
-                    bgColor: Colors.blueAccent,
-                  ),
+                  child: BasicButton(
+                      text: ButtonTexts.statistics,
+                      bgColor: ButtonColors.info,
+                      textStyle: TextStyles.buttonTextStyle(
+                          fontSize: screenSize.height / 54),
+                      height: screenSize.height * 0.1 / 2.5,
+                      width: screenSize.width * 0.08),
                 ),
-                DialogTextButton(
+                BasicButton(
                   text: "Hisobotlar",
-                  textStyle: textStyleWhite18,
                   onClick: () {
                     if (widget.reportCtl.list.isNotEmpty) {
                       Get.toNamed(AppPaths.reportDocs);
@@ -278,6 +275,10 @@ class _HeaderState extends State<Header> {
                           type: TypeOfSnackBar.alert);
                     }
                   },
+                  textStyle: TextStyles.buttonTextStyle(
+                      fontSize: screenSize.height / 54),
+                  height: screenSize.height * 0.1 / 2.5,
+                  width: screenSize.width * 0.06,
                 ),
               ],
             ),
@@ -288,23 +289,10 @@ class _HeaderState extends State<Header> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(widget.authCtl.userModel.value.first_name,
-                      style: textStyleBlack18),
-                  switch (widget.authCtl.userModel.value.employee.role.role) {
-                    'seller' => Text(
-                        "Sotuvchi",
-                        style: textStyleBlack18Bold,
-                      ),
-                    'manager' => Text(
-                        'Boshqaruvchi',
-                        style: textStyleBlack18Bold,
-                      ),
-                    'admin' => Text(
-                        'Admin',
-                        style: textStyleBlack18Bold,
-                      ),
-                    String() => throw UnimplementedError(),
-                  }
+                  Text(
+                    widget.authCtl.userModel.value.firstName,
+                    style: textStyleBlack18,
+                  ),
                 ],
               ),
               const SizedBox(

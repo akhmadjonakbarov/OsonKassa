@@ -5,7 +5,7 @@ import '../../styles/icons.dart';
 import '../../styles/text_styles.dart';
 import '../../utils/texts/button_texts.dart';
 
-class PermissionChecker {
+class PermissionCheckerS {
   static Widget addButton(String role, Function() onClick, Size buttonSize) {
     switch (role) {
       case 'manager' || 'admin':

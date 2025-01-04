@@ -2,7 +2,7 @@ import 'package:osonkassa/app/core/printer/pos_printer_manager.dart';
 import 'package:osonkassa/app/features/shared/export_commons.dart';
 import 'package:osonkassa/app/features/dashboard_views/document/logic/doc_item/doc_item_ctl.dart';
 import 'package:osonkassa/app/features/dashboard_views/document/models/doc_item_model.dart';
-import 'package:osonkassa/app/features/dashboard_views/spiska/logic/spiska_controller.dart';
+import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -15,7 +15,7 @@ import '../../../../../shared/widgets/delete_dialog.dart';
 
 class DocItemTableDialog extends StatefulWidget {
   final PosPrinterManager printerManager;
-  final SpiskaCtl spiskaCtl;
+  final NoteCtl spiskaCtl;
   final DocItemCtl docItemCtl;
   final Size size;
   const DocItemTableDialog({

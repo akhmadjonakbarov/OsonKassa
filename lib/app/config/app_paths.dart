@@ -4,4 +4,5 @@ class AppPaths {
   static const String storeStatistic = '/storeStatistic';
   static const String reportDocs = '/reportDocs';
   static const String clientDetail = '/clientDetail';
+  static const String profile = '/profile_page';
 }

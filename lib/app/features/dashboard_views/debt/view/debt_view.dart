@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import '../../../../styles/container_decoration.dart';
 
 import '../../../../styles/text_styles.dart';
+import '../../../../styles/themes.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../shared/export_commons.dart';
+import '../../../shared/widgets/pagination.dart';
 import '../logic/debt_ctl.dart';
 import '../table/debt_table.dart';
 
@@ -29,13 +31,12 @@ class _DebtViewState extends State<DebtView> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
-    return Stack(
-      children: [
-        AppContainer(
-          padding: EdgeInsets.zero,
-          height: screenSize.height * 0.9,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return CustomContainer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              child: ListView(
             children: [
               HeaderTitle(
                 title: "Qarzlar Ro'yhati",
@@ -44,39 +45,45 @@ class _DebtViewState extends State<DebtView> {
                     fontWeight: FontWeight.w500,
                     color: Colors.white),
               ),
-              AppContainer(
-                decoration: containerDecoration,
-                child: Column(
-                  children: [
-                    AppContainer(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      decoration: const BoxDecoration(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: screenSize.width * 0.15,
-                            child: SearchTextField(
-                              hintText: ButtonTexts.search,
-                              onChanged: (value) => debtCtl.searchDebt(value),
-                            ),
+              Column(
+                children: [
+                  AppContainer(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    decoration: const BoxDecoration(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: screenSize.width * 0.15,
+                          child: SearchTextField(
+                            hintText: ButtonTexts.search,
+                            onChanged: (value) => debtCtl.searchDebt(value),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    Obx(
-                      () => DataList(
-                          isLoading: debtCtl.isLoading.value,
-                          isNotEmpty: debtCtl.list.isNotEmpty,
-                          child: DebtTable(debtCtl: debtCtl)),
-                    )
-                  ],
-                ),
+                  ),
+                  Obx(
+                    () => DataList(
+                        isLoading: debtCtl.isLoading.value,
+                        isNotEmpty: debtCtl.list.isNotEmpty,
+                        child: DebtTable(debtCtl: debtCtl)),
+                  )
+                ],
               ),
             ],
+          )),
+          CustomContainer(
+            height: screenSize.height * 0.1 / 1.8,
+            margin: EdgeInsets.zero,
+            decoration: Decorations.decoration(),
+            child:  Pagination(
+              count: 2,
+              onClick: (index) {},
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

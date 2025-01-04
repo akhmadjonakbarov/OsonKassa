@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../core/printer/pos_printer_manager.dart';
-import '../../../../styles/container_decoration.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/alert_texts.dart';
@@ -13,7 +12,7 @@ import '../../../../utils/texts/button_texts.dart';
 import '../../../shared/export_commons.dart';
 import '../../customer/logic/client_ctl.dart';
 import '../../customer/models/client_model.dart';
-import '../../spiska/logic/spiska_controller.dart';
+import '../../note/logic/note_controller.dart';
 import '../../store/logic/store_ctl.dart';
 import '../../store/view/widgets/card_button.dart';
 import '../logic/trade_ctl.dart';
@@ -36,7 +35,7 @@ class _TradeViewState extends State<TradeView> {
   final TradeCtl tradeCtl = Get.find<TradeCtl>();
   final ClientCtl clientCtl = Get.find<ClientCtl>();
   final StoreCtl storeCtl = Get.find<StoreCtl>();
-  final SpiskaCtl spiskaCtl = Get.find<SpiskaCtl>();
+  final NoteCtl spiskaCtl = Get.find<NoteCtl>();
 
   // TextEditingController
   TextEditingController barCodeController = TextEditingController();
@@ -210,29 +209,23 @@ class _TradeViewState extends State<TradeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.zero,
-      margin: const EdgeInsets.symmetric(vertical: 15),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _leftSide(constraints),
-              _rightSide(constraints),
-            ],
-          );
-        },
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _leftSide(constraints),
+            _rightSide(constraints),
+          ],
+        );
+      },
     );
   }
 
   Widget _leftSide(BoxConstraints constraints) {
-    return AppContainer(
+    return CustomContainer(
       width: constraints.maxWidth * 0.69,
-      height: constraints.maxHeight,
-      decoration: containerDecoration,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -288,11 +281,8 @@ class _TradeViewState extends State<TradeView> {
   }
 
   Widget _rightSide(BoxConstraints constraints) {
-    return AppContainer(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      height: constraints.maxHeight,
+    return CustomContainer(
       width: constraints.maxWidth * 0.30,
-      decoration: containerDecoration,
       child: Column(
         children: [
           Expanded(

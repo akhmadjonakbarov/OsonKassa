@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/shared/export_commons.dart';
+import 'package:osonkassa/app/styles/themes.dart';
 
 import '../../../../config/app_views.dart';
 import '../../../../styles/icons.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/texts/button_texts.dart';
-import '../../../shared/widgets/buttons.dart';
-import '../../../dashboard_views/spiska/logic/spiska_controller.dart';
+import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
 import '../../logic/controllers/dashboard_controller.dart';
 
 class SideBar extends StatefulWidget {
@@ -25,26 +26,27 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
-  final SpiskaCtl spiskaCtl = Get.find<SpiskaCtl>();
+  final NoteCtl spiskaCtl = Get.find<NoteCtl>();
 
   @override
   Widget build(BuildContext context) {
     spiskaCtl.fetchItems();
     return Obx(
       () {
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+        return CustomContainer(
           width: widget.sizeScreen.width * 0.15,
-          color: const Color.fromARGB(255, 16, 15, 77),
+          margin: EdgeInsets.zero,
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  ButtonTexts.dashboard,
-                  style: textStyleBlack18.copyWith(
-                      fontSize: 25, fontWeight: FontWeight.w500),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Text(
+                    "Boshqaruv Paneli",
+                    style: textStyleBlack18.copyWith(
+                        fontSize: 25, fontWeight: FontWeight.w500),
+                  ),
                 ),
               ),
               CustomButton(

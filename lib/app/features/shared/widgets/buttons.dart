@@ -1,9 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: deprecated_member_use
 
-import 'package:osonkassa/app/styles/colors.dart';
-import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:osonkassa/app/styles/app_colors.dart';
+
+import 'package:osonkassa/app/styles/colors.dart';
+import 'package:osonkassa/app/styles/icons.dart';
+import 'package:osonkassa/app/styles/themes.dart';
+import 'package:osonkassa/app/utils/helper/button_size_manager.dart';
+import 'package:osonkassa/app/utils/media/get_screen_size.dart';
+import 'package:osonkassa/app/utils/texts/button_texts.dart';
 
 import '../../../styles/text_styles.dart';
 
@@ -334,6 +341,161 @@ class EditIconButton extends StatelessWidget {
         color: iconColor,
       ),
       onPressed: onEdit,
+    );
+  }
+}
+
+class BasicButton extends StatelessWidget {
+  final String text;
+  final Function()? onClick;
+  final TextStyle textStyle;
+  final Color bgColor;
+  final double height;
+  final double width;
+
+  const BasicButton({
+    super.key,
+    required this.text,
+    this.onClick,
+    required this.textStyle,
+    this.bgColor = ButtonColors.primary,
+    required this.height,
+    required this.width,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: Material(
+        child: Ink(
+          decoration: Decorations.decoration(
+            color: bgColor,
+            borderRadius: BorderRadiuses.borderRadius8,
+            border: Border.all(color: Colors.transparent),
+          ),
+          child: InkWell(
+            onTap: () {
+              onClick!();
+            },
+            child: Center(
+              child: Text(
+                text,
+                style: textStyle,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BasicIconButton extends StatelessWidget {
+  final String text;
+  final Function()? onClick;
+  final TextStyle textStyle;
+  final Color bgColor;
+  final Color? iconColor;
+  final double? height;
+  final double? width;
+  final double? iconHeight;
+  final double? iconWidth;
+
+  final String icon;
+
+  const BasicIconButton({
+    super.key,
+    required this.text,
+    this.onClick,
+    this.iconColor = Colors.white,
+    required this.textStyle,
+    this.bgColor = ButtonColors.primary,
+    this.height,
+    this.width,
+    this.iconHeight,
+    this.iconWidth,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height ?? ButtonSizeManager.height(context),
+      width: width ?? ButtonSizeManager.width(context),
+      child: Material(
+        child: Ink(
+          padding: EdgeInsets.zero,
+          decoration: Decorations.decoration(
+            color: bgColor,
+            borderRadius: BorderRadiuses.borderRadius8,
+            border: Border.all(color: Colors.transparent),
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(BorderRadiuses.borderRadius8),
+            onTap: () {
+              onClick!();
+            },
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SvgPicture.asset(
+                    icon,
+                    height: iconHeight,
+                    width: iconWidth,
+                    color: iconColor,
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    text,
+                    style: textStyle,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class AddButton extends StatelessWidget {
+  final double? height;
+  final double? width;
+  final TextStyle textStyle;
+  final double? iconHeight;
+  final double? iconWidth;
+  final Function() onClick;
+  final Color iconColor;
+
+  const AddButton(
+      {super.key,
+       this.height,
+       this.width,
+      required this.textStyle,
+      this.iconHeight,
+      this.iconWidth,
+      required this.onClick,
+      this.iconColor = Colors.white});
+
+  @override
+  Widget build(BuildContext context) {
+    return BasicIconButton(
+      text: ButtonTexts.add,
+      textStyle: textStyle,
+      height: height,
+      width: width,
+      iconHeight: iconHeight,
+      iconWidth: iconWidth,
+      iconColor: iconColor,
+      onClick: onClick,
+      icon: AppIcons.plus,
     );
   }
 }

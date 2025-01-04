@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:osonkassa/app/styles/app_colors.dart';
 
 import 'colors.dart';
 
@@ -40,6 +41,19 @@ class TextStyles {
       double opacity = 1.0,
       Color? color,
       double fontSize = 25}) {
+    return TextStyle(
+      color: color,
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+    );
+  }
+
+  static TextStyle buttonTextStyle({
+    FontWeight fontWeight = FontWeight.w600,
+    double opacity = 1.0,
+    Color color = AppColors.lightWhite,
+    double fontSize = 18,
+  }) {
     return TextStyle(
       color: color,
       fontSize: fontSize,

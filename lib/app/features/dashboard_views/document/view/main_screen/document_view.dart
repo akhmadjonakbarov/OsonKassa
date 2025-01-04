@@ -17,6 +17,7 @@ import 'table/document_table.dart';
 class DocumentView extends StatefulWidget {
   final AuthCtl authCtl;
   final DocumentCtl documentCtl;
+
   const DocumentView(
       {super.key, required this.authCtl, required this.documentCtl});
 
@@ -74,107 +75,84 @@ class _DocumentViewState extends State<DocumentView> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
-    return Stack(
-      children: [
-        AppContainer(
-          padding: EdgeInsets.zero,
-          decoration: const BoxDecoration(),
-          height: screenSize.height * 0.9,
-          child: ListView(
+    return CustomContainer(
+      child: ListView(
+        children: [
+          HeaderTitle(
+            title: "Ombor",
+            textStyle: textStyleBlack18.copyWith(
+                fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
+            isList: false,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              HeaderTitle(
-                title: "Ombor",
-                textStyle: textStyleBlack18.copyWith(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
-                isList: false,
-              ),
-              AppContainer(
-                decoration: containerDecoration,
-                child: Column(
-                  children: [
-                    AppContainer(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      decoration: const BoxDecoration(),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                key: _sortButtonKey,
-                                onPressed: () => _showPopupMenu(context),
-                                icon: const Icon(
-                                  Icons.sort,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              SizedBox(
-                                width: screenSize.width * 0.2,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Obx(
-                                      () => DialogTextButton(
-                                        text: documentCtl.isToday.value
-                                            ? "Hammasi"
-                                            : "Bugunilik",
-                                        textStyle: textStyleWhite18,
-                                        onClick: () => documentCtl.setToday(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          if (screenSize.width <= 1370)
-                            SizedBox(
-                              width: screenSize.width * 0.1,
-                              child: PermissionChecker.addButton(
-                                widget
-                                    .authCtl.userModel.value.employee.role.role,
-                                () {
-                                  dashboardCtl.changeView(AppViews.addProduct);
-                                },
-                                Size(0, screenSize.height * 0.06),
-                              ),
-                            )
-                          else
-                            SizedBox(
-                              width: screenSize.width * 0.08,
-                              child: PermissionChecker.addButton(
-                                widget
-                                    .authCtl.userModel.value.employee.role.role,
-                                () {
-                                  dashboardCtl.changeView(AppViews.addProduct);
-                                },
-                                Size(0, screenSize.height * 0.05),
-                              ),
-                            ),
-                        ],
-                      ),
+              Row(
+                children: [
+                  IconButton(
+                    key: _sortButtonKey,
+                    onPressed: () => _showPopupMenu(context),
+                    icon: const Icon(
+                      Icons.sort,
                     ),
-                    Obx(
-                      () => DataList(
-                        isLoading: documentCtl.isLoading.value,
-                        isNotEmpty: documentCtl.list.isNotEmpty,
-                        child: DocumentTable(
-                          documentCtl: documentCtl,
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  SizedBox(
+                    width: screenSize.width * 0.2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Obx(
+                          () => DialogTextButton(
+                            text: documentCtl.isToday.value
+                                ? "Hammasi"
+                                : "Bugunilik",
+                            textStyle: textStyleWhite18,
+                            onClick: () => documentCtl.setToday(),
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
+              // if (screenSize.width <= 1370)
+              //   SizedBox(
+              //     width: screenSize.width * 0.1,
+              //     child: PermissionChecker.addButton(
+              //       widget.authCtl.userModel.value.employee.role.role,
+              //       () {
+              //         dashboardCtl.changeView(AppViews.addProduct);
+              //       },
+              //       Size(0, screenSize.height * 0.06),
+              //     ),
+              //   )
+              // else
+              //   SizedBox(
+              //     width: screenSize.width * 0.08,
+              //     child: PermissionChecker.addButton(
+              //       widget.authCtl.userModel.value.employee.role.role,
+              //       () {
+              //         dashboardCtl.changeView(AppViews.addProduct);
+              //       },
+              //       Size(0, screenSize.height * 0.05),
+              //     ),
+              //   ),
             ],
           ),
-        ),
-      ],
+          Obx(
+            () => DataList(
+              isLoading: documentCtl.isLoading.value,
+              isNotEmpty: documentCtl.list.isNotEmpty,
+              child: DocumentTable(
+                documentCtl: documentCtl,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -196,7 +174,7 @@ class AddingButton extends StatelessWidget {
     return SizedBox(
       width: screenSize.width * 0.1,
       child: Expanded(
-        child: PermissionChecker.addButton(
+        child: PermissionCheckerS.addButton(
           role,
           () {
             onClick();

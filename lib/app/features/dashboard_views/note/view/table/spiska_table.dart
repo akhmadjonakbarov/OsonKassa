@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import '../../../../../utils/texts/table_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../../dashboard/logic/controllers/dashboard_controller.dart';
-import '../../logic/spiska_controller.dart';
-import '../../models/spiska_model.dart';
+import '../../logic/note_controller.dart';
+import '../../models/note_model.dart';
 
 class SpiskaTable extends StatefulWidget {
-  final SpiskaCtl providerController;
+  final NoteCtl providerController;
 
   const SpiskaTable({super.key, required this.providerController});
 
@@ -34,7 +34,7 @@ class _SpiskaTableState extends State<SpiskaTable> {
         rows: widget.providerController.list.asMap().entries.map(
           (entry) {
             int index = entry.key;
-            SpiskaModel spiska = entry.value;
+            NoteModel spiska = entry.value;
             return DataRow(
               cells: <DataCell>[
                 DataCell(Text("${index + 1}")),

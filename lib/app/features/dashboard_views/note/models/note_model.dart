@@ -2,19 +2,19 @@
 
 import '../../item/models/item_model.dart';
 
-class SpiskaModel {
+class NoteModel {
   int id;
   ItemModel item;
-  SpiskaModel({
+  NoteModel({
     required this.id,
     required this.item,
   });
 
-  SpiskaModel copyWith({
+  NoteModel copyWith({
     int? id,
     ItemModel? item,
   }) {
-    return SpiskaModel(
+    return NoteModel(
       id: id ?? this.id,
       item: item ?? this.item,
     );
@@ -27,8 +27,8 @@ class SpiskaModel {
     };
   }
 
-  factory SpiskaModel.fromMap(Map<String, dynamic> map) {
-    return SpiskaModel(
+  factory NoteModel.fromMap(Map<String, dynamic> map) {
+    return NoteModel(
       id: map['id'] as int,
       item: ItemModel.fromMap(map['item'] as Map<String, dynamic>),
     );

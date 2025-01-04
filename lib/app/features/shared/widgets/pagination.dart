@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:osonkassa/app/features/shared/export_commons.dart';
 
 import '../../../styles/text_styles.dart';
 
@@ -28,31 +29,23 @@ class _PaginationState extends State<Pagination> {
   @override
   Widget build(BuildContext context) {
     return widget.count > 1
-        ? Container(
-            padding: const EdgeInsets.all(3),
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(5)),
-            height: MediaQuery.sizeOf(context).height / 22,
-            child: ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(
-                width: 5,
-              ),
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.count,
-              itemBuilder: (context, index) {
-                return PaginationItem(
-                  is_selected: currect_index == index + 1,
-                  index: index + 1,
-                  onClick: (p0) {
-                    widget.onClick(p0);
-                    select(p0);
-                  },
-                );
+        ? ListView.separated(
+          separatorBuilder: (context, index) => const SizedBox(
+            width: 5,
+          ),
+          scrollDirection: Axis.horizontal,
+          itemCount: widget.count,
+          itemBuilder: (context, index) {
+            return PaginationItem(
+              is_selected: currect_index == index + 1,
+              index: index + 1,
+              onClick: (p0) {
+                widget.onClick(p0);
+                select(p0);
               },
-            ),
-          )
+            );
+          },
+        )
         : const SizedBox.shrink();
   }
 }
@@ -61,6 +54,7 @@ class PaginationItem extends StatelessWidget {
   final int index;
   final bool is_selected;
   final Function(int) onClick;
+
   const PaginationItem(
       {super.key,
       required this.index,

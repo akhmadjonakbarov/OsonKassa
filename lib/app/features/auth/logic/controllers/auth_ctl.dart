@@ -10,7 +10,6 @@ import '../services/auth_service.dart';
 
 class AuthCtl extends GetxController {
   var error = ''.obs;
-  var isSeller = false.obs;
   var userModel = UserModel.empty().obs;
 
   final AuthService _authService = AuthService(authRepo: AuthRepo());
@@ -22,14 +21,11 @@ class AuthCtl extends GetxController {
       if (userModelData != null) {
         UserModel user = UserModel.fromJson(userModelData);
         Get.toNamed(AppPaths.dashboard);
-        if (user.employee.role.role == 'seller') {
-          isSeller(true);
-        } else {
-          isSeller(false);
-        }
+
         userModel(user);
       }
     } catch (e) {
+      print(e);
       Get.snackbar("Error", e.toString());
     }
   }
@@ -44,6 +40,7 @@ class AuthCtl extends GetxController {
         await _secureStorage.write("userModel", userModelData);
         Get.toNamed(AppPaths.dashboard);
         userModel(user);
+        print(user.toString());
       } else {
         Get.snackbar("Error", "Wrong login or password");
       }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/action/logic/action_ctl.dart';
 import 'package:osonkassa/app/features/dashboard/view/widgets/contentbar.dart';
 
 import '../../../styles/app_colors.dart';
@@ -20,10 +21,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final DashboardCtl dashboardCtl = Get.find<DashboardCtl>();
   final AuthCtl authCtl = Get.find<AuthCtl>();
   final TokenCtl tokenCtl = Get.find<TokenCtl>();
+  final ActionCtl actionCtl = Get.find<ActionCtl>();
 
   @override
   void didChangeDependencies() {
     tokenCtl.setToken(authCtl.userModel.value.token);
+    actionCtl.fetchItems();
     super.didChangeDependencies();
   }
 
@@ -32,7 +35,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Size sizeScreen = getScreenSize(context);
     return Scaffold(
       backgroundColor: AppColors.grey,
-      body: Center(
+      body: Container(
+        padding: const EdgeInsets.all(15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

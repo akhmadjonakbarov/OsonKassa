@@ -5,7 +5,7 @@ import 'package:osonkassa/app/core/printer/pos_printer_manager.dart';
 import 'package:osonkassa/app/features/shared/export_commons.dart';
 import 'package:osonkassa/app/features/dashboard_views/document/logic/document/document_ctl.dart';
 import 'package:osonkassa/app/features/dashboard_views/document/view/main_screen/table/doc_item_table_dialog.dart';
-import 'package:osonkassa/app/features/dashboard_views/spiska/logic/spiska_controller.dart';
+import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
 import 'package:osonkassa/app/styles/text_styles.dart';
 import 'package:osonkassa/app/utils/formatter_functions/formatter_date.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
@@ -29,7 +29,7 @@ class DocumentTable extends StatefulWidget {
 
 class _DebtTableState extends State<DocumentTable> {
   final DocItemCtl doc_item_ctl = Get.find<DocItemCtl>();
-  final SpiskaCtl spiskaCtl = Get.find<SpiskaCtl>();
+  final NoteCtl spiskaCtl = Get.find<NoteCtl>();
   late final PosPrinterManager _printer;
 
   @override

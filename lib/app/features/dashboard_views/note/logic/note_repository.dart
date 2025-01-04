@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
 import '../../../../core/interfaces/api/get_all.dart';
-import '../models/spiska_model.dart';
+import '../models/note_model.dart';
 
-class SpiskaRepository implements GetAll<SpiskaModel> {
+class SpiskaRepository implements GetAll<NoteModel> {
   final Dio dio;
 
   SpiskaRepository({required this.dio});
@@ -11,9 +11,9 @@ class SpiskaRepository implements GetAll<SpiskaModel> {
   static const String baseUrl = '/notes'; // Replace with your API base URL
 
   @override
-  Future<List<SpiskaModel>> getAll() async {
+  Future<List<NoteModel>> getAll() async {
     try {
-      List<SpiskaModel> spikas = [];
+      List<NoteModel> spikas = [];
       Response response = await dio.get(
         '$baseUrl/all',
       );
@@ -21,7 +21,7 @@ class SpiskaRepository implements GetAll<SpiskaModel> {
       if (response.statusCode == 200) {
         var resData = response.data['data']['list'];
         for (var provider in resData) {
-          spikas.add(SpiskaModel.fromMap(provider));
+          spikas.add(NoteModel.fromMap(provider));
         }
       }
       return spikas;
