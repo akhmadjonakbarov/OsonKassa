@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/shared/widgets/pagination.dart';
-import 'package:osonkassa/app/styles/themes.dart';
 
-import '../../../../styles/container_decoration.dart';
 import '../../../../styles/text_styles.dart';
-import '../../../../utils/media/get_screen_size.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/export_commons.dart';
-import '../../../shared/widgets/table_bar.dart';
+
 import '../logic/category_controller.dart';
-import 'table/category_table.dart';
 
 class CategoryView extends StatefulWidget {
   final AuthCtl authCtl;
@@ -32,7 +28,6 @@ class _CategoryViewState extends State<CategoryView> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = getScreenSize(context);
     return CustomContainer(
       child: ListView(
         children: [

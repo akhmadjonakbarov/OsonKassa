@@ -23,26 +23,25 @@ class ItemDataSource extends DataTableSource {
         DataCell(CenterText(text: item.category.name)),
         DataCell(CenterText(
             text: item.company != null ? item.company!.name : "Belgilanmagan")),
-        if (isSeller != true)
-          DataCell(
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                EditIconButton(
-                  onEdit: () => itemCtl.selectItem(item, context: context),
-                ),
-                DeleteIconButton(
-                  onDelete: () => showDialog(
-                    context: context,
-                    builder: (context) => DeleteDialog(
-                      title: item.name,
-                      onConfirmDelete: () => itemCtl.removeItem(item.id),
-                    ),
+        DataCell(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              EditIconButton(
+                onEdit: () => itemCtl.selectItem(item, context: context),
+              ),
+              DeleteIconButton(
+                onDelete: () => showDialog(
+                  context: context,
+                  builder: (context) => DeleteDialog(
+                    title: item.name,
+                    onConfirmDelete: () => itemCtl.removeItem(item.id),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
       ],
     );
   }

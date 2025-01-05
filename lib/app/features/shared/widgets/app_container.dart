@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:osonkassa/app/styles/app_colors.dart';
-import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 
 import '../../../styles/themes.dart';
 import '../../../utils/media/paddings.dart';

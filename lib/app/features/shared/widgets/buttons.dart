@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:osonkassa/app/features/auth/models/user_model.dart';
 import 'package:osonkassa/app/styles/app_colors.dart';
 
 import 'package:osonkassa/app/styles/colors.dart';
@@ -12,6 +13,7 @@ import 'package:osonkassa/app/utils/helper/button_size_manager.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 import 'package:osonkassa/app/utils/texts/button_texts.dart';
 
+import '../../../core/permission/permission_checker.dart';
 import '../../../styles/text_styles.dart';
 
 class CustomButton extends StatefulWidget {
@@ -476,8 +478,8 @@ class AddButton extends StatelessWidget {
 
   const AddButton(
       {super.key,
-       this.height,
-       this.width,
+      this.height,
+      this.width,
       required this.textStyle,
       this.iconHeight,
       this.iconWidth,
@@ -497,5 +499,29 @@ class AddButton extends StatelessWidget {
       onClick: onClick,
       icon: AppIcons.plus,
     );
+  }
+}
+
+class CheckedAddButton extends StatelessWidget {
+  final List<RoleModel> roles;
+  final String permission;
+  final Function() onClick;
+  const CheckedAddButton({
+    super.key,
+    required this.onClick,
+    required this.permission,
+    required this.roles,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (PermissionChecker.hasPermission(roles, permission)) {
+      return AddButton(
+        onClick: onClick,
+        textStyle: TextStyles.buttonTextStyle(),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }

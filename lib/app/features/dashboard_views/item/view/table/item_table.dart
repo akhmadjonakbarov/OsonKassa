@@ -8,12 +8,10 @@ import '../../logic/item_ctl.dart';
 
 class ItemTable extends StatefulWidget {
   final ItemCtl itemCtl;
-  final bool isSeller;
 
   const ItemTable({
     super.key,
     required this.itemCtl,
-    required this.isSeller,
   });
 
   @override
@@ -29,20 +27,20 @@ class _ItemTableState extends State<ItemTable> {
       children: [
         switch (screenSize.width) {
           1366 => PaginatedDataTable(
-              columns: _columns(widget.isSeller),
+              columns: _columns(),
               dataRowMaxHeight: screenSize.height * 0.07,
               source: ItemDataSource(
                 widget.itemCtl,
-                widget.isSeller,
+                true,
                 context,
               ),
             ),
           1920 => PaginatedDataTable(
-              columns: _columns(widget.isSeller),
+              columns: _columns(),
               dataRowMaxHeight: screenSize.height * 0.06,
               source: ItemDataSource(
                 widget.itemCtl,
-                widget.isSeller,
+                true,
                 context,
               ),
             ),
@@ -54,19 +52,18 @@ class _ItemTableState extends State<ItemTable> {
     );
   }
 
-  List<DataColumn> _columns(bool isSeller) {
+  List<DataColumn> _columns() {
     return <DataColumn>[
       const DataColumn(label: Text(TableTexts.index)),
       const DataColumn(label: Text(TableTexts.name)),
       const DataColumn(label: Text(TableTexts.barcode)),
       const DataColumn(label: Text(TableTexts.category)),
       const DataColumn(label: Text(TableTexts.company)),
-      if (widget.isSeller != true)
-        const DataColumn(
-          label: Text(
-            TableTexts.buttons,
-          ),
+      const DataColumn(
+        label: Text(
+          TableTexts.buttons,
         ),
+      ),
     ];
   }
 }

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/auth/logic/controllers/auth_ctl.dart';
-import 'package:osonkassa/app/utils/helper/permission_checker.dart';
+import 'package:osonkassa/app/core/permission/permission_checker.dart';
 
 import '../../../../core/enums/filter_field.dart';
 import '../../../../core/permission_checker/permission_checker.dart';
@@ -110,35 +110,11 @@ class _CustomerViewState extends State<CustomerView> {
                       ),
                     ],
                   ),
-                  if (PermissionChecker.hasPermission(
-                      widget.authCtl.userModel.value.roles, "create_item"))
-                    AddButton(
-                      textStyle: TextStyles.buttonTextStyle(),
-                      onClick: () {},
-                    ),
-
-                  // if (screenSize.width <= 1370)
-                  //   SizedBox(
-                  //     width: screenSize.width * 0.1,
-                  //     child: PermissionCheckerS.addButton(
-                  //       'admin',
-                  //       () {
-                  //         widget.clientCtl.editDialog(context);
-                  //       },
-                  //       Size(0, screenSize.height * 0.06),
-                  //     ),
-                  //   )
-                  // else
-                  //   SizedBox(
-                  //     width: screenSize.width * 0.08,
-                  //     child: PermissionCheckerS.addButton(
-                  //       'admin',
-                  //       () {
-                  //         widget.clientCtl.editDialog(context);
-                  //       },
-                  //       Size(0, screenSize.height * 0.05),
-                  //     ),
-                  //   ),
+                  CheckedAddButton(
+                    onClick: () {},
+                    permission: "create_customer",
+                    roles: widget.authCtl.userModel.value.roles,
+                  )
                 ],
               ),
               Obx(

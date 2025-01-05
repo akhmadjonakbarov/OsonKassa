@@ -23,7 +23,9 @@ class _DataListState extends State<DataList> {
   @override
   Widget build(BuildContext context) {
     if (widget.isLoading) {
-      return const Loading();
+      return const Center(
+        child: Loading(),
+      );
     } else {
       if (widget.isNotEmpty) {
         return SingleChildScrollView(

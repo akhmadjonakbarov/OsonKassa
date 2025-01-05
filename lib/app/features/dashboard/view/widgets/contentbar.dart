@@ -64,9 +64,6 @@ class _ContentBarState extends State<ContentBar> {
             statisticsCtl: statisticsCtl,
             storeCtl: storeCtl,
           ),
-          SizedBox(
-            height: widget.sizeScreen.height * 0.1 / 4,
-          ),
           Expanded(
             child: Obx(
               () {
@@ -100,7 +97,9 @@ class _ContentBarState extends State<ContentBar> {
                   case AppViews.spiska:
                     return const NoteView();
                   case AppViews.currency:
-                    return const CurrencyView();
+                    return CurrencyView(
+                      authCtl: authCtl,
+                    );
                   case AppViews.debt:
                     return const DebtView();
                   case AppViews.addProduct:

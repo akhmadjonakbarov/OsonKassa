@@ -75,7 +75,6 @@ class _StoreViewState extends State<StoreView> {
     Size screenSize = getScreenSize(context);
 
     return CustomContainer(
-
       child: ListView(
         children: [
           HeaderTitle(

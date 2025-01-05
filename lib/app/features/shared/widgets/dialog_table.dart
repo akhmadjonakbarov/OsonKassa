@@ -12,7 +12,7 @@ class DialogTable extends StatelessWidget {
   final List<DataRow> rows;
   final Function() onClick;
   final List<DataColumn> columns;
-  final List<DocItemModel> products_list;
+  final List<DocItemModel> products;
   final PosPrinterManager? printer;
 
   const DialogTable({
@@ -22,7 +22,7 @@ class DialogTable extends StatelessWidget {
     required this.columns,
     required this.rows,
     required this.margin,
-    this.products_list = const [],
+    this.products = const [],
     this.printer,
   });
 
@@ -57,7 +57,7 @@ class DialogTable extends StatelessWidget {
                           Icons.close,
                         ),
                       ),
-                      if (products_list.isNotEmpty)
+                      if (products.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.only(left: 25),
                           child: Material(
@@ -66,7 +66,7 @@ class DialogTable extends StatelessWidget {
                             child: IconButton(
                               onPressed: () async {
                                 if (printer != null) {
-                                  await printer!.printProductDoc(products_list);
+                                  await printer!.printProductDoc(products);
                                 }
                               },
                               icon: const Icon(

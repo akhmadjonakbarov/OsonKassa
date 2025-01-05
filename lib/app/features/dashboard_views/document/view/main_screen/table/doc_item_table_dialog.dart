@@ -76,7 +76,7 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
 
           return DialogTable(
             printer: widget.printerManager,
-            products_list: widget.docItemCtl.docItemsByDoc,
+            products: widget.docItemCtl.docItemsByDoc,
             onClick: () => Navigator.of(context).pop(),
             margin: EdgeInsets.symmetric(
               horizontal: widget.size.width * 0.1,

@@ -1,0 +1,49 @@
+{
+  "data": {
+    "message": "Success",
+    "item": {
+      "id": 1,
+      "first_name": "Akhmad",
+      "last_name": "Akbarov",
+      "email": "akhmad@gmail.com",
+      "roles": [
+        {
+          "name": "Admin",
+          "employees": [
+            {
+              "base_salary": 1500000,
+              "salary_type": {
+                "id": 1,
+                "type_of_salary": "monthly",
+                "created_at": "2025-01-01T01:11:17.287194",
+                "updated_at": "2025-01-01T01:11:17.287194"
+              },
+              "id": 1,
+              "created_at": "2025-01-01T01:11:17.298865",
+              "updated_at": "2025-01-01T01:11:17.298865"
+            }
+          ],
+          "permissions": [
+            {
+              "id": 1,
+              "action": {
+                "name": "create_user",
+                "status": true,
+                "fixed_name": "User qo'shish",
+                "id": 1,
+                "created_at": "2025-01-01T01:11:53.087804",
+                "updated_at": "2025-01-01T01:11:53.087804"
+              }
+            }
+          ],
+          "id": 1,
+          "created_at": "2025-01-01T01:11:17.292182",
+          "updated_at": "2025-01-01T01:11:17.292182"
+        }
+      ],
+      "created_at": "2025-01-01T01:11:17.279128",
+      "updated_at": "2025-01-01T01:11:17.279128",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFraG1hZEBnbWFpbC5jb20iLCJpZCI6MSwiZXhwIjoxNjY2NTkzMDM5NC4wNjg4NjN9.X3O9jWdGPbhg2Qupzr2Pf0-4b3tqkz_NbZQMqRbm7JU"
+    }
+  }
+}

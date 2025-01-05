@@ -9,7 +9,7 @@ import '../../../../styles/container_decoration.dart';
 
 import '../../../../styles/icons.dart';
 import '../../../../styles/text_styles.dart';
-import '../../../../utils/helper/permission_checker.dart';
+import '../../../../core/permission/permission_checker.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
@@ -104,19 +104,12 @@ class _ItemtViewState extends State<ItemtView> {
                                     itemCtl.searchProduct(value),
                               ),
                             ),
-                            if (PermissionChecker.hasPermission(
-                                widget.authCtl.userModel.value.roles,
-                                "create_item"))
-                              BasicIconButton(
-                                text: ButtonTexts.add,
-                                icon: AppIcons.plus,
+                            CheckedAddButton(
                                 onClick: () {
                                   itemCtl.editDialog(context);
                                 },
-                                textStyle: TextStyles.buttonTextStyle(),
-                                iconHeight: 22,
-                                iconWidth: 22,
-                              )
+                                permission: "create_item",
+                                roles: widget.authCtl.userModel.value.roles),
                           ],
                         ),
                       ],
@@ -127,16 +120,15 @@ class _ItemtViewState extends State<ItemtView> {
           const SizedBox(
             height: 5,
           ),
-          // Obx(
-          //   () => DataList(
-          //     isLoading: itemCtl.isLoading.value,
-          //     isNotEmpty: itemCtl.list.isNotEmpty,
-          //     child: ItemTable(
-          //       itemCtl: itemCtl,
-          //       isSeller: widget.authCtl.isSeller.value,
-          //     ),
-          //   ),
-          // )
+          Obx(
+            () => DataList(
+              isLoading: itemCtl.isLoading.value,
+              isNotEmpty: itemCtl.list.isNotEmpty,
+              child: ItemTable(
+                itemCtl: itemCtl,
+              ),
+            ),
+          )
         ],
       ),
     );

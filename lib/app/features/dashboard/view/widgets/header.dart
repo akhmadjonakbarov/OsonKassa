@@ -239,6 +239,7 @@ class _HeaderState extends State<Header> {
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
+      margin: const EdgeInsets.only(bottom: Paddings.padding12),
       width: double.infinity,
       height: screenSize.height * 0.1 / 1.5,
       decoration: Decorations.decoration(boxShadow: BoxShadows.custom),

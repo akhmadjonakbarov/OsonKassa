@@ -10,14 +10,11 @@ import 'package:osonkassa/app/styles/themes.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 
 import '../../../../styles/chart_colors.dart';
-import '../../../../styles/container_decoration.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/texts/display_texts.dart';
-import '../../../shared/export_commons.dart';
 
 import '../logic/statistics_ctl.dart';
 import '../models/daily_total_selling_price.dart';
-import 'widgets/chart/chart_data.dart';
 
 class StatisticsView extends StatefulWidget {
   const StatisticsView({super.key, required this.staticticsCtl});
@@ -31,8 +28,6 @@ class StatisticsView extends StatefulWidget {
 class _StatisticsViewState extends State<StatisticsView> {
   @override
   void initState() {
-    fetchData();
-
     super.initState();
   }
 
@@ -93,7 +88,6 @@ class _StatisticsViewState extends State<StatisticsView> {
     loadingChanged();
     final screenSize = getScreenSize(context);
     return ListView(
-      padding: const EdgeInsets.symmetric(vertical: Paddings.padding8),
       children: [
         Row(
           children: [
