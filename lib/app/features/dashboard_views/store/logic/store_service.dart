@@ -1,6 +1,5 @@
-import 'package:osonkassa/app/features/shared/models/api_data.dart';
-
 import '../../../../core/interfaces/api/api_interfaces.dart';
+import '../../../shared/models/api_data.dart';
 import '../../document/models/doc_item_model.dart';
 
 class StoreService {

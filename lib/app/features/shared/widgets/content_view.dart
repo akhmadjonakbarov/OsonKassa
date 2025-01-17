@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/shared/models/pagination_model.dart';
 
 import '../../../styles/text_styles.dart';
 import '../../../styles/themes.dart';
 import '../../../utils/media/get_screen_size.dart';
 import '../export_commons.dart';
+import '../models/pagination_model.dart';
 import 'pagination.dart';
 
 class ContentView extends StatelessWidget {

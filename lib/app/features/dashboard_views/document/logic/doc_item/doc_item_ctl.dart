@@ -45,12 +45,7 @@ class DocItemCtl extends MainController<DocItemModel> {
       List<DocItemModel> product_doc_item_list =
           await _docItemsService.fetchItems();
 
-      if (cachedList.isEmpty ||
-          product_doc_item_list.length != cachedList.length) {
-        cachedList(product_doc_item_list);
-      }
-
-      list(cachedList);
+      list(product_doc_item_list);
       isLoading(false);
     } catch (e) {
       handleError(e.toString());

@@ -101,9 +101,7 @@ class DocumentCtl extends MainController<DocumentModel> {
       setLoading(true);
 
       final documents = await documentService.getAllProductDocs();
-      if (cachedList.isEmpty || documents.length != cachedList.length) {
-        cachedList(documents);
-      }
+
       list(documents);
       sortBySell();
     } catch (e) {

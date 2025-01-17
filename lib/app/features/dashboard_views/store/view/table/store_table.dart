@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/document/models/doc_item_model.dart';
+import '../../../document/models/doc_item_model.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../../utils/texts/display_texts.dart';
@@ -25,13 +25,11 @@ class _DebtTableState extends State<StoreTable> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-
     return AppContainer(
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(
-        columns: [
+        columns: const [
           TableTexts.index,
           TableTexts.name,
           TableTexts.category,

@@ -1,4 +1,4 @@
-import 'package:osonkassa/app/utils/media/get_screen_size.dart';
+import '../../../../../utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../styles/text_styles.dart';

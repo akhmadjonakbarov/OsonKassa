@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:osonkassa/app/core/interfaces/api/api_interfaces.dart';
-import 'package:osonkassa/app/features/action/models/action_model.dart';
+import '../../../core/interfaces/api/api_interfaces.dart';
+import '../models/action_model.dart';
 
 class ActionRepository implements GetAll<ActionModel> {
   final Dio dio;

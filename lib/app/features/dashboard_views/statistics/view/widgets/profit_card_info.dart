@@ -93,12 +93,12 @@ class PercentageDisplay extends StatelessWidget {
   final double? borderRadius;
 
   const PercentageDisplay({
-    Key? key,
+    super.key,
     required this.colorBg,
     required this.colorText,
     required this.text,
     this.borderRadius,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class PercentageDisplay extends StatelessWidget {
         border: Border.all(color: Colors.transparent),
         borderRadius: borderRadius ?? BorderRadiuses.borderRadius16 / 3,
       ),
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: Paddings.padding8,
         vertical: Paddings.padding8 / 3,
       ),

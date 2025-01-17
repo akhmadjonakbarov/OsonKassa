@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:osonkassa/app/features/shared/models/api_data.dart';
-import 'package:osonkassa/app/features/shared/models/pagination_model.dart';
 
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/network/status_codes.dart';
 import '../../../../core/validator/response_validator.dart';
+import '../../../shared/models/api_data.dart';
+import '../../../shared/models/pagination_model.dart';
 import '../../document/models/doc_item_model.dart';
 
 class StoreRepository

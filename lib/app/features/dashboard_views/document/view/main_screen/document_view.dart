@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/core/permission/permissions.dart';
-import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 
-import '../../../../../config/app_views.dart';
 import '../../../../../core/enums/product_doc_type.dart';
-import '../../../../../core/permission_checker/permission_checker.dart';
-import '../../../../../styles/container_decoration.dart';
+import '../../../../../core/permission/permissions.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/media/get_screen_size.dart';
 import '../../../../../utils/texts/button_texts.dart';
 import '../../../../auth/logic/controllers/auth_ctl.dart';
-import '../../../../shared/export_commons.dart';
 import '../../../../dashboard/logic/controllers/dashboard_controller.dart';
+import '../../../../shared/export_commons.dart';
+import '../../../../shared/widgets/content_view.dart';
 import '../../logic/document/document_ctl.dart';
 import 'table/document_table.dart';
 

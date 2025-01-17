@@ -1,8 +1,8 @@
-import '../../../shared/widgets/grid_box.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../utils/texts/table_texts.dart';
 import '../../../shared/widgets/center_text.dart';
+import '../../../shared/widgets/grid_box.dart';
 import '../../models/report_model.dart';
 
 class ReportBox extends StatelessWidget {

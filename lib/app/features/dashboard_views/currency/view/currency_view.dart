@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/auth/logic/controllers/auth_ctl.dart';
-import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
+import '../../../auth/logic/controllers/auth_ctl.dart';
+import '../../../shared/widgets/content_view.dart';
 
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/media/get_screen_size.dart';

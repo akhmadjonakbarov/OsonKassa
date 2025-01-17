@@ -2,14 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/auth/logic/controllers/auth_ctl.dart';
-import 'package:osonkassa/app/core/permission/permission_checker.dart';
 import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 
 import '../../../../core/enums/filter_field.dart';
-import '../../../../core/permission_checker/permission_checker.dart';
-import '../../../../styles/container_decoration.dart';
-
-import '../../../../styles/text_styles.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';

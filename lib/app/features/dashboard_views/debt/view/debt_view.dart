@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
+import '../../../shared/widgets/content_view.dart';
 
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';

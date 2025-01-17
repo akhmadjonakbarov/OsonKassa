@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../styles/container_decoration.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
@@ -48,8 +47,7 @@ class _NoteViewState extends State<NoteView> {
                     width: screenSize.width * 0.15,
                     child: SearchTextField(
                       hintText: ButtonTexts.search,
-                      onChanged: (value) =>
-                          providerCtl.searchProvider(value),
+                      onChanged: (value) => providerCtl.searchProvider(value),
                     ),
                   ),
                 ],

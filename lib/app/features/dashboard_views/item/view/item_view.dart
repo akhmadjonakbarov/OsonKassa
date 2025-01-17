@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:osonkassa/app/features/action/logic/action_ctl.dart';
-import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 
 import '../../../../utils/media/get_screen_size.dart';
+import '../../../action/logic/action_ctl.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/export_commons.dart';
+import '../../../shared/widgets/content_view.dart';
 import '../../../unit/logic/unit_controller.dart';
 import '../../category/logic/category_controller.dart';
 import '../../company/logic/company_ctl.dart';

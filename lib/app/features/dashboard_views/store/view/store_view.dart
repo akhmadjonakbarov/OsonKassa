@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 
 import '../../../../core/enums/filter_field.dart';
-import '../../../../styles/text_styles.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';
 import '../../../shared/export_commons.dart';
+import '../../../shared/widgets/content_view.dart';
 import '../logic/store_ctl.dart';
 import 'table/store_table.dart';
 
@@ -107,7 +106,7 @@ class _StoreViewState extends State<StoreView> {
             // ),
           ],
         ),
-        Container(
+        SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.63,
           child: Obx(
             () => DataList(

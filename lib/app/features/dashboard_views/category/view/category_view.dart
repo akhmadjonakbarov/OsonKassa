@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/core/permission/permissions.dart';
-import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
-import 'package:osonkassa/app/features/shared/widgets/pagination.dart';
 
-import '../../../../styles/text_styles.dart';
+import '../../../../core/permission/permissions.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/export_commons.dart';
-
-import '../../../shared/widgets/table_bar.dart';
+import '../../../shared/widgets/content_view.dart';
 import '../logic/category_controller.dart';
 import 'table/category_table.dart';
 

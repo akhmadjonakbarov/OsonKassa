@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../utils/texts/table_texts.dart';
-import '../../../../shared/export_commons.dart';
 import '../../../../dashboard/logic/controllers/dashboard_controller.dart';
+import '../../../../shared/export_commons.dart';
 import '../../logic/note_controller.dart';
 import '../../models/note_model.dart';
 

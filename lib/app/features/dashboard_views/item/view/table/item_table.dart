@@ -1,9 +1,6 @@
-import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../utils/texts/table_texts.dart';
-
-import '../../../../shared/widgets/app_container.dart';
 import '../../../../shared/widgets/buttons.dart';
 import '../../../../shared/widgets/center_text.dart';
 import '../../../../shared/widgets/custom_data_table.dart';

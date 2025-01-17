@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:osonkassa/app/features/shared/models/api_data.dart';
+import '../../../shared/models/api_data.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -167,10 +167,10 @@ class ItemCtl extends MainController<ItemModel> {
     }
   }
 
-  void searchProduct(String text) async {
+  void searchProduct(String text) {
     // If text is empty, reset to the cached list without re-fetching
     if (text.isEmpty) {
-      list(cachedList);
+      fetchItems();
       return;
     }
 
@@ -179,7 +179,7 @@ class ItemCtl extends MainController<ItemModel> {
       List<String> searchKeywords = text.toLowerCase().split(' ');
 
       // Filter products based on barcode or name
-      var filteredProducts = cachedList.where((product) {
+      var filteredProducts = list.where((product) {
         // Convert product name and category name to lowercase only once
         final productName = product.name.toLowerCase();
         final categoryName = product.category.name.toLowerCase();

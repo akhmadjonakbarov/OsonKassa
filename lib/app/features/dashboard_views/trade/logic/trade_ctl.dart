@@ -9,14 +9,12 @@ import '../../../../core/enums/product_doc_type.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
-import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/alert_texts.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';
 import '../../../../utils/texts/placeholder_texts.dart';
-
-import '../../../shared/export_commons.dart';
 import '../../../report_docs/logic/report_ctl.dart';
+import '../../../shared/export_commons.dart';
 import '../../document/models/doc_item_model.dart';
 import 'trade_repository.dart';
 import 'trade_service.dart';
@@ -91,17 +89,15 @@ class TradeCtl extends GetxController {
     updateTotals();
   }
 
-  void editProduct(BuildContext context, DocItemModel doc_item) {
-    final Size screenSize = getScreenSize(context);
-
+  void editProduct(BuildContext context, DocItemModel docItem) {
     final TextEditingController sellingPriceController = TextEditingController(
-      text: doc_item.selling_price.toStringAsFixed(3),
+      text: docItem.selling_price.toStringAsFixed(3),
     );
     final TextEditingController qtyController = TextEditingController(
-      text: doc_item.qty.toStringAsFixed(0),
+      text: docItem.qty.toStringAsFixed(0),
     );
 
-    int selected_unit_id = doc_item.item.units.first.id;
+    int selected_unit_id = docItem.item.units.first.id;
 
     double updatePrice() {
       double qtyKg = 0.0;
@@ -119,7 +115,7 @@ class TradeCtl extends GetxController {
 
     void updateItem() {
       int index = sellProductDocItems
-          .indexWhere((item) => item.item.barcode == doc_item.item.barcode);
+          .indexWhere((item) => item.item.barcode == docItem.item.barcode);
       sellProductDocItems[index].qty =
           double.parse(qtyController.text.toString());
       sellProductDocItems[index].selling_price = double.parse(
@@ -136,7 +132,7 @@ class TradeCtl extends GetxController {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(doc_item.item.name),
+              Text(docItem.item.name),
               IconButton(
                 onPressed: () => Get.back(),
                 icon: const Icon(
@@ -216,7 +212,7 @@ class TradeCtl extends GetxController {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      "${PlaceholderTexts.income_price}: ${formatPriceAtUZS(doc_item.income_price)}",
+                      "${PlaceholderTexts.income_price}: ${formatPriceAtUZS(docItem.income_price)}",
                       style: textStyleBlack20,
                     ),
                     const SizedBox(height: 16),

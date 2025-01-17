@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:osonkassa/app/styles/app_colors.dart';
+import 'app_colors.dart';
 
 import 'colors.dart';
 

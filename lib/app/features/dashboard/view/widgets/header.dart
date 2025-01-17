@@ -1,7 +1,7 @@
-import 'package:osonkassa/app/styles/app_colors.dart';
-import 'package:osonkassa/app/styles/chart_colors.dart';
-import 'package:osonkassa/app/styles/themes.dart';
-import 'package:osonkassa/app/utils/media/get_screen_size.dart';
+import '../../../../styles/app_colors.dart';
+import '../../../../styles/chart_colors.dart';
+import '../../../../styles/themes.dart';
+import '../../../../utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';

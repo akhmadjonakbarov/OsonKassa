@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/action/logic/action_ctl.dart';
-import 'package:osonkassa/app/features/dashboard/view/widgets/contentbar.dart';
+import '../../action/logic/action_ctl.dart';
+import 'widgets/contentbar.dart';
 
 import '../../../styles/app_colors.dart';
 import '../../../utils/media/get_screen_size.dart';

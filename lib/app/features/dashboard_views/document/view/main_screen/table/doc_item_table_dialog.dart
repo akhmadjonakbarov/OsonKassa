@@ -1,9 +1,9 @@
-import 'package:osonkassa/app/core/printer/pos_printer_manager.dart';
-import 'package:osonkassa/app/features/shared/export_commons.dart';
-import 'package:osonkassa/app/features/dashboard_views/document/logic/doc_item/doc_item_ctl.dart';
-import 'package:osonkassa/app/features/dashboard_views/document/models/doc_item_model.dart';
-import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
-import 'package:osonkassa/app/utils/media/get_screen_size.dart';
+import '../../../../../../core/printer/pos_printer_manager.dart';
+import '../../../../../shared/export_commons.dart';
+import '../../../logic/doc_item/doc_item_ctl.dart';
+import '../../../models/doc_item_model.dart';
+import '../../../../note/logic/note_controller.dart';
+import '../../../../../../utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

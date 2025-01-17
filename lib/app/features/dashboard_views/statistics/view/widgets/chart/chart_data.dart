@@ -1,4 +1,4 @@
-import 'package:osonkassa/app/features/shared/export_commons.dart';
+import '../../../../../shared/export_commons.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

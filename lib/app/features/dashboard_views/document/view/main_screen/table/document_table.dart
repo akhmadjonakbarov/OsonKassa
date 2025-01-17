@@ -1,21 +1,21 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:osonkassa/app/core/enums/product_doc_type.dart';
 import 'package:osonkassa/app/core/printer/pos_printer_manager.dart';
-import 'package:osonkassa/app/features/shared/export_commons.dart';
 import 'package:osonkassa/app/features/dashboard_views/document/logic/document/document_ctl.dart';
 import 'package:osonkassa/app/features/dashboard_views/document/view/main_screen/table/doc_item_table_dialog.dart';
 import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
+import 'package:osonkassa/app/features/shared/export_commons.dart';
 import 'package:osonkassa/app/styles/text_styles.dart';
 import 'package:osonkassa/app/utils/formatter_functions/formatter_date.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 import 'package:osonkassa/app/utils/texts/display_texts.dart';
 import 'package:osonkassa/app/utils/texts/table_texts.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import '../../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../logic/doc_item/doc_item_ctl.dart';
-
 import '../../../models/document_model.dart';
 
 class DocumentTable extends StatefulWidget {

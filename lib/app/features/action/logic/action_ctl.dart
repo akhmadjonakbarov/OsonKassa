@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:osonkassa/app/core/interfaces/api/api_interfaces.dart';
-import 'package:osonkassa/app/core/interfaces/getx_controller/main_controller.dart';
-import 'package:osonkassa/app/features/action/logic/action_repository.dart';
-import 'package:osonkassa/app/features/action/logic/action_service.dart';
-import 'package:osonkassa/app/features/action/models/action_model.dart';
+import '../../../core/interfaces/api/api_interfaces.dart';
+import '../../../core/interfaces/getx_controller/main_controller.dart';
+import 'action_repository.dart';
+import 'action_service.dart';
+import '../models/action_model.dart';
 
 import '../../../config/dio_provider.dart';
 import '../../../core/display/user_notifier.dart';

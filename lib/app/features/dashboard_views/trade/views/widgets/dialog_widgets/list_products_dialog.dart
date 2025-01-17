@@ -1,9 +1,9 @@
-import 'package:osonkassa/app/features/shared/export_commons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/texts/button_texts.dart';
+import '../../../../../shared/export_commons.dart';
 import '../../../../document/models/doc_item_model.dart';
 import '../../../../store/logic/store_ctl.dart';
 

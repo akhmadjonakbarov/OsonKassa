@@ -1,4 +1,4 @@
-import 'package:osonkassa/app/features/shared/models/api_data.dart';
+import '../../../shared/models/api_data.dart';
 
 import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/interfaces/api/add.dart';

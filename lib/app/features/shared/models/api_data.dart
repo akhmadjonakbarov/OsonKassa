@@ -1,4 +1,4 @@
-import 'package:osonkassa/app/features/shared/models/pagination_model.dart';
+import 'pagination_model.dart';
 
 class ApiData<T> {
   PaginationModel pagination;

@@ -1,11 +1,12 @@
+import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
+import '../../models/client_debt_model.dart';
 import '../repository/client_debt_repository.dart';
 import '../service/client_debt_service.dart';
-import '../../models/client_debt_model.dart';
-import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 
 class ClientDebtCtl extends GetxController {
   var list = <ClientDebtModel>[].obs;

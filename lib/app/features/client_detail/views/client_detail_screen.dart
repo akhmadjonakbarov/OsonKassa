@@ -1,10 +1,10 @@
-import '../logic/ctl/client_debt_ctl.dart';
-import '../../shared/widgets/grid_box.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../shared/widgets/app_bar.dart';
 import '../../dashboard_views/customer/models/client_model.dart';
+import '../../shared/widgets/app_bar.dart';
+import '../../shared/widgets/grid_box.dart';
+import '../logic/ctl/client_debt_ctl.dart';
 import 'widgets/debts_box.dart';
 
 class ClientDetailScreen extends StatefulWidget {

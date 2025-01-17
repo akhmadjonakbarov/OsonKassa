@@ -1,21 +1,19 @@
-import 'package:osonkassa/app/features/dashboard_views/customer/logic/client_ctl.dart';
-import 'package:osonkassa/app/features/dashboard_views/document/logic/document/document_ctl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../config/app_views.dart';
-import '../../../../styles/colors.dart';
 import '../../../action/logic/action_ctl.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../dashboard_views/category/view/category_view.dart';
-import '../../../dashboard_views/customer/view/customer_view.dart';
 import '../../../dashboard_views/currency/view/currency_view.dart';
+import '../../../dashboard_views/customer/logic/client_ctl.dart';
+import '../../../dashboard_views/customer/view/customer_view.dart';
 import '../../../dashboard_views/debt/view/debt_view.dart';
+import '../../../dashboard_views/document/logic/document/document_ctl.dart';
 import '../../../dashboard_views/document/view/edit_screen/edit_product_doc_item_screen.dart';
 import '../../../dashboard_views/document/view/main_screen/document_view.dart';
 import '../../../dashboard_views/item/view/item_view.dart';
-import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
 import '../../../dashboard_views/note/view/note_view.dart';
 import '../../../dashboard_views/statistics/logic/statistics_ctl.dart';
 import '../../../dashboard_views/statistics/view/statistics_view.dart';

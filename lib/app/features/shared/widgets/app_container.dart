@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:osonkassa/app/styles/app_colors.dart';
+import '../../../styles/app_colors.dart';
 
 import '../../../styles/themes.dart';
 import '../../../utils/media/paddings.dart';

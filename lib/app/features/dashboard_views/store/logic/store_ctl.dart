@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/shared/models/api_data.dart';
-import 'package:osonkassa/app/features/shared/models/pagination_model.dart';
+import '../../../shared/models/api_data.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -21,7 +20,6 @@ import 'store_service.dart';
 
 class StoreCtl extends MainController<DocItemModel> {
   var totalProductQty = 0.0.obs;
-  var pagination = PaginationModel.empty().obs;
 
   var storeProduct = DocItemModel.empty().obs;
   var selledProductDocItems = <DocItemModel>[].obs;

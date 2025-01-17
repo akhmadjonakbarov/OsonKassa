@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:osonkassa/app/features/shared/models/api_data.dart';
-import 'package:osonkassa/app/features/shared/models/pagination_model.dart';
-import 'package:osonkassa/app/features/shared/widgets/pagination.dart';
+import '../../../shared/models/api_data.dart';
+import '../../../shared/models/pagination_model.dart';
+import '../../../shared/widgets/pagination.dart';
 
 import '../../../../core/interfaces/api/add.dart';
 import '../../../../core/interfaces/api/delete.dart';

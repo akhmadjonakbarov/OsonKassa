@@ -1,4 +1,4 @@
-import 'package:osonkassa/app/styles/container_decoration.dart';
+import '../../../styles/container_decoration.dart';
 
 import '../../../utils/texts/display_texts.dart';
 import 'package:flutter/material.dart';

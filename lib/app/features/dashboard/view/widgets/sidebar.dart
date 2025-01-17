@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/shared/export_commons.dart';
-import 'package:osonkassa/app/styles/themes.dart';
 
 import '../../../../config/app_views.dart';
 import '../../../../styles/icons.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/texts/button_texts.dart';
-import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
+import '../../../dashboard_views/note/logic/note_controller.dart';
+import '../../../shared/export_commons.dart';
 import '../../logic/controllers/dashboard_controller.dart';
 
 class SideBar extends StatefulWidget {
