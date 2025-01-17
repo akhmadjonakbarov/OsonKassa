@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/auth/logic/controllers/auth_ctl.dart';
 import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
-import 'package:osonkassa/app/features/shared/widgets/pagination.dart';
-import 'package:osonkassa/app/styles/themes.dart';
 
-import '../../../../styles/text_styles.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
@@ -48,57 +45,51 @@ class _CurrencyViewState extends State<CurrencyView> {
       onChangePage: (pageNumber) {
         currencyCtl.selectPage(pageNumber);
       },
+      title: "Valyuta",
       pagination: currencyCtl.pagination,
-      child: ListView(
-        children: [
-          HeaderTitle(
-            title: "Valyuta",
-            textStyle: textStyleBlack18.copyWith(
-                fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: screenSize.width * 0.15,
-                child: SearchTextField(
-                  hintText:
-                      " ${ButtonTexts.search} | ${formatUZSNumber((12600))}",
-                  onChanged: (value) => currencyCtl.searchCurrency(value),
-                ),
-              ),
-              CheckedAddButton(
-                onClick: () {
-                  showCurrencyEditDialog(
-                    width: screenSize.width * 0.4,
-                    height: screenSize.height * 0.39,
-                  );
-                },
-                permission: 'create_currency',
-                roles: widget.authCtl.userModel.value.roles,
-              )
-            ],
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: screenSize.height / 60,
-            ),
-            child: Obx(
-              () => DataList(
-                isLoading: currencyCtl.isLoading.value,
-                isNotEmpty: currencyCtl.list.isNotEmpty,
-                child: CurrencyTable(
-                  onSelect: () => showCurrencyEditDialog(
-                    width: screenSize.width * 0.4,
-                    height: screenSize.height * 0.39,
-                  ),
-                  currencyCtl: currencyCtl,
-                ),
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: screenSize.width * 0.15,
+              child: SearchTextField(
+                hintText:
+                    " ${ButtonTexts.search} | ${formatUZSNumber((12600))}",
+                onChanged: (value) => currencyCtl.searchCurrency(value),
               ),
             ),
-          )
-        ],
-      ),
+            CheckedAddButton(
+              onClick: () {
+                showCurrencyEditDialog(
+                  width: screenSize.width * 0.4,
+                  height: screenSize.height * 0.39,
+                );
+              },
+              permission: 'create_currency',
+              roles: widget.authCtl.userModel.value.roles,
+            )
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: screenSize.height / 60,
+          ),
+          child: Obx(
+            () => DataList(
+              isLoading: currencyCtl.isLoading.value,
+              isNotEmpty: currencyCtl.list.isNotEmpty,
+              child: CurrencyTable(
+                onSelect: () => showCurrencyEditDialog(
+                  width: screenSize.width * 0.4,
+                  height: screenSize.height * 0.39,
+                ),
+                currencyCtl: currencyCtl,
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 }

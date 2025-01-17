@@ -26,11 +26,11 @@ class _CurrencyTableState extends State<CurrencyTable> {
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(
-        columns: const <DataColumn>[
-          DataColumn(label: Text(TableTexts.index)),
-          DataColumn(label: Text(TableTexts.currency)),
-          DataColumn(label: Text(TableTexts.addingTime)),
-          DataColumn(label: Text(TableTexts.buttons)),
+        columns: const [
+          TableTexts.index,
+          TableTexts.currency,
+          TableTexts.addingTime,
+          TableTexts.buttons
         ],
         rows: widget.currencyCtl.list.asMap().entries.map(
           (entry) {

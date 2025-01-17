@@ -8,6 +8,7 @@ import '../../../../core/interfaces/api/delete.dart';
 import '../../../../core/interfaces/api/get_all.dart';
 import '../../../../core/interfaces/api/update.dart';
 import '../../../../core/network/status_codes.dart';
+import '../../../../core/validator/response_validator.dart';
 import '../models/category_models.dart';
 
 class CategoryRepository
@@ -81,16 +82,20 @@ class CategoryRepository
   Future<ApiData> getAll(int page, int pageSize) async {
     ApiData<CategoryModel> data =
         ApiData(items: [], pagination: PaginationModel.empty());
+    List<CategoryModel> categories = [];
+    PaginationModel pagination = PaginationModel.empty();
     try {
-      List<CategoryModel> categories = [];
-      PaginationModel pagination = PaginationModel.empty();
       Response response =
           await dio.get('$_baseURL/all?page=$page&pageSize=$pageSize');
       if (response.statusCode == StatusCodes.OK_200) {
         var resData = response.data['data']['list'];
+        var paginationData = response.data['data']['pagination'];
         for (var element in resData) {
           CategoryModel categoryModel = CategoryModel.fromMap(element);
           categories.add(categoryModel);
+        }
+        if (ResponseValidator.isMap(paginationData)) {
+          pagination = PaginationModel.fromMap(paginationData);
         }
       }
       data.items = categories;

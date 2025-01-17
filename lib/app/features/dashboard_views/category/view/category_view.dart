@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/core/permission/permissions.dart';
+import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 import 'package:osonkassa/app/features/shared/widgets/pagination.dart';
 
 import '../../../../styles/text_styles.dart';
+import '../../../../utils/media/get_screen_size.dart';
+import '../../../../utils/texts/button_texts.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/export_commons.dart';
 
+import '../../../shared/widgets/table_bar.dart';
 import '../logic/category_controller.dart';
+import 'table/category_table.dart';
 
 class CategoryView extends StatefulWidget {
   final AuthCtl authCtl;
@@ -28,54 +34,49 @@ class _CategoryViewState extends State<CategoryView> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomContainer(
-      child: ListView(
-        children: [
-          HeaderTitle(
-            title: "Bo'limlar Ro'yhati",
-            textStyle: textStyleBlack18.copyWith(
-                fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
+    Size screenSize = getScreenSize(context);
+    return ContentView(
+      onChangePage: (p0) {
+        categoryCtl.selectPage(p0);
+      },
+      title: "Bo'limlar Ro'yhati",
+      pagination: categoryCtl.pagination,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: screenSize.width * 0.15,
+              child: SearchTextField(
+                hintText: ButtonTexts.search,
+                onChanged: (value) => categoryCtl.searchCategory(value),
+              ),
+            ),
+            CheckedAddButton(
+              onClick: () {
+                categoryCtl.editDialog(context);
+              },
+              permission: Permissions.create_category.name.toLowerCase(),
+              roles: widget.authCtl.userModel.value.roles,
+            )
+          ],
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: screenSize.height / 60,
           ),
-          SizedBox(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  children: [
-                    // TableBar(
-                    //   screenSize: screenSize,
-                    //   onEdit: () => categoryCtl.editDialog(context),
-                    //   onSearch: (value) => categoryCtl.searchCategory(value),
-                    //   role: widget.authCtl.userModel.value.employee.role.role,
-                    // ),
-                    // SizedBox(
-                    //   height: MediaQuery.sizeOf(context).height * 0.63,
-                    //   child: Obx(
-                    //     () => DataList(
-                    //       isLoading: categoryCtl.isLoading.value,
-                    //       isNotEmpty: categoryCtl.list.isNotEmpty,
-                    //       child: CategoryTable(
-                    //         categoryCtl: categoryCtl,
-                    //         categories: categoryCtl.list,
-                    //         isSeller: widget.authCtl.isSeller.value,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                  ],
-                ),
-                Pagination(
-                  count: categoryCtl.pagination.value.pages,
-                  onClick: (p0) {
-                    categoryCtl.selectPage(p0);
-                  },
-                )
-              ],
+          child: Obx(
+            () => DataList(
+              isLoading: categoryCtl.isLoading.value,
+              isNotEmpty: categoryCtl.list.isNotEmpty,
+              child: CategoryTable(
+                categoryCtl: categoryCtl,
+                categories: categoryCtl.list,
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

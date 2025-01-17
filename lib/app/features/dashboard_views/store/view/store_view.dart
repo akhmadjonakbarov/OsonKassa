@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 
-import '../../../../config/app_paths.dart';
 import '../../../../core/enums/filter_field.dart';
-import '../../../../styles/container_decoration.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';
 import '../../../shared/export_commons.dart';
-import '../../../shared/widgets/pagination.dart';
 import '../logic/store_ctl.dart';
 import 'table/store_table.dart';
 
@@ -74,74 +72,54 @@ class _StoreViewState extends State<StoreView> {
     reloadLists();
     Size screenSize = getScreenSize(context);
 
-    return CustomContainer(
-      child: ListView(
-        children: [
-          HeaderTitle(
-            title: "Ombor",
-            textStyle: textStyleBlack18.copyWith(
-                fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
-            isList: false,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    key: _sortButtonKey,
-                    onPressed: () => _showPopupMenu(context),
-                    icon: const Icon(
-                      Icons.sort_sharp,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(
-                    width: screenSize.width * 0.01,
-                  ),
-                  SizedBox(
-                    width: screenSize.width * 0.15,
-                    child: SearchTextField(
-                      hintText:
-                          "${ButtonTexts.search} | ${DisplayTexts.name_of_product}",
-                      onChanged: (p0) => storeCtl.searchProduct(p0),
-                    ),
-                  ),
-                  // DialogTextButton(
-                  //   text: ButtonTexts.statistics,
-                  //   onClick: () => Get.toNamed(AppPaths.storeStatistic),
-                  //   textStyle: textStyleBlack18,
-                  // ),
-                ],
+    return ContentView(
+      onChangePage: (pageNumber) {
+        storeCtl.selectPage(pageNumber);
+      },
+      title: "Ombor",
+      pagination: storeCtl.pagination,
+      children: [
+        Row(
+          children: [
+            IconButton(
+              key: _sortButtonKey,
+              onPressed: () => _showPopupMenu(context),
+              icon: const Icon(
+                Icons.sort_sharp,
+                color: Colors.black,
               ),
-              Container(
-                height: MediaQuery.sizeOf(context).height * 0.63,
-                child: Obx(
-                  () => DataList(
-                    isLoading: storeCtl.isLoading.value,
-                    isNotEmpty: storeCtl.list.isNotEmpty,
-                    child: StoreTable(
-                      storeCtl: storeCtl,
-                    ),
-                  ),
-                ),
+            ),
+            SizedBox(
+              width: screenSize.width * 0.01,
+            ),
+            SizedBox(
+              width: screenSize.width * 0.15,
+              child: SearchTextField(
+                hintText:
+                    "${ButtonTexts.search} | ${DisplayTexts.name_of_product}",
+                onChanged: (p0) => storeCtl.searchProduct(p0),
               ),
-              Obx(() {
-                if (storeCtl.pagination.value.pages > 1) {
-                  return Pagination(
-                    count: storeCtl.pagination.value.pages,
-                    onClick: (index) {
-                      storeCtl.selectPage(index);
-                    },
-                  );
-                } else {
-                  return const SizedBox.shrink();
-                }
-              })
-            ],
+            ),
+            // DialogTextButton(
+            //   text: ButtonTexts.statistics,
+            //   onClick: () => Get.toNamed(AppPaths.storeStatistic),
+            //   textStyle: textStyleBlack18,
+            // ),
+          ],
+        ),
+        Container(
+          height: MediaQuery.sizeOf(context).height * 0.63,
+          child: Obx(
+            () => DataList(
+              isLoading: storeCtl.isLoading.value,
+              isNotEmpty: storeCtl.list.isNotEmpty,
+              child: StoreTable(
+                storeCtl: storeCtl,
+              ),
+            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

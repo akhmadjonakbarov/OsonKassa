@@ -31,16 +31,16 @@ class _DebtTableState extends State<StoreTable> {
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(
-        columns: const <DataColumn>[
-          DataColumn(label: Text(TableTexts.index)),
-          DataColumn(label: Text(TableTexts.name)),
-          DataColumn(label: Text(TableTexts.category)),
-          DataColumn(label: Text(TableTexts.income_price)),
-          DataColumn(label: Text(TableTexts.income_price_usd)),
-          DataColumn(label: Text(TableTexts.selling_price)),
-          DataColumn(label: Text(TableTexts.remainder)),
-          DataColumn(label: Text(TableTexts.total_of_product)),
-          DataColumn(label: Text(TableTexts.buttons)),
+        columns: [
+          TableTexts.index,
+          TableTexts.name,
+          TableTexts.category,
+          TableTexts.income_price,
+          TableTexts.income_price_usd,
+          TableTexts.selling_price,
+          TableTexts.remainder,
+          TableTexts.total_of_product,
+          TableTexts.buttons
         ],
         rows: widget.storeCtl.list.asMap().entries.map(
           (entry) {

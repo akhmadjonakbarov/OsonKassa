@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/auth/logic/controllers/auth_ctl.dart';
 import 'package:osonkassa/app/core/permission/permission_checker.dart';
+import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 
 import '../../../../core/enums/filter_field.dart';
 import '../../../../core/permission_checker/permission_checker.dart';
@@ -75,63 +76,56 @@ class _CustomerViewState extends State<CustomerView> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
-    return CustomContainer(
-      child: ListView(
-        children: [
-          HeaderTitle(
-            title: DisplayTexts.builders,
-            textStyle: textStyleBlack18.copyWith(
-                fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
-          ),
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        key: _sortButtonKey, // Assign the key to the button
-                        onPressed: () => _showPopupMenu(context),
-                        icon: const Icon(
-                          Icons.sort_sharp,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(
-                        width: screenSize.width * 0.01,
-                      ),
-                      SizedBox(
-                        width: screenSize.width * 0.15,
-                        child: SearchTextField(
-                          onChanged: (value) =>
-                              widget.clientCtl.searchBuilder(value),
-                        ),
-                      ),
-                    ],
+    return ContentView(
+      onChangePage: (p0) {
+        widget.clientCtl.selectPage(p0);
+      },
+      title: DisplayTexts.builders,
+      pagination: widget.clientCtl.pagination,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  key: _sortButtonKey, // Assign the key to the button
+                  onPressed: () => _showPopupMenu(context),
+                  icon: const Icon(
+                    Icons.sort_sharp,
+                    color: Colors.black,
                   ),
-                  CheckedAddButton(
-                    onClick: () {},
-                    permission: "create_customer",
-                    roles: widget.authCtl.userModel.value.roles,
-                  )
-                ],
+                ),
+                SizedBox(
+                  width: screenSize.width * 0.01,
+                ),
+                SizedBox(
+                  width: screenSize.width * 0.15,
+                  child: SearchTextField(
+                    onChanged: (value) => widget.clientCtl.searchBuilder(value),
+                  ),
+                ),
+              ],
+            ),
+            CheckedAddButton(
+              onClick: () {},
+              permission: "create_customer",
+              roles: widget.authCtl.userModel.value.roles,
+            )
+          ],
+        ),
+        Obx(
+          () {
+            return DataList(
+              isLoading: widget.clientCtl.isLoading.value,
+              isNotEmpty: widget.clientCtl.list.isNotEmpty,
+              child: ClientTable(
+                builderController: widget.clientCtl,
               ),
-              Obx(
-                () {
-                  return DataList(
-                    isLoading: widget.clientCtl.isLoading.value,
-                    isNotEmpty: widget.clientCtl.list.isNotEmpty,
-                    child: ClientTable(
-                      builderController: widget.clientCtl,
-                    ),
-                  );
-                },
-              )
-            ],
-          ),
-        ],
-      ),
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:osonkassa/app/features/shared/models/api_data.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -58,7 +59,7 @@ class ItemCtl extends MainController<ItemModel> {
       addRepository: _productRepo as Add<Map<String, dynamic>>,
       deleteRepository: _productRepo as Delete<int>,
       updateRepository: _productRepo as Update<ItemModel>,
-      getAllRepository: _productRepo as GetAll<ItemModel>,
+      getAllRepository: _productRepo as GetAllWithPagination<ApiData>,
     );
 
     super.onInit();
@@ -70,19 +71,9 @@ class ItemCtl extends MainController<ItemModel> {
       // Set loading state at the beginning
       setLoading(true);
 
-      // Fetch items only if cache is empty, avoiding unnecessary API calls
-      if (cachedList.isEmpty) {
-        List<ItemModel> items = await _productRepo.getAll();
-
-        // Cache the items and update observable list if there's a difference in data
-        if (items.length != cachedList.length ||
-            !areListsEqual(items, cachedList)) {
-          cachedList(items);
-          list(cachedList); // Only update list if data has changed
-        }
-      } else {
-        list(cachedList); // Use cached list if available
-      }
+      var data = await _productService.getAllItems(page: page.value);
+      list(data.items.cast<ItemModel>());
+      pagination(data.pagination);
     } catch (e) {
       handleError(e.toString());
     } finally {
@@ -156,8 +147,9 @@ class ItemCtl extends MainController<ItemModel> {
     List<ItemModel> filteredProducts = [];
     try {
       category_id(id);
-      // Fetch all products
-      final products = await _productService.getAllItems();
+      fetchItems();
+
+      var products = list;
 
       // Filter products by category ID
       if (categoryIsSelected()) {
@@ -169,9 +161,6 @@ class ItemCtl extends MainController<ItemModel> {
             products.where((element) => element.category.id == id).toList();
       }
 
-      // Simulate delay if needed
-
-      // Update the observable list with filtered products
       list.assignAll(filteredProducts); // Use assignAll for observable lists
     } catch (e) {
       handleError(e.toString()); // Handle errors
@@ -241,13 +230,14 @@ class ItemCtl extends MainController<ItemModel> {
           label: AlertTexts.deleted.capitalizeFirst!,
           type: TypeOfSnackBar.delete,
         );
-        fetchItems();
       }
     } catch (e) {
       UserNotifier.showSnackBar(
         text: e.toString(),
         type: TypeOfSnackBar.error,
       );
+    } finally {
+      fetchItems();
     }
   }
 
@@ -641,9 +631,11 @@ class ItemCtl extends MainController<ItemModel> {
                       onClick: () {
                         bool isValid = formKey.currentState!.validate();
                         List units = [];
+                        List selectedUnitIdsList = [];
                         for (var element in unitCtl.list) {
                           for (var unitId in selectedUnitIds) {
                             if (element.id == unitId) {
+                              selectedUnitIdsList.add(element.id);
                               units.add(element);
                               break;
                             }
@@ -661,9 +653,9 @@ class ItemCtl extends MainController<ItemModel> {
                           itemData = {
                             'name': itemName.capitalize,
                             'barcode': barCode,
-                            'category': itemData['category'],
-                            'units': units,
-                            'company': itemData['company'],
+                            'category_id': itemData['category']['id'],
+                            'units_ids': selectedUnitIdsList,
+                            // 'company_id': itemData['company']['id'],
                           };
                           if (isNull) {
                             addItem(itemData);

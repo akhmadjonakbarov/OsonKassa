@@ -49,8 +49,9 @@ class CurrencyCtl extends MainController<CurrencyModel> {
     }
   }
 
-  void selectPage(int page_value) {
-    page(page_value);
+  @override
+  void selectPage(int pageValue) {
+    page(pageValue);
 
     fetchItems();
   }

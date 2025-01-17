@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:osonkassa/app/features/shared/models/api_data.dart';
 
 import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/interfaces/api/add.dart';
@@ -6,11 +9,13 @@ import '../../../../core/interfaces/api/delete.dart';
 import '../../../../core/interfaces/api/get_all.dart';
 import '../../../../core/interfaces/api/update.dart';
 import '../../../../core/network/status_codes.dart';
+import '../../../../core/validator/response_validator.dart';
+import '../../../shared/models/pagination_model.dart';
 import '../models/item_model.dart';
 
 class ItemRepo
     implements
-        GetAll<ItemModel>,
+        GetAllWithPagination<ApiData>,
         Add<Map<String, dynamic>>,
         Delete<int>,
         Update<ItemModel> {
@@ -26,6 +31,8 @@ class ItemRepo
       Response response = await dio.post('$_baseURL/add', data: itemData);
       return response.statusCode == StatusCodes.CREATED_201;
     } on DioException catch (e) {
+      log(e.response!.statusCode.toString());
+      log(e.toString());
       if (e.response != null) {
         switch (e.response!.statusCode) {
           case StatusCodes.CONFLICT_409:
@@ -58,30 +65,36 @@ class ItemRepo
     }
   }
 
-  @override
-  Future<List<ItemModel>> getAll() async {
-    try {
-      List<ItemModel> products = [];
-      Response response = await dio.get('$_baseURL/all');
-      if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
-        for (var element in resData) {
-          ItemModel item = ItemModel.fromMap(element);
-          products.add(item);
-        }
-      }
-      return products;
-    } catch (e) {
-      rethrow;
-    }
-  }
+  // @override
+  // Future<List<ItemModel>> getAll() async {
+  //   try {
+  //     List<ItemModel> products = [];
+  //     Response response = await dio.get('$_baseURL/all');
+  //     if (response.statusCode == StatusCodes.OK_200) {
+  //       var resData = response.data['data']['list'];
+  //       for (var element in resData) {
+  //         ItemModel item = ItemModel.fromMap(element);
+  //         products.add(item);
+  //       }
+  //     }
+  //     return products;
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   @override
   Future<bool> update(ItemModel item) async {
     try {
+      List<int> units = [];
+      for (var unit in item.units) {
+        units.add(unit.id);
+      }
+      Map<String, dynamic> itemMap = item.toMap();
+      itemMap['units'] = units;
       Response response = await dio.patch(
         '$_baseURL/update/${item.id}',
-        data: item.toMap(),
+        data: itemMap,
       );
 
       if (response.statusCode == StatusCodes.OK_200) {
@@ -103,6 +116,37 @@ class ItemRepo
         // Something else went wrong (e.g. no response from the server)
         throw Exception("Network error or no response from the server.");
       }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<ApiData> getAll(int page, int pageSize) async {
+    ApiData<ItemModel> data =
+        ApiData(pagination: PaginationModel.empty(), items: []);
+    PaginationModel pagination = PaginationModel.empty();
+    try {
+      List<ItemModel> products = [];
+      Response response = await dio.get(
+        '$_baseURL/all?page=$page&size=$pageSize',
+      );
+
+      if (response.statusCode == StatusCodes.OK_200) {
+        var resData = response.data['data']['list'];
+        var paginationData = response.data['data']['pagination'];
+        for (var element in resData) {
+          ItemModel item = ItemModel.fromMap(element);
+          products.add(item);
+        }
+        if (ResponseValidator.isMap(paginationData)) {
+          pagination = PaginationModel.fromMap(paginationData);
+        }
+      }
+      data.items = products;
+      data.pagination = pagination;
+
+      return data;
     } catch (e) {
       rethrow;
     }

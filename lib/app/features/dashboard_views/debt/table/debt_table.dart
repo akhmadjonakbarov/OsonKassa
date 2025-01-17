@@ -24,14 +24,14 @@ class _DebtTableState extends State<DebtTable> {
       padding: EdgeInsets.zero,
       decoration: containerDecoration,
       child: CustomDataTable(
-        columns: const <DataColumn>[
-          DataColumn(label: Text("№")),
-          DataColumn(label: Text(TableTexts.fish)),
-          DataColumn(label: Text(TableTexts.phone_number)),
-          DataColumn(label: Text(TableTexts.phone_number2)),
-          DataColumn(label: Text(TableTexts.address)),
-          DataColumn(label: Text(TableTexts.total)),
-          DataColumn(label: Text(TableTexts.buttons)),
+        columns: [
+          TableTexts.index,
+          TableTexts.fish,
+          TableTexts.phone_number,
+          TableTexts.phone_number2,
+          TableTexts.address,
+          TableTexts.total,
+          TableTexts.buttons
         ],
         rows: widget.debtCtl.list.asMap().entries.map((entry) {
           int index = entry.key;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/core/permission/permissions.dart';
+import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 
 import '../../../../../config/app_views.dart';
 import '../../../../../core/enums/product_doc_type.dart';
@@ -75,113 +77,64 @@ class _DocumentViewState extends State<DocumentView> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
-    return CustomContainer(
-      child: ListView(
-        children: [
-          HeaderTitle(
-            title: "Ombor",
-            textStyle: textStyleBlack18.copyWith(
-                fontSize: 25, fontWeight: FontWeight.w500, color: Colors.white),
-            isList: false,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    key: _sortButtonKey,
-                    onPressed: () => _showPopupMenu(context),
-                    icon: const Icon(
-                      Icons.sort,
-                    ),
+    return ContentView(
+      pagination: documentCtl.pagination,
+      onChangePage: (p0) {
+        documentCtl.selectPage(p0);
+      },
+      title: "Ombor",
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  key: _sortButtonKey,
+                  onPressed: () => _showPopupMenu(context),
+                  icon: const Icon(
+                    Icons.sort,
                   ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  SizedBox(
-                    width: screenSize.width * 0.2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(
-                          () => DialogTextButton(
-                            text: documentCtl.isToday.value
-                                ? "Hammasi"
-                                : "Bugunilik",
-                            textStyle: textStyleWhite18,
-                            onClick: () => documentCtl.setToday(),
-                          ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                SizedBox(
+                  width: screenSize.width * 0.2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Obx(
+                        () => DialogTextButton(
+                          text: documentCtl.isToday.value
+                              ? "Hammasi"
+                              : "Bugunilik",
+                          textStyle: textStyleWhite18,
+                          onClick: () => documentCtl.setToday(),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              // if (screenSize.width <= 1370)
-              //   SizedBox(
-              //     width: screenSize.width * 0.1,
-              //     child: PermissionChecker.addButton(
-              //       widget.authCtl.userModel.value.employee.role.role,
-              //       () {
-              //         dashboardCtl.changeView(AppViews.addProduct);
-              //       },
-              //       Size(0, screenSize.height * 0.06),
-              //     ),
-              //   )
-              // else
-              //   SizedBox(
-              //     width: screenSize.width * 0.08,
-              //     child: PermissionChecker.addButton(
-              //       widget.authCtl.userModel.value.employee.role.role,
-              //       () {
-              //         dashboardCtl.changeView(AppViews.addProduct);
-              //       },
-              //       Size(0, screenSize.height * 0.05),
-              //     ),
-              //   ),
-            ],
-          ),
-          Obx(
-            () => DataList(
-              isLoading: documentCtl.isLoading.value,
-              isNotEmpty: documentCtl.list.isNotEmpty,
-              child: DocumentTable(
-                documentCtl: documentCtl,
-              ),
+                ),
+              ],
+            ),
+            CheckedAddButton(
+              onClick: () {},
+              permission: Permissions.create_document.name,
+              roles: widget.authCtl.userModel.value.roles,
+            )
+          ],
+        ),
+        Obx(
+          () => DataList(
+            isLoading: documentCtl.isLoading.value,
+            isNotEmpty: documentCtl.list.isNotEmpty,
+            child: DocumentTable(
+              documentCtl: documentCtl,
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class AddingButton extends StatelessWidget {
-  const AddingButton({
-    super.key,
-    required this.screenSize,
-    required this.role,
-    required this.onClick,
-  });
-
-  final Size screenSize;
-  final String role;
-  final Function() onClick;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: screenSize.width * 0.1,
-      child: Expanded(
-        child: PermissionCheckerS.addButton(
-          role,
-          () {
-            onClick();
-          },
-          Size(0, screenSize.height * 0.06),
         ),
-      ),
+      ],
     );
   }
 }

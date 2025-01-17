@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import '../../../styles/text_styles.dart';
 
 class CustomDataTable extends StatelessWidget {
-  final List<DataColumn> columns;
+  final List<String> columns;
   final List<DataRow> rows;
-
-  const CustomDataTable({super.key, required this.columns, required this.rows});
+  final EdgeInsets? padding;
+  const CustomDataTable(
+      {super.key, required this.columns, required this.rows, this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +15,21 @@ class CustomDataTable extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: DataTable(
         border: TableBorder.all(
-          color: Colors.grey,
+          borderRadius: BorderRadius.circular(10),
         ),
         showCheckboxColumn: false,
-        sortColumnIndex: 0,
-        columnSpacing: 9,
         headingTextStyle: textStyleBlack18Bold,
         dataTextStyle: textStyleBlack14.copyWith(
-            fontSize: 16, fontWeight: FontWeight.w600),
-        columns: columns,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        columns: columns
+            .map(
+              (e) => DataColumn(
+                  label: Text(e),
+                  headingRowAlignment: MainAxisAlignment.center),
+            )
+            .toList(),
         rows: rows,
       ),
     );

@@ -2,16 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 import 'package:osonkassa/app/features/action/logic/action_ctl.dart';
-import 'package:osonkassa/app/utils/helper/button_size_manager.dart';
+import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 
-import '../../../../core/permission_checker/permission_checker.dart';
-import '../../../../styles/container_decoration.dart';
-
-import '../../../../styles/icons.dart';
-import '../../../../styles/text_styles.dart';
-import '../../../../core/permission/permission_checker.dart';
 import '../../../../utils/media/get_screen_size.dart';
-import '../../../../utils/texts/button_texts.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/export_commons.dart';
 import '../../../unit/logic/unit_controller.dart';
@@ -51,86 +44,81 @@ class _ItemtViewState extends State<ItemtView> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
-    return CustomContainer(
-      margin: EdgeInsets.zero,
-      child: ListView(
-        children: [
-          HeaderTitle(
-            title: "Productlar Ro'yhati",
-            textStyle: textStyleBlack18.copyWith(
-              fontSize: 25,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Obx(
-            () {
-              return categoryCtl.list.isNotEmpty
-                  ? Column(
-                      children: [
-                        SizedBox(
-                          child: Row(
-                            children: [
-                              // filter by category
-                              FilterByCategory(
-                                multiSelectController: categoryController,
-                                isSearchEnabled: true,
-                                categories: categoryCtl.list,
-                                onSearchByCategory: (p0) =>
-                                    itemCtl.filterByCategory(p0),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  itemCtl.removeSelectedCategory();
-                                  categoryController.clearAllSelection();
-                                },
-                                icon: const Icon(Icons.refresh),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return ContentView(
+      onChangePage: (p0) {
+        itemCtl.selectPage(p0);
+      },
+      pagination: itemCtl.pagination,
+      title: "Mahsulotlar",
+      children: [
+        Obx(
+          () {
+            return categoryCtl.list.isNotEmpty
+                ? Column(
+                    children: [
+                      SizedBox(
+                        child: Row(
                           children: [
-                            SizedBox(
-                              width: screenSize.width * 0.15,
-                              child: SearchTextField(
-                                onChanged: (value) =>
-                                    itemCtl.searchProduct(value),
-                              ),
+                            // filter by category
+                            FilterByCategory(
+                              multiSelectController: categoryController,
+                              isSearchEnabled: true,
+                              categories: categoryCtl.list,
+                              onSearchByCategory: (p0) =>
+                                  itemCtl.filterByCategory(p0),
                             ),
-                            CheckedAddButton(
-                                onClick: () {
-                                  itemCtl.editDialog(context);
-                                },
-                                permission: "create_item",
-                                roles: widget.authCtl.userModel.value.roles),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                itemCtl.removeSelectedCategory();
+                                categoryController.clearAllSelection();
+                              },
+                              icon: const Icon(Icons.refresh),
+                            )
                           ],
                         ),
-                      ],
-                    )
-                  : const SizedBox.shrink();
-            },
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Obx(
-            () => DataList(
-              isLoading: itemCtl.isLoading.value,
-              isNotEmpty: itemCtl.list.isNotEmpty,
-              child: ItemTable(
-                itemCtl: itemCtl,
-              ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: screenSize.width * 0.15,
+                            child: SearchTextField(
+                              onChanged: (value) =>
+                                  itemCtl.searchProduct(value),
+                            ),
+                          ),
+                          CheckedAddButton(
+                              onClick: () {
+                                itemCtl.editDialog(context);
+                              },
+                              permission: "create_item",
+                              roles: widget.authCtl.userModel.value.roles),
+                        ],
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink();
+          },
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Obx(
+          () => DataList(
+            isLoading: itemCtl.isLoading.value,
+            isNotEmpty: itemCtl.list.isNotEmpty,
+            child: ItemTable(
+              itemCtl: itemCtl,
             ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

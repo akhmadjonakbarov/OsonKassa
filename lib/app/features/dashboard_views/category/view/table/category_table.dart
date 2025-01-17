@@ -8,13 +8,11 @@ import '../../models/category_models.dart';
 class CategoryTable extends StatefulWidget {
   final CategoryCtl categoryCtl;
   final List<CategoryModel> categories;
-  final bool isSeller;
 
   const CategoryTable({
     super.key,
     required this.categoryCtl,
     required this.categories,
-    required this.isSeller,
   });
 
   @override
@@ -29,12 +27,11 @@ class _CategoryTableState extends State<CategoryTable> {
       margin: EdgeInsets.zero,
       decoration: const BoxDecoration(),
       child: CustomDataTable(
-        columns: <DataColumn>[
-          const DataColumn(label: Text(TableTexts.index)),
-          const DataColumn(label: Text(TableTexts.category)),
-          const DataColumn(label: Text(TableTexts.total_of_product)),
-          if (!widget.isSeller)
-            const DataColumn(label: Text(TableTexts.buttons)),
+        columns: const [
+          TableTexts.index,
+          TableTexts.category,
+          TableTexts.total_of_product,
+          TableTexts.buttons,
         ],
         rows: widget.categories.asMap().entries.map(
           (entry) {
@@ -46,22 +43,21 @@ class _CategoryTableState extends State<CategoryTable> {
                 DataCell(CenterText(text: category.name)),
                 DataCell(
                     CenterText(text: category.items_type_count.toString())),
-                if (!widget.isSeller)
-                  DataCell(
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        EditIconButton(
-                          onEdit: () => widget.categoryCtl
-                              .selectCategory(category, context),
-                        ),
-                        DeleteIconButton(
-                          onDelete: () =>
-                              widget.categoryCtl.removeItem(category.id),
-                        ),
-                      ],
-                    ),
+                DataCell(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      EditIconButton(
+                        onEdit: () => widget.categoryCtl
+                            .selectCategory(category, context),
+                      ),
+                      DeleteIconButton(
+                        onDelete: () =>
+                            widget.categoryCtl.removeItem(category.id),
+                      ),
+                    ],
                   ),
+                ),
               ],
             );
           },

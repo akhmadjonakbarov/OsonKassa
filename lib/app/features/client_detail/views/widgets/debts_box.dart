@@ -65,34 +65,11 @@ class DebtsBox extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: CustomDataTable(
-            columns: [
-              DataColumn(
-                label: CenterText(
-                  text: TableTexts.index,
-                  style: textStyleBlack20,
-                ),
-                headingRowAlignment: MainAxisAlignment.center,
-              ),
-              DataColumn(
-                  label: CenterText(
-                    text: TableTexts.date,
-                    style: textStyleBlack20,
-                  ),
-                  headingRowAlignment: MainAxisAlignment.center),
-              DataColumn(
-                label: CenterText(
-                  text: TableTexts.total_amount_price,
-                  style: textStyleBlack20,
-                ),
-                headingRowAlignment: MainAxisAlignment.center,
-              ),
-              DataColumn(
-                label: CenterText(
-                  text: TableTexts.buttons,
-                  style: textStyleBlack20,
-                ),
-                headingRowAlignment: MainAxisAlignment.center,
-              ),
+            columns: const [
+              TableTexts.index,
+              TableTexts.date,
+              TableTexts.total_amount_price,
+              TableTexts.buttons
             ], // Your columns here
             rows: clientDebtCtl.list
                 .asMap()

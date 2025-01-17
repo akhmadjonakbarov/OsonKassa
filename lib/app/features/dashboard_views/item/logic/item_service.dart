@@ -1,3 +1,5 @@
+import 'package:osonkassa/app/features/shared/models/api_data.dart';
+
 import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/interfaces/api/add.dart';
 import '../../../../core/interfaces/api/delete.dart';
@@ -8,14 +10,14 @@ import '../models/item_model.dart';
 class ItemService {
   final Add<Map<String, dynamic>> _addRepo;
   final Delete<int> _deleteRepo;
-  final GetAll<ItemModel> _getAllRepo;
+  final GetAllWithPagination<ApiData> _getAllRepo;
   final Update<ItemModel> _updateRepo;
 
   ItemService({
     required Add<Map<String, dynamic>> addRepository,
     required Update<ItemModel> updateRepository,
     required Delete<int> deleteRepository,
-    required GetAll<ItemModel> getAllRepository,
+    required GetAllWithPagination<ApiData> getAllRepository,
   })  : _addRepo = addRepository,
         _updateRepo = updateRepository,
         _deleteRepo = deleteRepository,
@@ -47,7 +49,7 @@ class ItemService {
     return await _deleteRepo.delete(id);
   }
 
-  Future<List<ItemModel>> getAllItems() async {
-    return await _getAllRepo.getAll();
+  Future<ApiData> getAllItems({int page = 1, int size = 50}) async {
+    return await _getAllRepo.getAll(page, size);
   }
 }

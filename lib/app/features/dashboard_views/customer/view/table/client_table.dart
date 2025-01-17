@@ -29,25 +29,13 @@ class _ClientTableState extends State<ClientTable> {
       padding: EdgeInsets.zero,
       decoration: const BoxDecoration(),
       child: CustomDataTable(
-        columns: const <DataColumn>[
-          DataColumn(
-              label: Text(TableTexts.index),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.fish),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.phone_number),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.phone_number2),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.address),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.buttons),
-              headingRowAlignment: MainAxisAlignment.center),
+        columns: const [
+          TableTexts.index,
+          TableTexts.fish,
+          TableTexts.phone_number,
+          TableTexts.phone_number2,
+          TableTexts.address,
+          TableTexts.buttons
         ],
         rows: widget.builderController.list.asMap().entries.map((entry) {
           int index = entry.key;

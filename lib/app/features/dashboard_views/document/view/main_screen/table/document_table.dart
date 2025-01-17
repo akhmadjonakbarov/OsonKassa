@@ -65,28 +65,14 @@ class _DebtTableState extends State<DocumentTable> {
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(
-        columns: const <DataColumn>[
-          DataColumn(
-              label: Text(TableTexts.index),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.date),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.type_of_product),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.total_of_product),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.total_amount_price),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.document_type),
-              headingRowAlignment: MainAxisAlignment.center),
-          DataColumn(
-              label: Text(TableTexts.see_detail),
-              headingRowAlignment: MainAxisAlignment.center),
+        columns: const [
+          TableTexts.index,
+          TableTexts.date,
+          TableTexts.type_of_product,
+          TableTexts.total_of_product,
+          TableTexts.total_amount_price,
+          TableTexts.document_type,
+          TableTexts.see_detail
         ],
         rows: widget.documentCtl.list.asMap().entries.map(
           (entry) {

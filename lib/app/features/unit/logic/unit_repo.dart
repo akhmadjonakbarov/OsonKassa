@@ -7,14 +7,14 @@ class UnitRepository implements GetAll<UnitModel> {
   final Dio dio;
   UnitRepository(this.dio);
 
-  static const String baseUrl = '/shop/unit';
+  static const String baseUrl = '/unit';
 
   @override
   Future<List<UnitModel>> getAll() async {
     try {
       List<UnitModel> units = [];
       Response response = await dio.get(
-        '$baseUrl/all/',
+        '$baseUrl/all',
       );
 
       if (response.statusCode == 200) {

@@ -17,7 +17,7 @@ class CompanyRepository
 
   CompanyRepository(this.dio);
 
-  static const String baseUrl = '/shop/company';
+  static const String baseUrl = '/company';
 
   @override
   Future<bool> add(Map<String, dynamic> currencyData) async {

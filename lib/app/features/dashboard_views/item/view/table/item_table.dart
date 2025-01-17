@@ -1,10 +1,15 @@
-import 'package:osonkassa/app/features/dashboard_views/item/view/table/item_data_source.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../utils/texts/table_texts.dart';
 
+import '../../../../shared/widgets/app_container.dart';
+import '../../../../shared/widgets/buttons.dart';
+import '../../../../shared/widgets/center_text.dart';
+import '../../../../shared/widgets/custom_data_table.dart';
+import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/item_ctl.dart';
+import '../../models/item_model.dart';
 
 class ItemTable extends StatefulWidget {
   final ItemCtl itemCtl;
@@ -21,49 +26,55 @@ class ItemTable extends StatefulWidget {
 class _ItemTableState extends State<ItemTable> {
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = getScreenSize(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        switch (screenSize.width) {
-          1366 => PaginatedDataTable(
-              columns: _columns(),
-              dataRowMaxHeight: screenSize.height * 0.07,
-              source: ItemDataSource(
-                widget.itemCtl,
-                true,
-                context,
-              ),
-            ),
-          1920 => PaginatedDataTable(
-              columns: _columns(),
-              dataRowMaxHeight: screenSize.height * 0.06,
-              source: ItemDataSource(
-                widget.itemCtl,
-                true,
-                context,
-              ),
-            ),
-
-          // TODO: Handle this case.
-          double() => throw UnimplementedError(),
-        }
+    return CustomDataTable(
+      columns: const [
+        TableTexts.index,
+        TableTexts.name,
+        TableTexts.barcode,
+        TableTexts.category,
+        TableTexts.company,
+        TableTexts.buttons
       ],
-    );
-  }
+      rows: widget.itemCtl.list.asMap().entries.map(
+        (entry) {
+          int index = entry.key;
+          final ItemModel item = widget.itemCtl.list[index];
 
-  List<DataColumn> _columns() {
-    return <DataColumn>[
-      const DataColumn(label: Text(TableTexts.index)),
-      const DataColumn(label: Text(TableTexts.name)),
-      const DataColumn(label: Text(TableTexts.barcode)),
-      const DataColumn(label: Text(TableTexts.category)),
-      const DataColumn(label: Text(TableTexts.company)),
-      const DataColumn(
-        label: Text(
-          TableTexts.buttons,
-        ),
-      ),
-    ];
+          return DataRow(
+            cells: <DataCell>[
+              DataCell(Text('${index + 1}')),
+              DataCell(CenterText(text: item.name)),
+              DataCell(CenterText(text: item.barcode)),
+              DataCell(CenterText(text: item.category.name)),
+              DataCell(CenterText(
+                  text: item.company != null
+                      ? item.company!.name
+                      : "Belgilanmagan")),
+              DataCell(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    EditIconButton(
+                      onEdit: () =>
+                          widget.itemCtl.selectItem(item, context: context),
+                    ),
+                    DeleteIconButton(
+                      onDelete: () => showDialog(
+                        context: context,
+                        builder: (context) => DeleteDialog(
+                          title: item.name,
+                          onConfirmDelete: () =>
+                              widget.itemCtl.removeItem(item.id),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ).toList(),
+    );
   }
 }

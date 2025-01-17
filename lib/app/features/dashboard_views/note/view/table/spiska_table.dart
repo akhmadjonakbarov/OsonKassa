@@ -25,11 +25,11 @@ class _SpiskaTableState extends State<SpiskaTable> {
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(
-        columns: const <DataColumn>[
-          DataColumn(label: Text(TableTexts.index)),
-          DataColumn(label: Text(TableTexts.name)),
-          DataColumn(label: Text(TableTexts.category)),
-          DataColumn(label: Text(TableTexts.company)),
+        columns: const [
+          TableTexts.index,
+          TableTexts.name,
+          TableTexts.category,
+          TableTexts.company
         ],
         rows: widget.providerController.list.asMap().entries.map(
           (entry) {

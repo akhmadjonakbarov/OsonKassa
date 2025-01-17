@@ -5,8 +5,8 @@ import '../../../../config/dio_provider.dart';
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/interfaces/getx_controller/main_controller.dart';
 import '../models/company_model.dart';
-import 'currency_repository.dart';
-import 'currency_service.dart';
+import 'company_repository.dart';
+import 'company_service.dart';
 
 class CompanyCtl extends MainController<CompanyModel> {
   var selectedCompany = CompanyModel.empty().obs;

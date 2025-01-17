@@ -28,7 +28,7 @@ class CurrencyRepository
         '$baseUrl/add',
         data: currencyData,
       );
-      return response.statusCode == 201;
+      return response.statusCode == StatusCodes.CREATED_201;
     } on DioException {
       rethrow;
     }

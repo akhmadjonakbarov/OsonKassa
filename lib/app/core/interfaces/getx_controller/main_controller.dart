@@ -32,8 +32,8 @@ abstract class MainController<T> extends GetxController {
     list(filteredList);
   }
 
-  void selectPage(int page_value) {
-    page(page_value);
+  void selectPage(int pageValue) {
+    page(pageValue);
 
     fetchItems();
   }
