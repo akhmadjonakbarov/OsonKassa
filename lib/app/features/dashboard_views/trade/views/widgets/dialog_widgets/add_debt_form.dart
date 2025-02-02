@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
 import 'package:osonkassa/app/styles/colors.dart';
 import 'package:osonkassa/app/styles/text_styles.dart';
 import 'package:osonkassa/app/utils/helper/valid_alert.dart';
 import 'package:osonkassa/app/utils/texts/button_texts.dart';
 import 'package:osonkassa/app/utils/texts/user_texts.dart';
-import 'package:flutter/material.dart';
 
 class AddDebtForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;

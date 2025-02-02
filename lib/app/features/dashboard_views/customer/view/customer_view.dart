@@ -1,14 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/auth/logic/controllers/auth_ctl.dart';
-import 'package:osonkassa/app/features/shared/widgets/content_view.dart';
 
 import '../../../../core/enums/filter_field.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';
+import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/export_commons.dart';
+import '../../../shared/widgets/content_view.dart';
 import '../logic/client_ctl.dart';
 import 'table/client_table.dart';
 
@@ -16,11 +15,11 @@ class CustomerView extends StatefulWidget {
   final ClientCtl clientCtl;
   final AuthCtl authCtl;
 
-  CustomerView({
-    Key? key,
+  const CustomerView({
+    super.key,
     required this.clientCtl,
     required this.authCtl,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomerView> createState() => _CustomerViewState();

@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:osonkassa/app/features/dashboard_views/currency/models/models.dart';
 
-import '../../item/models/item_model.dart';
+import '../../item/models/item.dart';
 
 class StoreProductDocItemBalanceModel {
   int id;
@@ -15,7 +15,7 @@ class StoreProductDocItemBalanceModel {
   double income_price_usd;
   String created_at;
   String updated_at;
-  ItemModel item;
+  Item item;
   CurrencyTypeModel currency_type;
   CurrencyModel currency;
   StoreProductDocItemBalanceModel({
@@ -45,7 +45,7 @@ class StoreProductDocItemBalanceModel {
         created_at: '',
         updated_at: '',
         currency_type: CurrencyTypeModel.empty(),
-        item: ItemModel.empty(),
+        item: Item.empty(),
         currency: CurrencyModel.empty());
   }
 
@@ -59,7 +59,7 @@ class StoreProductDocItemBalanceModel {
     double? income_price_usd,
     String? created_at,
     String? updated_at,
-    ItemModel? item,
+    Item? item,
     CurrencyTypeModel? currency_type,
     CurrencyModel? currency,
   }) {
@@ -107,7 +107,7 @@ class StoreProductDocItemBalanceModel {
       income_price_usd: map['income_price_usd'] as double,
       created_at: map['created_at'] as String,
       updated_at: map['updated_at'] as String,
-      item: ItemModel.fromMap(map['item'] as Map<String, dynamic>),
+      item: Item.fromMap(map['item'] as Map<String, dynamic>),
       currency_type: CurrencyTypeModel.fromMap(
           map['currency_type'] as Map<String, dynamic>),
       currency: CurrencyModel.fromMap(map['currency'] as Map<String, dynamic>),

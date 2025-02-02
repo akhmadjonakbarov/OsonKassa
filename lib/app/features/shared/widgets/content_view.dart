@@ -9,9 +9,9 @@ import '../models/pagination_model.dart';
 import 'pagination.dart';
 
 class ContentView extends StatelessWidget {
-  final Function(int) onChangePage;
+  final Function(int pageValue) onChangePage;
   final Rx<PaginationModel> pagination;
-  final List<Widget> children; // Pass list of widgets instead of ListView
+  final List<Widget> children;
   final String title;
 
   const ContentView(
@@ -59,7 +59,7 @@ class ContentView extends StatelessWidget {
                   ),
                 );
               } else {
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               }
             },
           )

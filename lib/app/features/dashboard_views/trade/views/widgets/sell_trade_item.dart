@@ -91,16 +91,16 @@ class _SellProductItemState extends State<SellProductItem> {
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(width: 2),
-                        Text(
-                          widget.sellProductDocItem.item.units
-                              .firstWhere(
-                                (element) =>
-                                    element.value.toLowerCase() == 'kg',
-                              )
-                              .value,
-                          textAlign: TextAlign.center,
-                          style: textStyleBlack14,
-                        )
+                        // Text(
+                        //   widget.sellProductDocItem.item.units
+                        //       .firstWhere(
+                        //         (element) =>
+                        //             element.value.toLowerCase() == 'kg',
+                        //       )
+                        //       .value,
+                        //   textAlign: TextAlign.center,
+                        //   style: textStyleBlack14,
+                        // )
                       ],
                     ),
                     Row(
@@ -114,16 +114,16 @@ class _SellProductItemState extends State<SellProductItem> {
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(width: 2),
-                        Text(
-                          widget.sellProductDocItem.item.units
-                              .firstWhere(
-                                (element) =>
-                                    element.value.toLowerCase() == 'qop',
-                              )
-                              .value,
-                          textAlign: TextAlign.center,
-                          style: textStyleBlack14,
-                        )
+                        // Text(
+                        //   widget.sellProductDocItem.item.units
+                        //       .firstWhere(
+                        //         (element) =>
+                        //             element.value.toLowerCase() == 'qop',
+                        //       )
+                        //       .value,
+                        //   textAlign: TextAlign.center,
+                        //   style: textStyleBlack14,
+                        // )
                       ],
                     ),
                   ],

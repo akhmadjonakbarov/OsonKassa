@@ -2,19 +2,18 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'widgets/chart/bottom_titles.dart';
-import 'widgets/profit_card_info.dart';
+
 import '../../../../styles/app_colors.dart';
+import '../../../../styles/chart_colors.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../styles/themes.dart';
-import '../../../../utils/media/get_screen_size.dart';
-
-import '../../../../styles/chart_colors.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
+import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/display_texts.dart';
-
 import '../logic/statistics_ctl.dart';
 import '../models/daily_total_selling_price.dart';
+import 'widgets/chart/bottom_titles.dart';
+import 'widgets/profit_card_info.dart';
 
 class StatisticsView extends StatefulWidget {
   const StatisticsView({super.key, required this.staticticsCtl});

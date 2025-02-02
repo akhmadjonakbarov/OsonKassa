@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../shared/widgets/content_view.dart';
 
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../shared/export_commons.dart';
+import '../../../shared/widgets/content_view.dart';
 import '../logic/debt_ctl.dart';
 import '../table/debt_table.dart';
 
@@ -29,7 +29,7 @@ class _DebtViewState extends State<DebtView> {
     Size screenSize = getScreenSize(context);
     return ContentView(
       pagination: debtCtl.pagination,
-      onChangePage: (p0) {},
+      onChangePage: (page) => debtCtl.selectPage(page),
       title: "Qarzlar",
       children: [
         Row(

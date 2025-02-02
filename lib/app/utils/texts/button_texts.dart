@@ -34,6 +34,7 @@ class ButtonTexts {
   static const debt = "Қарзлар";
   static const docs = "Документлар";
   static const products = "Маҳсулотлар";
+  static const computers = "Kompyuter";
   static const categories = "Бўлимлар";
   static const cheapen = "Ўтиш";
   static const see = "Кўриш";

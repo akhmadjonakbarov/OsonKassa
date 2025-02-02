@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../auth/logic/controllers/auth_ctl.dart';
-import '../../../shared/widgets/content_view.dart';
 
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
+import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/export_commons.dart';
+import '../../../shared/widgets/content_view.dart';
 import '../logic/currency_controller.dart';
 import 'table/currency_table.dart';
 import 'widgets/edit_currency.dart';

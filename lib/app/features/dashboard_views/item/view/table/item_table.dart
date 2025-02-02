@@ -6,7 +6,7 @@ import '../../../../shared/widgets/center_text.dart';
 import '../../../../shared/widgets/custom_data_table.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/item_ctl.dart';
-import '../../models/item_model.dart';
+import '../../models/item.dart';
 
 class ItemTable extends StatefulWidget {
   final ItemCtl itemCtl;
@@ -35,7 +35,7 @@ class _ItemTableState extends State<ItemTable> {
       rows: widget.itemCtl.list.asMap().entries.map(
         (entry) {
           int index = entry.key;
-          final ItemModel item = widget.itemCtl.list[index];
+          final Item item = widget.itemCtl.list[index];
 
           return DataRow(
             cells: <DataCell>[

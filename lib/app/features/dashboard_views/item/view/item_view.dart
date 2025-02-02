@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
+import '../../../../core/permission/permissions.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../action/logic/action_ctl.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
@@ -97,7 +98,8 @@ class _ItemtViewState extends State<ItemtView> {
                               onClick: () {
                                 itemCtl.editDialog(context);
                               },
-                              permission: "create_item",
+                              permission:
+                                  Permissions.create_item.name.toLowerCase(),
                               roles: widget.authCtl.userModel.value.roles),
                         ],
                       ),

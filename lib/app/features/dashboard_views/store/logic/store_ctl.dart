@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../shared/models/api_data.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -13,6 +12,7 @@ import '../../../../utils/texts/alert_texts.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/placeholder_texts.dart';
 import '../../../shared/export_commons.dart';
+import '../../../shared/models/api_data.dart';
 import '../../document/models/doc_item_model.dart';
 import '../../trade/logic/trade_ctl.dart';
 import 'store_repository.dart';

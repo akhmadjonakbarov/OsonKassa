@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../document/models/doc_item_model.dart';
+
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../../utils/texts/display_texts.dart';
 import '../../../../../utils/texts/table_texts.dart';
-
 import '../../../../shared/export_commons.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
+import '../../../document/models/doc_item_model.dart';
 import '../../logic/store_ctl.dart';
 
 class StoreTable extends StatefulWidget {

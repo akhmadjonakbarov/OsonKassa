@@ -20,7 +20,7 @@ import '../../../category/logic/category_controller.dart';
 import '../../../currency/logic/currency_controller.dart';
 import '../../../currency/models/models.dart';
 import '../../../item/logic/item_ctl.dart';
-import '../../../item/models/item_model.dart';
+import '../../../item/models/item.dart';
 import '../../../note/logic/note_controller.dart';
 import '../../logic/document/document_ctl.dart';
 import '../../logic/view_controller/manage_product_doc_item_ctl.dart';
@@ -152,7 +152,7 @@ class _EditProductDocItemScreenState extends State<EditProductDocItemScreen> {
     });
   }
 
-  void chooseItemPriceData(ItemModel item) {
+  void chooseItemPriceData(Item item) {
     // setState(() {
     //   if (item.doc_item != null) {
     //     if (item.doc_item!.income_price_usd > 0) {
@@ -654,7 +654,7 @@ class _EditProductDocItemScreenState extends State<EditProductDocItemScreen> {
                             child: ListView.builder(
                               padding: const EdgeInsets.all(5),
                               itemBuilder: (context, index) {
-                                ItemModel item = itemCtl.list[index];
+                                Item item = itemCtl.list[index];
                                 return Container(
                                   margin: EdgeInsets.symmetric(
                                     vertical: constraints.minWidth * 0.002,

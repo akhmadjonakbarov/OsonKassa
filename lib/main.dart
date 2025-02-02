@@ -1,3 +1,5 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:logging/logging.dart';
@@ -12,7 +14,7 @@ class AppLogger {
   static void setupLogging() {
     Logger.root.level = Level.ALL;
     Logger.root.onRecord.listen((record) {
-      print('${record.level.name}: ${record.time}: ${record.message}');
+      dev.log('${record.level.name}: ${record.time}: ${record.message}');
     });
   }
 }

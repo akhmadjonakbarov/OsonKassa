@@ -1,10 +1,9 @@
-import '../../../styles/container_decoration.dart';
-
-import '../../../utils/texts/display_texts.dart';
 import 'package:flutter/material.dart';
 
+import '../../../styles/container_decoration.dart';
 import '../../../styles/text_styles.dart';
 import '../../../utils/media/get_screen_size.dart';
+import '../../../utils/texts/display_texts.dart';
 
 class NoData extends StatelessWidget {
   final bool hasPadding;

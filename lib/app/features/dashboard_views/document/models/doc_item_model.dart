@@ -2,14 +2,14 @@
 
 import 'package:osonkassa/app/features/dashboard_views/currency/models/models.dart';
 import 'package:osonkassa/app/features/dashboard_views/document/models/document_model.dart';
-import 'package:osonkassa/app/features/dashboard_views/item/models/item_model.dart';
+import 'package:osonkassa/app/features/dashboard_views/item/models/item.dart';
 
 // ignore_for_file: unnecessary_this
 
 class DocItemModel {
   int id;
   double qty;
-  ItemModel item;
+  Item item;
   DocumentModel document;
   double income_price;
   double income_price_usd;
@@ -38,7 +38,7 @@ class DocItemModel {
   DocItemModel copyWith({
     int? id,
     double? qty,
-    ItemModel? item,
+    Item? item,
     DocumentModel? document,
     double? income_price,
     double? income_price_usd,
@@ -89,7 +89,7 @@ class DocItemModel {
       id: map['id'] as int,
       qty: double.parse(map['qty'].toString()),
       currency_type: CurrencyTypeModel.fromMap(map['currency_type']),
-      item: ItemModel.fromMap(map['item'] as Map<String, dynamic>),
+      item: Item.fromMap(map['item'] as Map<String, dynamic>),
       document: DocumentModel.fromMap(map['document'] as Map<String, dynamic>),
       income_price: double.parse(map['income_price'].toString()),
       income_price_usd: double.parse(map['income_price_usd'].toString()),
@@ -108,7 +108,7 @@ class DocItemModel {
       id: 0,
       qty: 0,
       currency_type: CurrencyTypeModel.empty(),
-      item: ItemModel.empty(),
+      item: Item.empty(),
       document: DocumentModel.empty(),
       income_price: 0.0,
       income_price_usd: 0.0,
@@ -218,7 +218,7 @@ class DocItemModelWithoutDocument {
   int id;
   double qty;
   double qty_kg;
-  ItemModel item;
+  Item item;
   double income_price;
   double income_price_usd;
   double selling_price;
@@ -246,7 +246,7 @@ class DocItemModelWithoutDocument {
     int? id,
     double? qty,
     double? qty_kg,
-    ItemModel? item,
+    Item? item,
     double? income_price,
     double? income_price_usd,
     double? selling_price,
@@ -295,7 +295,7 @@ class DocItemModelWithoutDocument {
       currency_type: CurrencyTypeModel.fromMap(map['currency_type']),
       qty_kg: double.parse(map['qty_kg'].toString()),
       qty: double.parse(map['qty'].toString()),
-      item: ItemModel.fromMap(map['item'] as Map<String, dynamic>),
+      item: Item.fromMap(map['item'] as Map<String, dynamic>),
       income_price: double.parse(map['income_price'].toString()),
       income_price_usd: double.parse(map['income_price_usd'].toString()),
       selling_price: double.parse(map['selling_price'].toString()),

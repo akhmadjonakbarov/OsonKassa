@@ -191,12 +191,12 @@ class StoreItemDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Qolgan: ${product.qty} ${product.item.units.firstWhere(
-                            (element) => element.value == 'qop',
-                          ).value}",
-                      style: textStyleBlack18Bold,
-                    ),
+                    // Text(
+                    //   "Qolgan: ${product.qty} ${product.item.units.firstWhere(
+                    //         (element) => element.value == 'qop',
+                    //       ).value}",
+                    //   style: textStyleBlack18Bold,
+                    // ),
                   ],
                 ),
                 Column(

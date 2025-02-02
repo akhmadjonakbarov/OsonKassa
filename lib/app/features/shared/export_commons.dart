@@ -5,7 +5,7 @@ export 'widgets/center_text.dart';
 export 'widgets/custom_data_table.dart';
 export 'widgets/custom_textfields.dart';
 export 'widgets/data_list.dart';
-export 'widgets/dialog_table.dart';
+export 'widgets/dialogs.dart';
 export 'widgets/header_title.dart';
 export 'widgets/loading.dart';
 export 'widgets/no_data.dart';

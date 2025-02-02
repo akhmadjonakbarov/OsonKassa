@@ -6,9 +6,9 @@ import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/formatter_functions/formatter_date.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/table_texts.dart';
+import '../../../dashboard_views/customer/models/client_model.dart';
 import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/grid_box.dart';
-import '../../../dashboard_views/customer/models/client_model.dart';
 import '../../logic/ctl/client_debt_ctl.dart';
 import '../../models/client_debt_model.dart';
 

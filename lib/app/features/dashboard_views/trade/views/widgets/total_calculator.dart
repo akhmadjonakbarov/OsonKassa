@@ -46,22 +46,22 @@ class TotalCalculate extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '${formatUZSNumber(tradeCtl.totalSelledProductKg.value)} ${tradeCtl.sellProductDocItems.isNotEmpty ? tradeCtl.sellProductDocItems.first.item.units.firstWhere(
-                                (element) =>
-                                    element.value.toLowerCase() == 'kg',
-                              ).value : ""}',
-                          style: textStyleBlack18Bold.copyWith(
-                              color: Colors.white, fontSize: 20),
-                        ),
-                        Text(
-                          '${formatUZSNumber(tradeCtl.totalSelledProductCount.value)} ${tradeCtl.sellProductDocItems.isNotEmpty ? tradeCtl.sellProductDocItems.first.item.units.firstWhere(
-                                (element) =>
-                                    element.value.toLowerCase() == 'qop',
-                              ).value : ""}',
-                          style: textStyleBlack18Bold.copyWith(
-                              color: Colors.white, fontSize: 20),
-                        ),
+                        // Text(
+                        //   '${formatUZSNumber(tradeCtl.totalSelledProductKg.value)} ${tradeCtl.sellProductDocItems.isNotEmpty ? tradeCtl.sellProductDocItems.first.item.units.firstWhere(
+                        //         (element) =>
+                        //             element.value.toLowerCase() == 'kg',
+                        //       ).value : ""}',
+                        //   style: textStyleBlack18Bold.copyWith(
+                        //       color: Colors.white, fontSize: 20),
+                        // ),
+                        // Text(
+                        //   '${formatUZSNumber(tradeCtl.totalSelledProductCount.value)} ${tradeCtl.sellProductDocItems.isNotEmpty ? tradeCtl.sellProductDocItems.first.item.units.firstWhere(
+                        //         (element) =>
+                        //             element.value.toLowerCase() == 'qop',
+                        //       ).value : ""}',
+                        //   style: textStyleBlack18Bold.copyWith(
+                        //       color: Colors.white, fontSize: 20),
+                        // ),
                       ],
                     ),
                   ),

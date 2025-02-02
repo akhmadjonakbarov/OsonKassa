@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import '../../../shared/models/api_data.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -21,6 +20,7 @@ import '../../../../utils/texts/alert_texts.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';
 import '../../../shared/export_commons.dart';
+import '../../../shared/models/api_data.dart';
 import '../../../shared/widgets/buttons.dart';
 import '../../../unit/logic/unit_controller.dart';
 import '../../../unit/models/unit_model.dart';
@@ -29,15 +29,16 @@ import '../../category/models/category_models.dart';
 import '../../company/logic/company_ctl.dart';
 import '../../company/models/company_model.dart';
 import '../constants/texts.dart';
-import '../models/item_model.dart';
+import '../models/item.dart';
 import 'item_repo.dart';
 import 'item_service.dart';
 
-class ItemCtl extends MainController<ItemModel> {
+class ItemCtl extends MainController<Item> {
   var category_id = 0.obs;
   var company_id = 0.obs;
+  var unit_id = 0.obs;
 
-  var selectedItem = ItemModel.empty().obs;
+  var selectedItem = Item.empty().obs;
 
   void setLoading(bool value) {
     isLoading.value = value;
@@ -58,7 +59,7 @@ class ItemCtl extends MainController<ItemModel> {
     _productService = ItemService(
       addRepository: _productRepo as Add<Map<String, dynamic>>,
       deleteRepository: _productRepo as Delete<int>,
-      updateRepository: _productRepo as Update<ItemModel>,
+      updateRepository: _productRepo as Update<Item>,
       getAllRepository: _productRepo as GetAllWithPagination<ApiData>,
     );
 
@@ -72,7 +73,7 @@ class ItemCtl extends MainController<ItemModel> {
       setLoading(true);
 
       var data = await _productService.getAllItems(page: page.value);
-      list(data.items.cast<ItemModel>());
+      list(data.items.cast<Item>());
       pagination(data.pagination);
     } catch (e) {
       handleError(e.toString());
@@ -83,7 +84,7 @@ class ItemCtl extends MainController<ItemModel> {
   }
 
 // Helper function to check list equality
-  bool areListsEqual(List<ItemModel> list1, List<ItemModel> list2) {
+  bool areListsEqual(List<Item> list1, List<Item> list2) {
     if (list1.length != list2.length) return false;
     for (int i = 0; i < list1.length; i++) {
       if (list1[i] != list2[i]) return false;
@@ -91,7 +92,7 @@ class ItemCtl extends MainController<ItemModel> {
     return true;
   }
 
-  void selectItem(ItemModel item, {BuildContext? context}) async {
+  void selectItem(Item item, {BuildContext? context}) async {
     selectedItem(item);
 
     if (context != null) {
@@ -126,7 +127,7 @@ class ItemCtl extends MainController<ItemModel> {
   }
 
   @override
-  void updateItem(ItemModel item) async {
+  void updateItem(Item item) async {
     try {
       bool isSuccess = await _productService.updateItem(item);
       if (isSuccess) {
@@ -144,7 +145,7 @@ class ItemCtl extends MainController<ItemModel> {
   }
 
   void filterByCategory(int id) async {
-    List<ItemModel> filteredProducts = [];
+    List<Item> filteredProducts = [];
     try {
       category_id(id);
       fetchItems();
@@ -205,7 +206,7 @@ class ItemCtl extends MainController<ItemModel> {
 
   void resetItem() {
     selectedItem(
-      ItemModel.empty(),
+      Item.empty(),
     );
   }
 
@@ -250,15 +251,13 @@ class ItemCtl extends MainController<ItemModel> {
       'name': '',
       'barcode': '',
       'category': CategoryModel.empty().toMap(),
-      'units': <Map<String, dynamic>>[],
+      'unit': UnitModel.empty(),
       'company': CompanyModel.empty().toMap(),
     };
 
     bool is_category_null = false;
-    Set<int> selectedUnitIds = {};
-
     Map<String, dynamic> categoryData = CategoryModel.empty().toMap();
-    // Map<String, dynamic> unitData = UnitModel.empty().toMap();
+    Map<String, dynamic> unitData = UnitModel.empty().toMap();
     Map<String, dynamic> companyData = CompanyModel.empty().toMap();
 
     bool isNull = selectedItem.value.id == 0;
@@ -272,11 +271,8 @@ class ItemCtl extends MainController<ItemModel> {
       item_name_controller.text = selectedItem.value.name;
       barcode_controller.text = selectedItem.value.barcode;
       itemData['category'] = selectedItem.value.category.toMap();
-      itemData['units'] = selectedItem.value.units;
+      itemData['unit'] = selectedItem.value.unit.toMap();
       itemData['company'] = selectedItem.value.company?.toMap();
-      selectedUnitIds.addAll(
-        selectedItem.value.units.map((unit) => unit.id),
-      );
     }
 
     final String actionText = isNull ? ButtonTexts.add : ButtonTexts.edit;
@@ -303,12 +299,12 @@ class ItemCtl extends MainController<ItemModel> {
 
     double heightOfDialog = MediaQuery.of(context).size.height * 0.63;
 
-    Get.dialog(Dialog(
+    Get.dialog(AlertDialog(
       backgroundColor: primary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
       ),
-      child: StatefulBuilder(
+      content: StatefulBuilder(
         builder: (context, setState) {
           if (itemData['category']['id'] != 0) {
             setState(
@@ -565,55 +561,72 @@ class ItemCtl extends MainController<ItemModel> {
                     },
                   ),
                 ),
-                Obx(
-                  () => Expanded(
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        childAspectRatio: 3,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
+                Expanded(
+                    child: Column(
+                  children: [
+                    Obx(
+                      () => SizedBox(
+                        height: 60,
+                        child: MultiSelectDropDown<int>(
+                          selectedOptions: !isNull || category_id.value != 0
+                              ? [
+                                  ValueItem(
+                                    label: unitData['value'],
+                                    value: unitData['id'],
+                                  ),
+                                ]
+                              : [],
+                          onOptionSelected: (List<ValueItem> selectedOptions) {
+                            setState(
+                              () {
+                                itemData['unit']['id'] = unit_id.value != 0
+                                    ? category_id.value
+                                    : selectedOptions.first.value;
+                                itemData['unit']['id'] =
+                                    selectedOptions.last.label;
+                              },
+                            );
+                          },
+                          options: unitCtl.list.asMap().entries.map(
+                            (e) {
+                              return ValueItem(
+                                label: e.value.value,
+                                value: e.value.id,
+                              );
+                            },
+                          ).toList(),
+                          searchEnabled: true,
+                          searchLabel:
+                              "${ButtonTexts.search} | ${DisplayTexts.categories}",
+                          borderRadius: 5,
+                          selectionType: SelectionType.single,
+                          chipConfig: const ChipConfig(wrapType: WrapType.wrap),
+                          selectedOptionTextColor: Colors.white,
+                          hintStyle:
+                              textStyleBlack18.copyWith(color: Colors.grey),
+                          selectedOptionBackgroundColor: bgButtonColor,
+                          dropdownBackgroundColor: primary,
+                          fieldBackgroundColor: primary,
+                          optionsBackgroundColor: primary,
+                          singleSelectItemStyle: textStyleBlack18,
+                          hint: ProductViewTexts.category,
+                          optionTextStyle: textStyleBlack14.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
                       ),
-                      itemCount: unitCtl.list.length,
-                      itemBuilder: (context, index) {
-                        final unit = unitCtl.list[index];
-                        final bool isSelected =
-                            selectedUnitIds.contains(unit.id);
-
-                        return Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                            color: isSelected ? bgButtonColor : Colors.white,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                unit.value.capitalizeFirst.toString(),
-                                style: textStyleBlack18,
-                              ),
-                              Checkbox(
-                                value: isSelected,
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    if (value == true) {
-                                      selectedUnitIds.add(unit.id);
-                                    } else {
-                                      selectedUnitIds.remove(unit.id);
-                                    }
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
                     ),
-                  ),
-                ),
+                    if (is_category_null)
+                      Text(
+                        "Iltimos bo'limni tanlang",
+                        style: textStyleBlack14.copyWith(
+                            color: Colors.red, fontSize: 16),
+                      ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                )),
                 const SizedBox(
                   height: 10,
                 ),
@@ -632,15 +645,7 @@ class ItemCtl extends MainController<ItemModel> {
                         bool isValid = formKey.currentState!.validate();
                         List units = [];
                         List selectedUnitIdsList = [];
-                        for (var element in unitCtl.list) {
-                          for (var unitId in selectedUnitIds) {
-                            if (element.id == unitId) {
-                              selectedUnitIdsList.add(element.id);
-                              units.add(element);
-                              break;
-                            }
-                          }
-                        }
+
                         if (isValid && itemData['category']['id'] != 0) {
                           String itemName = item_name_controller.text.trim();
                           String barCode = barcode_controller.text.trim();
@@ -660,21 +665,13 @@ class ItemCtl extends MainController<ItemModel> {
                           if (isNull) {
                             addItem(itemData);
                           } else {
-                            ItemModel item = selectedItem.value;
+                            Item item = selectedItem.value;
                             List<UnitModel> units = [];
-                            for (var element in unitCtl.list) {
-                              for (var unitId in selectedUnitIds) {
-                                if (element.id == unitId) {
-                                  units.add(element);
-                                  break;
-                                }
-                              }
-                            }
 
                             item = item.copyWith(
                               category: CategoryPublicModel.fromMap(
                                   itemData['category']),
-                              units: units,
+                              unit: itemData['unit'],
                               name: itemData['name'],
                               barcode: itemData['barcode'],
                               company: itemData['company'] != null

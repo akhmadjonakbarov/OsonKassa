@@ -7,6 +7,7 @@ import 'features/auth/view/auth_screen.dart';
 import 'features/client_detail/views/client_detail_screen.dart';
 import 'features/dashboard/logic/bindings/dashboard_binding.dart';
 import 'features/dashboard/view/dashboard_screen.dart';
+import 'features/manage_store/manage_store_screen.dart';
 import 'features/profile/profile_screen.dart';
 import 'features/report_docs/logic/report_binding.dart';
 import 'features/report_docs/views/report_docs_screen.dart';
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Pos System',
+      title: 'Oson Kassa',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -32,6 +33,11 @@ class App extends StatelessWidget {
           name: AppPaths.auth,
           page: () => const AuthScreen(),
           binding: AuthBinding(),
+        ),
+        GetPage(
+          name: AppPaths.manageStore,
+          page: () => const ManageStoreScreen(),
+
         ),
         GetPage(
           name: AppPaths.dashboard,

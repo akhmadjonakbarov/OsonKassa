@@ -1,8 +1,5 @@
-import '../../../../styles/app_colors.dart';
-import '../../../../styles/chart_colors.dart';
-import '../../../../styles/themes.dart';
-import '../../../../utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
@@ -10,21 +7,22 @@ import '../../../../config/app_paths.dart';
 import '../../../../config/app_views.dart';
 import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
-
+import '../../../../styles/app_colors.dart';
 import '../../../../styles/container_decoration.dart';
 import '../../../../styles/icons.dart';
 import '../../../../styles/text_styles.dart';
+import '../../../../styles/themes.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
+import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
-import '../../../shared/export_commons.dart';
 import '../../../dashboard_views/statistics/logic/statistics_ctl.dart';
 import '../../../dashboard_views/statistics/view/widgets/statistics_item.dart';
 import '../../../dashboard_views/store/logic/store_ctl.dart';
 import '../../../report_docs/logic/report_ctl.dart';
+import '../../../shared/export_commons.dart';
 import '../../logic/controllers/dashboard_controller.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class Header extends StatefulWidget {
   final ReportCtl reportCtl;

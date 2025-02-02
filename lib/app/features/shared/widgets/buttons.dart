@@ -353,20 +353,22 @@ class BasicButton extends StatelessWidget {
   final Color bgColor;
   final double height;
   final double width;
+  final EdgeInsets? margin;
 
-  const BasicButton({
-    super.key,
-    required this.text,
-    this.onClick,
-    required this.textStyle,
-    this.bgColor = ButtonColors.primary,
-    required this.height,
-    required this.width,
-  });
+  const BasicButton(
+      {super.key,
+      required this.text,
+      this.onClick,
+      required this.textStyle,
+      this.bgColor = ButtonColors.primary,
+      required this.height,
+      required this.width,
+      this.margin});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      margin: margin,
       height: height,
       width: width,
       child: Material(
@@ -377,6 +379,7 @@ class BasicButton extends StatelessWidget {
             border: Border.all(color: Colors.transparent),
           ),
           child: InkWell(
+            borderRadius: BorderRadius.circular(BorderRadiuses.borderRadius8),
             onTap: () {
               onClick!();
             },
@@ -502,9 +505,10 @@ class AddButton extends StatelessWidget {
 }
 
 class CheckedAddButton extends StatelessWidget {
-  final List<RoleModel> roles;
+  final List<Role> roles;
   final String permission;
   final Function() onClick;
+
   const CheckedAddButton({
     super.key,
     required this.onClick,
@@ -522,5 +526,21 @@ class CheckedAddButton extends StatelessWidget {
     } else {
       return const SizedBox.shrink();
     }
+  }
+}
+
+class XButton extends StatelessWidget {
+  const XButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => Navigator.of(context).pop(),
+      icon: const Icon(
+        Icons.close,
+        color: Colors.black,
+      ),
+      hoverColor: Colors.red,
+    );
   }
 }

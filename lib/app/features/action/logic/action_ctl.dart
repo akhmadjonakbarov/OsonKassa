@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
-import '../../../core/interfaces/api/api_interfaces.dart';
-import '../../../core/interfaces/getx_controller/main_controller.dart';
-import 'action_repository.dart';
-import 'action_service.dart';
-import '../models/action_model.dart';
 
 import '../../../config/dio_provider.dart';
 import '../../../core/display/user_notifier.dart';
 import '../../../core/enums/type_of_snackbar.dart';
+import '../../../core/interfaces/api/api_interfaces.dart';
+import '../../../core/interfaces/getx_controller/main_controller.dart';
+import '../models/action_model.dart';
+import 'action_repository.dart';
+import 'action_service.dart';
 
 class ActionCtl extends MainController<ActionModel> {
   late final ActionRepository actionRepository;

@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/computer/logic/display/display_controller.dart';
 
 import '../../../../config/app_views.dart';
 import '../../../action/logic/action_ctl.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../dashboard_views/category/view/category_view.dart';
+import '../../../dashboard_views/computer/logic/computer_ctl.dart';
+import '../../../dashboard_views/computer/view/computer_view.dart';
 import '../../../dashboard_views/currency/view/currency_view.dart';
 import '../../../dashboard_views/customer/logic/client_ctl.dart';
 import '../../../dashboard_views/customer/view/customer_view.dart';
@@ -47,6 +50,8 @@ class _ContentBarState extends State<ContentBar> {
   final ActionCtl actionCtl = Get.find<ActionCtl>();
   final DocumentCtl documentCtl = Get.find<DocumentCtl>();
   final ClientCtl clientCtl = Get.find<ClientCtl>();
+  final ComputerCtl computerCtl = Get.find<ComputerCtl>();
+  final DisplayController displayController = Get.find<DisplayController>();
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +82,12 @@ class _ContentBarState extends State<ContentBar> {
                     return ItemtView(
                       actionCtl: actionCtl,
                       authCtl: authCtl,
+                    );
+                  case AppViews.computer:
+                    return ComputerView(
+                      displayController: displayController,
+                      authCtl: authCtl,
+                      computerCtl: computerCtl,
                     );
                   case AppViews.document:
                     return DocumentView(

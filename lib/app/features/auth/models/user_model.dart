@@ -10,7 +10,7 @@ class UserModel {
   final String firstName;
   final String lastName;
   final String email;
-  final List<RoleModel> roles;
+  final List<Role> roles;
   final DateTime createdAt;
   final DateTime updatedAt;
   final String token;
@@ -44,7 +44,7 @@ class UserModel {
     String? firstName,
     String? lastName,
     String? email,
-    List<RoleModel>? roles,
+    List<Role>? roles,
     DateTime? createdAt,
     DateTime? updatedAt,
     String? token,
@@ -80,9 +80,9 @@ class UserModel {
       firstName: map['first_name'] as String,
       lastName: map['last_name'] as String,
       email: map['email'] as String,
-      roles: List<RoleModel>.from(
-        (map['roles']).map<RoleModel>(
-          (x) => RoleModel.fromMap(x as Map<String, dynamic>),
+      roles: List<Role>.from(
+        (map['roles']).map<Role>(
+          (x) => Role.fromMap(x as Map<String, dynamic>),
         ),
       ),
       createdAt: DateTime.parse(map['created_at']),
@@ -128,7 +128,7 @@ class UserModel {
   }
 }
 
-class RoleModel {
+class Role {
   final int id;
   final String name;
   final List<EmployeeModel> employees;
@@ -136,7 +136,7 @@ class RoleModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  RoleModel({
+  Role({
     required this.id,
     required this.name,
     required this.employees,
@@ -145,7 +145,7 @@ class RoleModel {
     required this.updatedAt,
   });
 
-  RoleModel copyWith({
+  Role copyWith({
     int? id,
     String? name,
     List<EmployeeModel>? employees,
@@ -153,7 +153,7 @@ class RoleModel {
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
-    return RoleModel(
+    return Role(
       id: id ?? this.id,
       name: name ?? this.name,
       employees: employees ?? this.employees,
@@ -174,8 +174,8 @@ class RoleModel {
     };
   }
 
-  factory RoleModel.fromMap(Map<String, dynamic> map) {
-    return RoleModel(
+  factory Role.fromMap(Map<String, dynamic> map) {
+    return Role(
       id: map['id'] as int,
       name: map['name'] as String,
       employees: List<EmployeeModel>.from(
@@ -195,8 +195,8 @@ class RoleModel {
 
   String toJson() => json.encode(toMap());
 
-  factory RoleModel.fromJson(String source) =>
-      RoleModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Role.fromJson(String source) =>
+      Role.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
@@ -204,7 +204,7 @@ class RoleModel {
   }
 
   @override
-  bool operator ==(covariant RoleModel other) {
+  bool operator ==(covariant Role other) {
     if (identical(this, other)) return true;
 
     return other.id == id &&

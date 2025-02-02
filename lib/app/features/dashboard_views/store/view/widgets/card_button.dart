@@ -1,7 +1,7 @@
-import '../../../../../utils/media/get_screen_size.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../styles/text_styles.dart';
+import '../../../../../utils/media/get_screen_size.dart';
 
 class CardButton extends StatelessWidget {
   final String label;

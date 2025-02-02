@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 import '../../../../../../utils/texts/display_texts.dart';
-import '../../../../item/models/item_model.dart';
+import '../../../../item/models/item.dart';
 import 'expanded_dop_down.dart';
 
 class ExpandedProducts extends StatelessWidget {
-  final List<ItemModel> items;
+  final List<Item> items;
   final MultiSelectController multiSelectController;
-  final Function(ItemModel) getSelectedProduct;
+  final Function(Item) getSelectedProduct;
 
   const ExpandedProducts({
     super.key,
@@ -20,7 +20,7 @@ class ExpandedProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpandedDropDown<ItemModel>(
+    return ExpandedDropDown<Item>(
       multiSelectController: multiSelectController,
       items: items,
       getSelectedItem: getSelectedProduct,

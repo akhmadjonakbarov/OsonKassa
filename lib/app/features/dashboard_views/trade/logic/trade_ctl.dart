@@ -97,7 +97,7 @@ class TradeCtl extends GetxController {
       text: docItem.qty.toStringAsFixed(0),
     );
 
-    int selected_unit_id = docItem.item.units.first.id;
+    // int selected_unit_id = docItem.item.units.first.id;
 
     double updatePrice() {
       double qtyKg = 0.0;

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../action/logic/action_ctl.dart';
-import 'widgets/contentbar.dart';
 
 import '../../../styles/app_colors.dart';
 import '../../../utils/media/get_screen_size.dart';
+import '../../action/logic/action_ctl.dart';
 import '../../auth/logic/controllers/auth_ctl.dart';
 import '../../shared/export_commons.dart';
 import '../logic/controllers/dashboard_controller.dart';
+import 'widgets/contentbar.dart';
 import 'widgets/sidebar.dart';
 
 class DashboardScreen extends StatefulWidget {
