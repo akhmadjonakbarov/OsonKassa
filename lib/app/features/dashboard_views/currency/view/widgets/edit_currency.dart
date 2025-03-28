@@ -73,6 +73,7 @@ class _CurrencyEditDialogState extends State<CurrencyEditDialog> {
             );
             return;
           }
+          ctl.fetchItems();
         }
 
         final String actionText = ctl.selectedCurrency.value.id == -1
@@ -118,7 +119,7 @@ class _CurrencyEditDialogState extends State<CurrencyEditDialog> {
                       SmallButtonText(
                         text: ButtonTexts.cancel,
                         onClick: reset,
-                        buttonSize: const Size(125, 45),
+                        buttonSize: const Size(140, 45),
                         textStyle: textStyleBlack14,
                         isNegative: true,
                       ),

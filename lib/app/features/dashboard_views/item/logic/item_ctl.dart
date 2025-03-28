@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -69,27 +71,15 @@ class ItemCtl extends MainController<Item> {
   @override
   Future<void> fetchItems() async {
     try {
-      // Set loading state at the beginning
       setLoading(true);
-
       var data = await _productService.getAllItems(page: page.value);
       list(data.items.cast<Item>());
       pagination(data.pagination);
     } catch (e) {
       handleError(e.toString());
     } finally {
-      // Ensure loading state is turned off
       setLoading(false);
     }
-  }
-
-// Helper function to check list equality
-  bool areListsEqual(List<Item> list1, List<Item> list2) {
-    if (list1.length != list2.length) return false;
-    for (int i = 0; i < list1.length; i++) {
-      if (list1[i] != list2[i]) return false;
-    }
-    return true;
   }
 
   void selectItem(Item item, {BuildContext? context}) async {
@@ -109,7 +99,6 @@ class ItemCtl extends MainController<Item> {
           label: AlertTexts.addAlert(item['name']),
           type: TypeOfSnackBar.success,
         );
-
         fetchItems();
       }
     } on BarcodeAlreadyExistException {
@@ -251,25 +240,25 @@ class ItemCtl extends MainController<Item> {
       'name': '',
       'barcode': '',
       'category': CategoryModel.empty().toMap(),
-      'unit': UnitModel.empty(),
+      'unit': UnitModel.empty().toMap(),
       'company': CompanyModel.empty().toMap(),
     };
 
-    bool is_category_null = false;
+    bool isCategoryNull = false;
     Map<String, dynamic> categoryData = CategoryModel.empty().toMap();
     Map<String, dynamic> unitData = UnitModel.empty().toMap();
     Map<String, dynamic> companyData = CompanyModel.empty().toMap();
 
     bool isNull = selectedItem.value.id == 0;
 
-    final TextEditingController item_name_controller = TextEditingController();
-    final TextEditingController barcode_controller = TextEditingController();
+    final TextEditingController itemNameController = TextEditingController();
+    final TextEditingController barcodeController = TextEditingController();
 
     final formKey = GlobalKey<FormState>();
 
     if (!isNull) {
-      item_name_controller.text = selectedItem.value.name;
-      barcode_controller.text = selectedItem.value.barcode;
+      itemNameController.text = selectedItem.value.name;
+      barcodeController.text = selectedItem.value.barcode;
       itemData['category'] = selectedItem.value.category.toMap();
       itemData['unit'] = selectedItem.value.unit.toMap();
       itemData['company'] = selectedItem.value.company?.toMap();
@@ -309,7 +298,7 @@ class ItemCtl extends MainController<Item> {
           if (itemData['category']['id'] != 0) {
             setState(
               () {
-                is_category_null = false;
+                isCategoryNull = false;
                 heightOfDialog = MediaQuery.of(context).size.height * 0.63;
               },
             );
@@ -392,7 +381,7 @@ class ItemCtl extends MainController<Item> {
                               ),
                             ),
                           ),
-                          if (is_category_null)
+                          if (isCategoryNull)
                             Text(
                               "Iltimos kompaniyani tanlang",
                               style: textStyleBlack14.copyWith(
@@ -463,7 +452,7 @@ class ItemCtl extends MainController<Item> {
                             ),
                           ),
                         ),
-                        if (is_category_null)
+                        if (isCategoryNull)
                           Text(
                             "Iltimos bo'limni tanlang",
                             style: textStyleBlack14.copyWith(
@@ -483,7 +472,7 @@ class ItemCtl extends MainController<Item> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: item_name_controller,
+                            controller: itemNameController,
                             validator: (value) {
                               if (value == "") {
                                 return validField(
@@ -510,7 +499,7 @@ class ItemCtl extends MainController<Item> {
                         ),
                         Expanded(
                           child: TextFormField(
-                            controller: barcode_controller,
+                            controller: barcodeController,
                             validator: (value) {
                               if (value == "") {
                                 return validField('barcode kiriting');
@@ -544,8 +533,8 @@ class ItemCtl extends MainController<Item> {
                       style: textStyleWhite18,
                     ),
                     onPressed: () {
-                      if (item_name_controller.text.isNotEmpty) {
-                        String bar_code = item_name_controller.text
+                      if (itemNameController.text.isNotEmpty) {
+                        String barCode = itemNameController.text
                             .trim()
                             .replaceAll(' ', '')
                             .replaceAll('(', '')
@@ -554,7 +543,7 @@ class ItemCtl extends MainController<Item> {
 
                         setState(
                           () {
-                            barcode_controller.text = bar_code;
+                            barcodeController.text = barCode;
                           },
                         );
                       }
@@ -568,7 +557,7 @@ class ItemCtl extends MainController<Item> {
                       () => SizedBox(
                         height: 60,
                         child: MultiSelectDropDown<int>(
-                          selectedOptions: !isNull || category_id.value != 0
+                          selectedOptions: !isNull
                               ? [
                                   ValueItem(
                                     label: unitData['value'],
@@ -579,10 +568,9 @@ class ItemCtl extends MainController<Item> {
                           onOptionSelected: (List<ValueItem> selectedOptions) {
                             setState(
                               () {
-                                itemData['unit']['id'] = unit_id.value != 0
-                                    ? category_id.value
-                                    : selectedOptions.first.value;
                                 itemData['unit']['id'] =
+                                    selectedOptions.first.value;
+                                itemData['unit']['value'] =
                                     selectedOptions.last.label;
                               },
                             );
@@ -597,7 +585,7 @@ class ItemCtl extends MainController<Item> {
                           ).toList(),
                           searchEnabled: true,
                           searchLabel:
-                              "${ButtonTexts.search} | ${DisplayTexts.categories}",
+                              "${ButtonTexts.search} | ${DisplayTexts.unit}",
                           borderRadius: 5,
                           selectionType: SelectionType.single,
                           chipConfig: const ChipConfig(wrapType: WrapType.wrap),
@@ -616,9 +604,9 @@ class ItemCtl extends MainController<Item> {
                         ),
                       ),
                     ),
-                    if (is_category_null)
+                    if (isCategoryNull)
                       Text(
-                        "Iltimos bo'limni tanlang",
+                        "Iltimos o'lchov birligini tanlang",
                         style: textStyleBlack14.copyWith(
                             color: Colors.red, fontSize: 16),
                       ),
@@ -643,30 +631,23 @@ class ItemCtl extends MainController<Item> {
                       text: actionText,
                       onClick: () {
                         bool isValid = formKey.currentState!.validate();
-                        List units = [];
-                        List selectedUnitIdsList = [];
 
                         if (isValid && itemData['category']['id'] != 0) {
-                          String itemName = item_name_controller.text.trim();
-                          String barCode = barcode_controller.text.trim();
+                          String itemName = itemNameController.text.trim();
+                          String barCode = barcodeController.text.trim();
 
-                          for (var i = 0; i < units.length; i++) {
-                            int indexOfUnit = units.indexOf(units[i]);
-                            UnitModel unit = units[i];
-                            units[indexOfUnit] = unit.toMap();
-                          }
                           itemData = {
                             'name': itemName.capitalize,
                             'barcode': barCode,
                             'category_id': itemData['category']['id'],
-                            'units_ids': selectedUnitIdsList,
+                            'unit_id': itemData['unit']['id'],
                             // 'company_id': itemData['company']['id'],
                           };
+                          log(itemData.toString());
                           if (isNull) {
                             addItem(itemData);
                           } else {
                             Item item = selectedItem.value;
-                            List<UnitModel> units = [];
 
                             item = item.copyWith(
                               category: CategoryPublicModel.fromMap(
@@ -685,7 +666,7 @@ class ItemCtl extends MainController<Item> {
                         } else {
                           setState(
                             () {
-                              is_category_null = true;
+                              isCategoryNull = true;
                               heightOfDialog = heightOfDialog + 50;
                             },
                           );

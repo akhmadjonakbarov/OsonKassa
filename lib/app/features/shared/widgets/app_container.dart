@@ -4,7 +4,7 @@ import '../../../styles/app_colors.dart';
 import '../../../styles/themes.dart';
 import '../../../utils/media/paddings.dart';
 
-class AppContainer extends StatelessWidget {
+class BasicContainer extends StatelessWidget {
   final BoxDecoration decoration;
   final Widget child;
   final double? width;
@@ -12,7 +12,7 @@ class AppContainer extends StatelessWidget {
   final EdgeInsets padding;
   final EdgeInsets margin;
 
-  const AppContainer({
+  const BasicContainer({
     super.key,
     this.decoration = const BoxDecoration(),
     required this.child,

@@ -20,7 +20,7 @@ class DebtTable extends StatefulWidget {
 class _DebtTableState extends State<DebtTable> {
   @override
   Widget build(BuildContext context) {
-    return AppContainer(
+    return BasicContainer(
       padding: EdgeInsets.zero,
       decoration: containerDecoration,
       child: CustomDataTable(

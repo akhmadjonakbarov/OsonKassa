@@ -63,7 +63,7 @@ class _CurrencyViewState extends State<CurrencyView> {
               onClick: () {
                 showCurrencyEditDialog(
                   width: screenSize.width * 0.4,
-                  height: screenSize.height * 0.39,
+                  height: screenSize.height * 0.38,
                 );
               },
               permission: 'create_currency',
@@ -82,7 +82,7 @@ class _CurrencyViewState extends State<CurrencyView> {
               child: CurrencyTable(
                 onSelect: () => showCurrencyEditDialog(
                   width: screenSize.width * 0.4,
-                  height: screenSize.height * 0.39,
+                  height: screenSize.height * 0.38,
                 ),
                 currencyCtl: currencyCtl,
               ),

@@ -31,15 +31,14 @@ import 'widgets/show_price_qty.dart';
 
 enum CurrencyType { usd, uzs }
 
-class EditProductDocItemScreen extends StatefulWidget {
-  const EditProductDocItemScreen({super.key});
+class CreateDocumentView extends StatefulWidget {
+  const CreateDocumentView({super.key});
 
   @override
-  State<EditProductDocItemScreen> createState() =>
-      _EditProductDocItemScreenState();
+  State<CreateDocumentView> createState() => _CreateDocumentViewState();
 }
 
-class _EditProductDocItemScreenState extends State<EditProductDocItemScreen> {
+class _CreateDocumentViewState extends State<CreateDocumentView> {
   final _productDocItemKey = GlobalKey<FormState>();
 
   final CurrencyCtl currencyCtl = Get.find<CurrencyCtl>();
@@ -304,7 +303,7 @@ class _EditProductDocItemScreenState extends State<EditProductDocItemScreen> {
     });
     Size screenSize = getScreenSize(context);
 
-    return AppContainer(
+    return BasicContainer(
       height: screenSize.height,
       margin: const EdgeInsets.only(top: 20),
       padding: EdgeInsets.zero,
@@ -337,13 +336,13 @@ class _EditProductDocItemScreenState extends State<EditProductDocItemScreen> {
   }
 
   Widget _buildLeftSide(BoxConstraints constraints) {
-    return AppContainer(
+    return BasicContainer(
       padding: const EdgeInsets.only(bottom: 10),
       width: constraints.maxWidth * 0.72,
       decoration: const BoxDecoration(),
       child: Column(
         children: [
-          AppContainer(
+          BasicContainer(
             padding: const EdgeInsets.all(10),
             decoration: containerDecoration,
             child: Column(
@@ -616,7 +615,7 @@ class _EditProductDocItemScreenState extends State<EditProductDocItemScreen> {
   }
 
   Widget _buildRightSide(BoxConstraints constraints) {
-    return AppContainer(
+    return BasicContainer(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       width: constraints.maxWidth * 0.27,
       child: Column(

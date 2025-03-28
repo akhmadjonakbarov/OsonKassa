@@ -95,12 +95,13 @@ class _ItemtViewState extends State<ItemtView> {
                             ),
                           ),
                           CheckedAddButton(
-                              onClick: () {
-                                itemCtl.editDialog(context);
-                              },
-                              permission:
-                                  Permissions.create_item.name.toLowerCase(),
-                              roles: widget.authCtl.userModel.value.roles),
+                            onClick: () {
+                              itemCtl.editDialog(context);
+                            },
+                            permission:
+                                Permissions.create_item.name.toLowerCase(),
+                            roles: widget.authCtl.userModel.value.roles,
+                          ),
                         ],
                       ),
                     ],

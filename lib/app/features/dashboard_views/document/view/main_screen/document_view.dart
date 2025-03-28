@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/config/app_views.dart';
+import 'package:osonkassa/app/core/routes/app_routes.dart';
 
 import '../../../../../core/enums/product_doc_type.dart';
 import '../../../../../core/permission/permissions.dart';
@@ -116,7 +118,9 @@ class _DocumentViewState extends State<DocumentView> {
               ],
             ),
             CheckedAddButton(
-              onClick: () {},
+              onClick: () {
+                dashboardCtl.changeView(AppViews.addProduct);
+              },
               permission: Permissions.create_document.name,
               roles: widget.authCtl.userModel.value.roles,
             )

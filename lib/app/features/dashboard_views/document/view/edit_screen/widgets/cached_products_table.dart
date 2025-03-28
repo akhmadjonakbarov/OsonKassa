@@ -21,7 +21,7 @@ class _ProviderTableState extends State<CachedProductsTable> {
   Widget build(BuildContext context) {
     return Obx(
       () => widget.manageProductDocItemCtl.productDocItems.isNotEmpty
-          ? AppContainer(
+          ? BasicContainer(
               decoration: containerDecoration,
               child: DataTable(
                 sortColumnIndex: 0,

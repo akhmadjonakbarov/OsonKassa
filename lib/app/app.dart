@@ -37,7 +37,6 @@ class App extends StatelessWidget {
         GetPage(
           name: AppPaths.manageStore,
           page: () => const ManageStoreScreen(),
-
         ),
         GetPage(
           name: AppPaths.dashboard,
@@ -60,7 +59,7 @@ class App extends StatelessWidget {
         GetPage(
           name: AppPaths.clientDetail,
           page: () => const ClientDetailScreen(),
-        )
+        ),
       ],
     );
   }

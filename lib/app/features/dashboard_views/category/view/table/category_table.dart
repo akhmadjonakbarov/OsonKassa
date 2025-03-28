@@ -22,7 +22,7 @@ class CategoryTable extends StatefulWidget {
 class _CategoryTableState extends State<CategoryTable> {
   @override
   Widget build(BuildContext context) {
-    return AppContainer(
+    return BasicContainer(
       padding: const EdgeInsets.only(bottom: 10),
       margin: EdgeInsets.zero,
       decoration: const BoxDecoration(),

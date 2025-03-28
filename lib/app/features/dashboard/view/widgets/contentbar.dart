@@ -14,7 +14,7 @@ import '../../../dashboard_views/customer/logic/client_ctl.dart';
 import '../../../dashboard_views/customer/view/customer_view.dart';
 import '../../../dashboard_views/debt/view/debt_view.dart';
 import '../../../dashboard_views/document/logic/document/document_ctl.dart';
-import '../../../dashboard_views/document/view/edit_screen/edit_product_doc_item_screen.dart';
+import '../../../dashboard_views/document/view/edit_screen/create_document_view.dart';
 import '../../../dashboard_views/document/view/main_screen/document_view.dart';
 import '../../../dashboard_views/item/view/item_view.dart';
 import '../../../dashboard_views/note/view/note_view.dart';
@@ -112,7 +112,7 @@ class _ContentBarState extends State<ContentBar> {
                   case AppViews.debt:
                     return const DebtView();
                   case AppViews.addProduct:
-                    return const EditProductDocItemScreen();
+                    return const CreateDocumentView();
                   case AppViews.store:
                     return StoreView(
                       storeCtl: storeCtl,

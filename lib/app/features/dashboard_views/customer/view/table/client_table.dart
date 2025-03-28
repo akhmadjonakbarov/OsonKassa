@@ -25,7 +25,7 @@ class _ClientTableState extends State<ClientTable> {
 
   @override
   Widget build(BuildContext context) {
-    return AppContainer(
+    return BasicContainer(
       padding: EdgeInsets.zero,
       decoration: const BoxDecoration(),
       child: CustomDataTable(

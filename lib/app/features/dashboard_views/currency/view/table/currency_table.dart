@@ -22,7 +22,7 @@ class CurrencyTable extends StatefulWidget {
 class _CurrencyTableState extends State<CurrencyTable> {
   @override
   Widget build(BuildContext context) {
-    return AppContainer(
+    return BasicContainer(
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(

@@ -21,7 +21,7 @@ class _SpiskaTableState extends State<SpiskaTable> {
 
   @override
   Widget build(BuildContext context) {
-    return AppContainer(
+    return BasicContainer(
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(

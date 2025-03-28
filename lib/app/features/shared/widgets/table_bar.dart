@@ -20,7 +20,7 @@ class TableBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppContainer(
+    return BasicContainer(
       padding: const EdgeInsets.symmetric(vertical: 10),
       margin: EdgeInsets.zero,
       decoration: const BoxDecoration(),

@@ -126,7 +126,7 @@ class _HeaderState extends State<Header> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppContainer(
+                BasicContainer(
                   height: MediaQuery.of(context).size.height * 0.18,
                   decoration: containerDecoration,
                   child: Column(
@@ -183,7 +183,7 @@ class _HeaderState extends State<Header> {
                   height: 10,
                 ),
                 switch (MediaQuery.sizeOf(context).width) {
-                  1366 => AppContainer(
+                  1366 => BasicContainer(
                       padding: const EdgeInsets.symmetric(
                         vertical: 5,
                       ),
@@ -194,7 +194,7 @@ class _HeaderState extends State<Header> {
                         widget: widget,
                       ),
                     ),
-                  1920 => AppContainer(
+                  1920 => BasicContainer(
                       padding: const EdgeInsets.symmetric(
                         vertical: 5,
                       ),

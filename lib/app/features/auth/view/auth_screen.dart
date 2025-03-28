@@ -136,7 +136,7 @@ class _AuthScreenState extends State<AuthScreen> {
     Size screenSize = getScreenSize(context);
     return Scaffold(
       body: Center(
-        child: AppContainer(
+        child: BasicContainer(
           width: screenSize.width * 0.6,
           height: screenSize.height *
               0.8, // Increased height to accommodate new fields
