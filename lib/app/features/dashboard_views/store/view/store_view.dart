@@ -20,7 +20,6 @@ class StoreView extends StatefulWidget {
 }
 
 class _StoreViewState extends State<StoreView> {
-  StoreCtl storeCtl = Get.find<StoreCtl>();
   final GlobalKey _sortButtonKey = GlobalKey();
 
   @override
@@ -30,7 +29,7 @@ class _StoreViewState extends State<StoreView> {
   }
 
   void reloadLists() {
-    storeCtl.fetchItems();
+    widget.storeCtl.fetchItems();
   }
 
   void _showPopupMenu(BuildContext context) async {
@@ -59,24 +58,23 @@ class _StoreViewState extends State<StoreView> {
 
     if (selected != null) {
       if (selected == FilterField.qty.name) {
-        storeCtl.sortItemsByQuantity();
+        widget.storeCtl.sortItemsByQuantity();
       } else if (selected == FilterField.name.name) {
-        storeCtl.sortItemByName();
+        widget.storeCtl.sortItemByName();
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    reloadLists();
     Size screenSize = getScreenSize(context);
 
     return ContentView(
       onChangePage: (pageNumber) {
-        storeCtl.selectPage(pageNumber);
+        widget.storeCtl.selectPage(pageNumber);
       },
       title: "Ombor",
-      pagination: storeCtl.pagination,
+      pagination: widget.storeCtl.pagination,
       children: [
         Row(
           children: [
@@ -96,24 +94,22 @@ class _StoreViewState extends State<StoreView> {
               child: SearchTextField(
                 hintText:
                     "${ButtonTexts.search} | ${DisplayTexts.name_of_product}",
-                onChanged: (p0) => storeCtl.searchProduct(p0),
+                onChanged: (p0) => widget.storeCtl.searchProduct(p0),
               ),
             ),
-            // DialogTextButton(
-            //   text: ButtonTexts.statistics,
-            //   onClick: () => Get.toNamed(AppPaths.storeStatistic),
-            //   textStyle: textStyleBlack18,
-            // ),
           ],
+        ),
+        SizedBox(
+          height: screenSize.width * 0.01 / 2,
         ),
         SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.63,
           child: Obx(
             () => DataList(
-              isLoading: storeCtl.isLoading.value,
-              isNotEmpty: storeCtl.list.isNotEmpty,
+              isLoading: widget.storeCtl.isLoading.value,
+              isNotEmpty: widget.storeCtl.list.isNotEmpty,
               child: StoreTable(
-                storeCtl: storeCtl,
+                storeCtl: widget.storeCtl,
               ),
             ),
           ),

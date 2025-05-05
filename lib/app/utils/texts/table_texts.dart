@@ -21,6 +21,7 @@ class TableTexts {
   static const String see_detail = "Кўриш";
   static const String category = "Бўлим";
   static const String status = "Ҳолати";
+  static const String currency_type = "Pul birligi";
   static const String currency = "Курс";
   static const String addingTime = "Қўшилган вақт";
   static const String date = "Сана";
@@ -30,6 +31,9 @@ class TableTexts {
   static const String total_profit = "Умумий фойда";
   static const String total_amount_price = "Умумий сумма";
   static const String company = "Kompaniya";
+  static const String product = "Mahsulot";
 
   static const barcode = "Barcode";
+
+  static const String qty = "Сони";
 }

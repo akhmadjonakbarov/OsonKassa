@@ -1,43 +1,36 @@
 import 'package:dio/dio.dart';
+import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
+import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/network/status_codes.dart';
-import '../../../../core/validator/response_validator.dart';
+
 import '../../../shared/models/api_data.dart';
 import '../../../shared/models/pagination_model.dart';
-import '../../document/models/doc_item_model.dart';
 
 class StoreRepository
-    implements
-        GetAllWithPagination<ApiData>,
-        Delete<int>,
-        Update<DocItemModel> {
+    implements GetAllWithPagination<ApiData>, Delete<int>, Update<StoreItem> {
   final Dio dio;
 
   StoreRepository({required this.dio});
 
   static const _baseURL = "/store";
 
-  // @override
-  // Future<List<DocItemModel>> getAll() async {
-  //   try {
-  //     List<DocItemModel> store_products = [];
-  //     Response response = await dio.get("$_baseURL/all");
-  //     if (response.statusCode == StatusCodes.OK_200) {
-  //       var resData = response.data['data']['list'];
-  //       if (ResponseValidator.isNotEmptyAndIsList(resData)) {
-  //         for (var element in resData) {
-  //           if (ResponseValidator.isMap(element)) {
-  //             store_products.add(DocItemModel.fromMap(element));
-  //           }
-  //         }
-  //       }
-  //     }
-  //     return store_products;
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
+  Future<List<StoreItem>> fetchProduct() async {
+    try {
+      List<StoreItem> storeProducts = [];
+      Response response = await dio.get("$_baseURL/fetch");
+      if (response.statusCode == StatusCodes.OK_200) {
+        var resData = response.data;
+        for (var storeItem in resData) {
+          storeProducts.add(StoreItem.fromJson(storeItem));
+        }
+      }
+      return storeProducts;
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   @override
   Future<bool> delete(int id) async {
@@ -50,11 +43,11 @@ class StoreRepository
   }
 
   @override
-  Future<bool> update(DocItemModel value) async {
+  Future<bool> update(StoreItem value) async {
     try {
       Response response = await dio.patch(
         "$_baseURL/update/${value.id}",
-        data: value.toMap(),
+        data: value.toJson(),
       );
       return response.statusCode == StatusCodes.OK_200;
     } catch (e) {
@@ -66,7 +59,7 @@ class StoreRepository
   Future<ApiData> getAll(int page, int pageSize) async {
     ApiData data = ApiData(pagination: PaginationModel.empty(), items: []);
     try {
-      List<DocItemModel> store_products = [];
+      List<StoreItem> products = [];
       PaginationModel pagination = PaginationModel.empty();
 
       Response response =
@@ -74,21 +67,18 @@ class StoreRepository
       if (response.statusCode == StatusCodes.OK_200) {
         var resData = response.data['data']['list'];
         var paginationData = response.data['data']['pagination'];
-        if (ResponseValidator.isNotEmptyAndIsList(resData)) {
-          for (var element in resData) {
-            if (ResponseValidator.isMap(element)) {
-              store_products.add(DocItemModel.fromMap(element));
-            }
-          }
+        for (var element in resData) {
+          products.add(StoreItem.fromJson(element));
         }
         pagination = PaginationModel.fromMap(paginationData);
       }
 
       data.pagination = pagination;
-      data.items = store_products;
+      data.items = products;
 
       return data;
-    } catch (e) {
+    } on DioException catch (e) {
+      LogHelper.logError(e.response!.data);
       rethrow;
     }
   }

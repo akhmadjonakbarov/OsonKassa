@@ -2,6 +2,14 @@ import 'package:intl/intl.dart';
 
 import '../texts/display_texts.dart';
 
+class PriceFomatter {
+  static final format = NumberFormat('#,###.#####', 'en_US');
+
+  static String formatPrice(double price) {
+    return format.format(price);
+  }
+}
+
 String formatUZSCurrency(double amount) {
   int millions = (amount / 1000000).floor();
   int thousands = ((amount % 1000000) / 1000).floor();
@@ -37,7 +45,7 @@ String formatUZSNumber(
 
 String formatPriceAtUZS(double priceAtUZS, {bool isUSD = false}) {
   if (isUSD) {
-    return formatUSD(priceAtUZS);
+    return formatUSD(priceAtUZS, isAddWord: false);
   } else {
     return priceAtUZS < 1000000
         ? formatUZSNumber(priceAtUZS)
@@ -49,8 +57,7 @@ String formatUSD(
   double number, {
   bool isAddWord = true,
 }) {
-  final NumberFormat format =
-      NumberFormat.currency(locale: 'en_US', symbol: '\$');
+  final NumberFormat format = NumberFormat("#,###.#####");
   String formattedNumber = format.format(number);
 
   return isAddWord ? "$formattedNumber ${DisplayTexts.usd}" : formattedNumber;
@@ -66,8 +73,7 @@ String formatTotalPrice(double totalPriceOfProducts, {bool isUSD = false}) {
   }
 }
 
-String formatPrice(double currencyValue, double priceValue) {
-  final NumberFormat numberFormatterForUSD =
-      NumberFormat.currency(locale: 'en_US', symbol: '\$');
-  return "${numberFormatterForUSD.format(priceValue)} * ${currencyValue < 1000000 ? formatUZSNumber(currencyValue) : formatUZSCurrency(currencyValue)}";
+String formatPrice(
+    double currencyValue, double priceValue, String sellingCurrency) {
+  return "${PriceFomatter.formatPrice(priceValue)} $sellingCurrency * ${currencyValue < 1000000 ? formatUZSNumber(currencyValue) : formatUZSCurrency(currencyValue)}";
 }

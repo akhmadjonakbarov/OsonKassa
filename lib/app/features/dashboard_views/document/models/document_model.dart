@@ -3,87 +3,68 @@
 import 'package:osonkassa/app/features/dashboard_views/document/models/doc_item_model.dart';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 
-class DocumentModel {
-  int id;
-  DateTime reg_date;
-  String doc_type;
-  DateTime created_at;
-  DateTime updated_at;
-  double type_of_items;
-  double total_items_qty;
-  double total_price;
-  DocumentModel({
-    required this.id,
-    required this.reg_date,
-    required this.doc_type,
-    required this.created_at,
-    required this.updated_at,
-    required this.type_of_items,
-    required this.total_items_qty,
-    required this.total_price,
+class Document {
+  final int? id;
+  final String? docType;
+  final double? typeOfItems;
+  final double? countOfItems;
+  final Map<String, double>? price;
+  final DateTime? createdAt;
+
+  Document({
+    this.id,
+    this.docType,
+    this.typeOfItems,
+    this.countOfItems,
+    this.price,
+    this.createdAt,
   });
 
-  DocumentModel copyWith({
+  Document copyWith({
     int? id,
-    DateTime? reg_date,
-    String? doc_type,
-    DateTime? created_at,
-    DateTime? updated_at,
-    double? type_of_items,
-    double? total_items_qty,
-    double? total_price,
-  }) {
-    return DocumentModel(
-      id: id ?? this.id,
-      total_price: total_price ?? this.total_price,
-      reg_date: reg_date ?? this.reg_date,
-      doc_type: doc_type ?? this.doc_type,
-      created_at: created_at ?? this.created_at,
-      updated_at: updated_at ?? this.updated_at,
-      type_of_items: type_of_items ?? this.type_of_items,
-      total_items_qty: total_items_qty ?? this.total_items_qty,
-    );
-  }
+    String? docType,
+    double? typeOfItems,
+    double? countOfItems,
+    Map<String, double>? price,
+    DateTime? createdAt,
+  }) =>
+      Document(
+        id: id ?? this.id,
+        docType: docType ?? this.docType,
+        typeOfItems: typeOfItems ?? this.typeOfItems,
+        countOfItems: countOfItems ?? this.countOfItems,
+        price: price ?? this.price,
+        createdAt: createdAt ?? this.createdAt,
+      );
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'reg_date': reg_date.toString(),
-      'doc_type': doc_type,
-      'created_at': created_at.toString(),
-      'updated_at': updated_at.toString(),
-      'type_of_items': type_of_items,
-      'total_items_qty': total_items_qty,
-      'total_price': total_price,
-    };
-  }
+  factory Document.fromRawJson(String str) =>
+      Document.fromJson(json.decode(str));
 
-  factory DocumentModel.fromMap(Map<String, dynamic> map) {
-    return DocumentModel(
-      id: map['id'] as int,
-      total_price: double.parse(map['total_price'].toString()),
-      reg_date: DateTime.parse(map['reg_date']),
-      doc_type: map['doc_type'] as String,
-      created_at: DateTime.parse(map['created_at']),
-      updated_at: DateTime.parse(map['updated_at']),
-      type_of_items: double.parse(map['type_of_items'].toString()),
-      total_items_qty: double.parse(map['total_items_qty'].toString()),
-    );
-  }
+  String toRawJson() => json.encode(toJson());
 
-  factory DocumentModel.empty() {
-    return DocumentModel(
-      id: 0,
-      reg_date: DateTime.now(),
-      doc_type: '',
-      total_price: 0.0,
-      created_at: DateTime.now(),
-      updated_at: DateTime.now(),
-      type_of_items: 0,
-      total_items_qty: 0,
-    );
-  }
+  factory Document.fromJson(Map<String, dynamic> json) => Document(
+        id: json["id"],
+        docType: json["doc_type"],
+        typeOfItems: json["type_of_items"]?.toDouble(),
+        countOfItems: json["count_of_items"]?.toDouble(),
+        price: Map.from(json["price"]!)
+            .map((k, v) => MapEntry<String, double>(k, v?.toDouble())),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "doc_type": docType,
+        "type_of_items": typeOfItems,
+        "count_of_items": countOfItems,
+        "price":
+            Map.from(price!).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        "created_at": createdAt?.toIso8601String(),
+      };
 }
 
 class DocumentModelWithItems {

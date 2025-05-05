@@ -77,9 +77,9 @@ class _DebtTableState extends State<DocumentTable> {
         rows: widget.documentCtl.list.asMap().entries.map(
           (entry) {
             int index = entry.key;
-            DocumentModel document = entry.value;
+            Document document = entry.value;
 
-            bool isSold = document.doc_type == ProductDocType.sell.name;
+            bool isSold = document.docType == DocumentType.sell.name;
 
             return DataRow(
               color: WidgetStateProperty.resolveWith<Color?>(
@@ -104,7 +104,7 @@ class _DebtTableState extends State<DocumentTable> {
                 DataCell(
                   CenterText(
                     text: formatDateToUzbek(
-                      document.reg_date.toString(),
+                      document.createdAt.toString(),
                     ),
                     style: textStyleBlack18.copyWith(
                       color: isSold ? Colors.white : Colors.black,
@@ -113,16 +113,7 @@ class _DebtTableState extends State<DocumentTable> {
                 ),
                 DataCell(
                   CenterText(
-                    text: "${document.type_of_items} xil",
-                    style: textStyleBlack18.copyWith(
-                      fontWeight: FontWeight.w800,
-                      color: isSold ? Colors.white : Colors.black,
-                    ),
-                  ),
-                ),
-                DataCell(
-                  CenterText(
-                    text: "${document.total_items_qty.toString()} ta",
+                    text: "${document.typeOfItems} xil",
                     style: textStyleBlack18.copyWith(
                       fontWeight: FontWeight.w800,
                       color: isSold ? Colors.white : Colors.black,
@@ -131,7 +122,17 @@ class _DebtTableState extends State<DocumentTable> {
                 ),
                 DataCell(
                   CenterText(
-                    text: "${formatUZSNumber(document.total_price)} USD",
+                    text: "${document.countOfItems.toString()} ta",
+                    style: textStyleBlack18.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: isSold ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+                DataCell(
+                  CenterText(
+                    text:
+                        "${PriceFomatter.formatPrice(double.parse(document.price!['uzs'].toString()))} uzs",
                     style: textStyleBlack18.copyWith(
                       fontWeight: FontWeight.w800,
                       color: isSold ? Colors.white : Colors.black,
@@ -165,7 +166,7 @@ class _DebtTableState extends State<DocumentTable> {
                         color: isSold ? Colors.white : Colors.black,
                       ),
                       onPressed: () {
-                        doc_item_ctl.fetchByProductId(document.id);
+                        doc_item_ctl.fetchByProductId(document.id!);
                         showDialogWindow();
                       },
                     ),

@@ -32,17 +32,14 @@ class DocItemTableDialog extends StatefulWidget {
 
 class _DocItemTableDialogState extends State<DocItemTableDialog> {
   double calculateProfit(
-    double selling_price,
-    double income_price,
+    double sellPrice,
+    double incomePrice,
     double qty,
   ) {
-    return (qty * (selling_price - income_price));
+    return (qty * (sellPrice - incomePrice));
   }
 
-  // Calculate the totals for Qty, QtyKg, and Profit
   double totalQty = 0.0;
-
-  double totalQtyKg = 0.0;
 
   double totalProfit = 0.0;
 
@@ -51,8 +48,20 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
   double totalIncomePrice = 0.0;
 
   void calculateTotalValues() {
+    totalQty = 0.0;
+    totalIncomePrice = 0.0;
+    totalSellingPrice = 0.0;
+    totalProfit = 0.0;
+
     for (var docItem in widget.docItemCtl.docItemsByDoc) {
-      totalQty += docItem.qty;
+      final qty = docItem.qty ?? 0;
+      final income = docItem.incomePrice ?? 0;
+      final selling = docItem.sellingPrice ?? 0;
+
+      totalQty += qty;
+      totalIncomePrice += income * qty;
+      totalSellingPrice += selling * qty;
+      totalProfit += (selling - income) * qty;
     }
   }
 
@@ -88,13 +97,7 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
               ...widget.docItemCtl.docItemsByDoc.asMap().entries.map(
                 (doc_item_data) {
                   int index = doc_item_data.key;
-                  DocItemModel doc_item = doc_item_data.value;
-                  double totalPrice = 0;
-                  double profit = 0;
-                  double totalIncomePriceForItem = 0;
-
-                  profit = calculateProfit(doc_item.selling_price,
-                      doc_item.income_price, doc_item.qty);
+                  DocumentItem docItem = doc_item_data.value;
 
                   return DataRow(
                     cells: [
@@ -104,65 +107,25 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                       )),
                       DataCell(Container(
                         alignment: Alignment.center,
-                        child: Text(doc_item.item.name.toString()),
+                        child: Text(docItem.item!.name.toString()),
                       )),
                       DataCell(Container(
                         alignment: Alignment.center,
                         child: Text(
-                          "${doc_item.income_price} ${doc_item.currency_type.name}",
+                          "${PriceFomatter.formatPrice(docItem.incomePrice!)} ${docItem.incomeCurrency}",
                         ),
                       )),
-                      if (doc_item.income_price_usd > 0)
-                        DataCell(Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "${doc_item.income_price_usd.toString()} \$",
-                            style: screenSize.width <= 1366
-                                ? textStyleBlack15
-                                : textStyleBlack18Bold,
-                          ),
-                        ))
-                      else
-                        DataCell(Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "${formatUZSNumber(totalIncomePriceForItem)} ${doc_item.currency_type.name}",
-                            style: screenSize.width <= 1366
-                                ? textStyleBlack15
-                                : textStyleBlack18Bold,
-                          ),
-                        )),
                       DataCell(Container(
                         alignment: Alignment.center,
                         child: Text(
-                          "${doc_item.selling_price} ${doc_item.currency_type.name}",
+                          "${PriceFomatter.formatPrice(docItem.sellingPrice!)} ${docItem.sellingCurrency}",
                         ),
-                      )),
-                      DataCell(CenterText(
-                        text:
-                            "${formatUZSNumber(totalPrice)} ${doc_item.currency_type.name}",
-                      )),
-                      DataCell(Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                            "${formatUZSNumber(profit)} ${doc_item.currency_type}"),
                       )),
                       DataCell(
                         Container(
                           alignment: Alignment.center,
                           child: Text(
-                            "${doc_item.qty.toString()}",
-                            style: screenSize.width <= 1366
-                                ? textStyleBlack15
-                                : textStyleBlack18Bold,
-                          ),
-                        ),
-                      ),
-                      DataCell(
-                        Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "${formatUZSNumber(double.parse((doc_item.qty).toString()))} ",
+                            docItem.qty.toString(),
                             style: screenSize.width <= 1366
                                 ? textStyleBlack15
                                 : textStyleBlack18Bold,
@@ -183,10 +146,10 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                                 onPressed: () {
                                   Get.dialog(
                                     DeleteDialog(
-                                      title: doc_item.item.name,
+                                      title: docItem.item!.name!,
                                       onConfirmDelete: () {
                                         widget.docItemCtl
-                                            .removeItem(doc_item.id);
+                                            .removeItem(docItem.id!);
                                         widget.spiskaCtl.fetchItems();
 
                                         Navigator.of(context).pop();
@@ -205,51 +168,18 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
               ),
               DataRow(
                 cells: [
-                  DataCell(Container()), // Empty cell for index
-                  DataCell(Container(
-                      alignment: Alignment.center,
-                      child: Text(DisplayTexts.total_value,
-                          style: screenSize.width <= 1366
-                              ? textStyleBlack15
-                              : textStyleBlack18Bold))),
-                  // Empty cell for income price
-                  DataCell(Container()), // Empty cell for income price USD
-
+                  const DataCell(CenterText(text: "Jami")),
+                  const DataCell(SizedBox.shrink()),
                   DataCell(CenterText(
-                    text:
-                        "${formatUZSNumber(totalIncomePrice, isAddWord: false)} USD",
-                    style: screenSize.width <= 1366
-                        ? textStyleBlack15
-                        : textStyleBlack18Bold,
-                  )),
-                  // Empty cell for selling price
-                  DataCell(Container()), // Empty cell for total value
-                  DataCell(CenterText(
-                    text:
-                        "${formatUZSNumber(totalSellingPrice, isAddWord: false)} USD",
-                    style: screenSize.width <= 1366
-                        ? textStyleBlack15
-                        : textStyleBlack18Bold,
+                    text: "${PriceFomatter.formatPrice(totalIncomePrice)} usd",
                   )),
                   DataCell(CenterText(
-                    text: "${formatUZSNumber(totalProfit)} USD",
-                    style: screenSize.width <= 1366
-                        ? textStyleBlack15
-                        : textStyleBlack18Bold,
+                    text: "${PriceFomatter.formatPrice(totalSellingPrice)} uzs",
                   )),
                   DataCell(CenterText(
-                    text: "$totalQty QOP",
-                    style: screenSize.width <= 1366
-                        ? textStyleBlack15
-                        : textStyleBlack18Bold,
+                    text: totalQty.toStringAsFixed(2),
                   )),
-                  DataCell(CenterText(
-                    text: "${formatUZSNumber(totalQtyKg)} KG",
-                    style: screenSize.width <= 1366
-                        ? textStyleBlack15
-                        : textStyleBlack18Bold,
-                  )),
-                  DataCell(SizedBox.shrink()), // Empty cell for buttons
+                  const DataCell(SizedBox.shrink()),
                 ],
               ),
             ],
@@ -271,22 +201,10 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
           label: Text(TableTexts.income_price),
           headingRowAlignment: MainAxisAlignment.center),
       const DataColumn(
-          label: Text(TableTexts.income_price_usd),
-          headingRowAlignment: MainAxisAlignment.center),
-      const DataColumn(
           label: Text(TableTexts.selling_price),
           headingRowAlignment: MainAxisAlignment.center),
       const DataColumn(
-          label: Text(TableTexts.total_value),
-          headingRowAlignment: MainAxisAlignment.center),
-      const DataColumn(
-          label: Text(TableTexts.total_profit),
-          headingRowAlignment: MainAxisAlignment.center),
-      const DataColumn(
           label: Text(TableTexts.total_of_product),
-          headingRowAlignment: MainAxisAlignment.center),
-      const DataColumn(
-          label: Text(TableTexts.total_kg),
           headingRowAlignment: MainAxisAlignment.center),
       const DataColumn(
           label: Text(TableTexts.buttons),

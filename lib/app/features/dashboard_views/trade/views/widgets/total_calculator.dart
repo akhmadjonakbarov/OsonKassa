@@ -41,29 +41,15 @@ class TotalCalculate extends StatelessWidget {
                     '${DisplayTexts.total_of_products}: ',
                     style: textStyleBlack18Bold.copyWith(color: Colors.white),
                   ),
-                  SizedBox(
-                    width: constraints.maxWidth * 0.15,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // Text(
-                        //   '${formatUZSNumber(tradeCtl.totalSelledProductKg.value)} ${tradeCtl.sellProductDocItems.isNotEmpty ? tradeCtl.sellProductDocItems.first.item.units.firstWhere(
-                        //         (element) =>
-                        //             element.value.toLowerCase() == 'kg',
-                        //       ).value : ""}',
-                        //   style: textStyleBlack18Bold.copyWith(
-                        //       color: Colors.white, fontSize: 20),
-                        // ),
-                        // Text(
-                        //   '${formatUZSNumber(tradeCtl.totalSelledProductCount.value)} ${tradeCtl.sellProductDocItems.isNotEmpty ? tradeCtl.sellProductDocItems.first.item.units.firstWhere(
-                        //         (element) =>
-                        //             element.value.toLowerCase() == 'qop',
-                        //       ).value : ""}',
-                        //   style: textStyleBlack18Bold.copyWith(
-                        //       color: Colors.white, fontSize: 20),
-                        // ),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        formatUZSNumber(tradeCtl.totalSelledProductCount.value),
+                        style: textStyleBlack18Bold.copyWith(
+                            color: Colors.white, fontSize: 20),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -75,7 +61,8 @@ class TotalCalculate extends StatelessWidget {
                     style: textStyleBlack18Bold.copyWith(color: Colors.white),
                   ),
                   Text(
-                    "${formatUZSNumber(tradeCtl.totalSelledProductPrice.value)} ${tradeCtl.sellProductDocItems.isNotEmpty ? tradeCtl.sellProductDocItems.first.currency_type : ""}",
+                    PriceFomatter.formatPrice(
+                        tradeCtl.totalSelledProductPrice.value),
                     style: textStyleBlack18Bold.copyWith(
                         color: Colors.white, fontSize: 20),
                   ),

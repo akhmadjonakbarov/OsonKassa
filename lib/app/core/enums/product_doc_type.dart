@@ -1,1 +1,1 @@
-enum ProductDocType { sell, buy, none }
+enum DocumentType { sell, buy, none }

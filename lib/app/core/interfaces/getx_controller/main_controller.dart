@@ -4,7 +4,6 @@ import '../../../features/shared/models/pagination_model.dart';
 
 abstract class MainController<T> extends GetxController {
   var list = <T>[].obs;
-  var cachedList = <T>[].obs;
   var isLoading = false.obs;
   var page = 1.obs;
   var pagination = PaginationModel.empty().obs;

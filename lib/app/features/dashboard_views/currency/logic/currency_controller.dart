@@ -29,6 +29,7 @@ class CurrencyCtl extends MainController<CurrencyModel> {
       getAllRepository: currencyRepository as GetAllWithPagination<ApiData>,
     );
     super.onInit();
+    fetchItems();
   }
 
   void resetCurrency() {
@@ -36,7 +37,7 @@ class CurrencyCtl extends MainController<CurrencyModel> {
   }
 
   @override
-  void fetchItems() async {
+  Future<void> fetchItems() async {
     try {
       isLoading(true);
       var apiCurrencies =

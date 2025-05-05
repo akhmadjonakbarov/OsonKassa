@@ -7,7 +7,7 @@ import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';
 import '../../../shared/export_commons.dart';
 import '../logic/note_controller.dart';
-import 'table/spiska_table.dart';
+import 'table/note_table.dart';
 
 class NoteView extends StatefulWidget {
   const NoteView({super.key});
@@ -56,7 +56,7 @@ class _NoteViewState extends State<NoteView> {
                 () => DataList(
                   isLoading: providerCtl.isLoading.value,
                   isNotEmpty: providerCtl.list.isNotEmpty,
-                  child: SpiskaTable(
+                  child: NoteTable(
                     providerController: providerCtl,
                   ),
                 ),

@@ -7,16 +7,16 @@ import '../../../../shared/export_commons.dart';
 import '../../logic/note_controller.dart';
 import '../../models/note_model.dart';
 
-class SpiskaTable extends StatefulWidget {
+class NoteTable extends StatefulWidget {
   final NoteCtl providerController;
 
-  const SpiskaTable({super.key, required this.providerController});
+  const NoteTable({super.key, required this.providerController});
 
   @override
-  State<SpiskaTable> createState() => _SpiskaTableState();
+  State<NoteTable> createState() => _NoteTableState();
 }
 
-class _SpiskaTableState extends State<SpiskaTable> {
+class _NoteTableState extends State<NoteTable> {
   DashboardCtl dashboardController = Get.find<DashboardCtl>();
 
   @override
@@ -29,18 +29,16 @@ class _SpiskaTableState extends State<SpiskaTable> {
           TableTexts.index,
           TableTexts.name,
           TableTexts.category,
-          TableTexts.company
         ],
         rows: widget.providerController.list.asMap().entries.map(
           (entry) {
             int index = entry.key;
-            NoteModel spiska = entry.value;
+            Note note = entry.value;
             return DataRow(
               cells: <DataCell>[
                 DataCell(Text("${index + 1}")),
-                DataCell(Text(spiska.item.name)),
-                DataCell(Text(spiska.item.category.name)),
-                DataCell(Text(spiska.item.company!.name)),
+                DataCell(Text(note.item!.name!)),
+                DataCell(Text(note.item!.category!.name!)),
               ],
             );
           },

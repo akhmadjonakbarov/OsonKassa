@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
 
-import '../../../document/models/doc_item_model.dart';
 import '../../logic/trade_ctl.dart';
 import 'sell_trade_item.dart';
 
@@ -24,23 +24,22 @@ class ListSellProduct extends StatelessWidget {
           separatorBuilder: (context, index) => const SizedBox(
             height: 10,
           ),
-          itemCount: tradeCtl.sellProductDocItems.length,
+          itemCount: tradeCtl.sellProducts.length,
           itemBuilder: (context, index) {
-            DocItemModel sellProductDocItem =
-                tradeCtl.sellProductDocItems[index];
+            StoreItem sellProductDocItem = tradeCtl.sellProducts[index];
             return SellProductItem(
               onEdit: () => tradeCtl.editProduct(context, sellProductDocItem),
               cheapenClick: () => tradeCtl.calculateDiscount(
-                sellProductDocItem.item.barcode,
+                sellProductDocItem.item!.barcode!,
               ),
               decrementQty: () => tradeCtl.decrementQty(
-                sellProductDocItem.item.barcode,
+                sellProductDocItem.item!.barcode!,
               ),
               incrementQty: () => tradeCtl.incrementQty(
-                sellProductDocItem.item.barcode,
+                sellProductDocItem.item!.barcode!,
               ),
               deleteItem: () => tradeCtl.deleteItemFromSelledProductList(
-                sellProductDocItem.item.barcode,
+                sellProductDocItem.item!.barcode!,
               ),
               sellProductDocItem: sellProductDocItem,
               height: MediaQuery.sizeOf(context).width <= 1370

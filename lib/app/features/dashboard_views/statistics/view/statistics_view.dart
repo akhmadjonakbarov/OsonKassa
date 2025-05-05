@@ -289,7 +289,6 @@ class _ChartDataExampleState extends State<ChartDataExample> {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = getScreenSize(context);
     List<BarChartGroupData> barGroups = [];
     if (widget.reports.isNotEmpty) {
       for (int i = 0; i < widget.reports.length; i++) {

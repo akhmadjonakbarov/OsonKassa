@@ -19,7 +19,7 @@ class DialogTable extends StatelessWidget {
   final List<DataRow> rows;
   final Function() onClick;
   final List<DataColumn> columns;
-  final List<DocItemModel> products;
+  final List<DocumentItem> products;
   final PosPrinterManager? printer;
 
   const DialogTable({
@@ -107,8 +107,6 @@ class DialogTable extends StatelessWidget {
     );
   }
 }
-
-
 
 class BasicDialog extends StatelessWidget {
   final Widget child;

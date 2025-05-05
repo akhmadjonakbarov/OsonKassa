@@ -2,13 +2,13 @@ import '../../../../core/interfaces/api/get_all.dart';
 import '../models/note_model.dart';
 
 class SpiskaService {
-  final GetAll<NoteModel> _getAllRepository;
+  final GetAll<Note> _getAllRepository;
 
   SpiskaService({
-    required GetAll<NoteModel> getAllRepository,
+    required GetAll<Note> getAllRepository,
   }) : _getAllRepository = getAllRepository;
 
-  Future<List<NoteModel>> getAllProviders() async {
+  Future<List<Note>> getAllProviders() async {
     try {
       return await _getAllRepository.getAll();
     } catch (e) {

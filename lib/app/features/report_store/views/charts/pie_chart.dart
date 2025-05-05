@@ -1,12 +1,13 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
 
 import '../../../../styles/chart_colors.dart';
 import '../../../dashboard_views/document/models/doc_item_model.dart';
 import 'indicator.dart';
 
 class PieChartGraph extends StatefulWidget {
-  final List<DocItemModel> data;
+  final List<StoreItem> data;
 
   const PieChartGraph({
     super.key,
@@ -22,11 +23,11 @@ class PieChart2State extends State<PieChartGraph> {
   double percentOfProduct = 0.0;
 
   // Function to sort data
-  List<DocItemModel> _sortedData() {
+  List<StoreItem> _sortedData() {
     // Create a copy of the data list and sort it
-    List<DocItemModel> sortedData = List.from(widget.data);
-    sortedData.sort(
-        (a, b) => b.qty.compareTo(a.qty)); // Change sorting criteria as needed
+    List<StoreItem> sortedData = List.from(widget.data);
+    sortedData.sort((a, b) =>
+        b.qty!.compareTo(a.qty!)); // Change sorting criteria as needed
     return sortedData;
   }
 
@@ -76,7 +77,7 @@ class PieChart2State extends State<PieChartGraph> {
                         textColor: Colors.black,
                         color: PieChartColors.colors[widget.data.indexOf(item) %
                             PieChartColors.colors.length],
-                        text: "${item.item.name} ---- (${item.qty}) ",
+                        text: "${item.item!.name} ---- (${item.qty}) ",
                         isSquare: true,
                       ),
                     );
@@ -93,7 +94,7 @@ class PieChart2State extends State<PieChartGraph> {
   List<PieChartSectionData>? showingSections() {
     final totalValue = widget.data.fold<double>(
       0,
-      (sum, item) => sum + item.qty.toDouble(),
+      (sum, item) => sum + item.qty!.toDouble(),
     ); // Calculate total value
 
     return List.generate(
@@ -105,13 +106,13 @@ class PieChart2State extends State<PieChartGraph> {
         const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
 
         final item = widget.data[i];
-        percentOfProduct = (item.qty.toDouble()) / totalValue * 100;
+        percentOfProduct = (item.qty!.toDouble()) / totalValue * 100;
 
         return PieChartSectionData(
           color: PieChartColors
               .colors[widget.data.indexOf(item) % PieChartColors.colors.length],
           value: percentOfProduct,
-          title: '${item.item.name} ${percentOfProduct.toStringAsFixed(1)}%',
+          title: '${item.item!.name} ${percentOfProduct.toStringAsFixed(1)}%',
           radius: radius,
           titleStyle: TextStyle(
             fontSize: fontSize,

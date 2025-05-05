@@ -53,19 +53,19 @@ class _DocumentViewState extends State<DocumentView> {
       items: [
         PopupMenuItem<String>(
           labelTextStyle: WidgetStatePropertyAll(textStyleBlack18),
-          value: ProductDocType.sell.name,
+          value: DocumentType.sell.name,
           child: const Text(ButtonTexts.sold),
         ),
         PopupMenuItem<String>(
           labelTextStyle: WidgetStatePropertyAll(textStyleBlack18),
-          value: ProductDocType.buy.name,
+          value: DocumentType.buy.name,
           child: const Text(ButtonTexts.received),
         ),
       ],
     );
 
     if (selected != null) {
-      if (selected == ProductDocType.sell.name) {
+      if (selected == DocumentType.sell.name) {
         documentCtl.sortBySell();
       } else {
         documentCtl.sortByBuy();

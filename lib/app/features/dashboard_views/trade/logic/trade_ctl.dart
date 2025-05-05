@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
+import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -15,15 +17,12 @@ import '../../../../utils/texts/display_texts.dart';
 import '../../../../utils/texts/placeholder_texts.dart';
 import '../../../report_docs/logic/report_ctl.dart';
 import '../../../shared/export_commons.dart';
-import '../../document/models/doc_item_model.dart';
 import 'trade_repository.dart';
 import 'trade_service.dart';
 
 class TradeCtl extends GetxController {
-  var sellProductDocItems = <DocItemModel>[].obs;
-  var store_doc_items = <DocItemModel>[].obs;
+  var sellProducts = <StoreItem>[].obs;
 
-  var totalSelledProductKg = 0.0.obs;
   var totalSelledProductCount = 0.0.obs;
   var totalSelledProductPrice = 0.0.obs;
   var totalDiscount = 0.0.obs;
@@ -49,13 +48,12 @@ class TradeCtl extends GetxController {
   }) async {
     try {
       List<Map<String, dynamic>> productList = [];
-      for (DocItemModel element in sellProductDocItems) {
-        productList.add(element.toMap());
+      for (StoreItem element in sellProducts) {
+        productList.add(element.toSellJson());
       }
 
       Map<String, dynamic> data = {
-        "product_doc_items": productList,
-        "doc_type": ProductDocType.sell.name,
+        "sold_products": productList,
         "clientId": clientId,
         "debt_data": debtData,
         "is_debt": isDebt
@@ -74,55 +72,76 @@ class TradeCtl extends GetxController {
     }
   }
 
-  void setStoreItems(List<DocItemModel> items) {
-    store_doc_items(items);
-    updateTotals();
-  }
-
   clearData() async {
-    setSellProducts([]);
+    sellProducts([]);
     updateTotals();
   }
 
-  setSellProducts(List<DocItemModel> sell_list) {
-    sellProductDocItems(sell_list);
+  setSellStoreItem(StoreItem item) {
+    int existingItemOfIndex = sellProducts
+        .indexWhere((element) => element.item!.barcode! == item.item!.barcode!);
+    LogHelper.logInfo("ProductIndex: $existingItemOfIndex");
+    if (existingItemOfIndex <= -1) {
+      sellProducts.insert(
+        0,
+        StoreItem(
+          qty: 1,
+          document: item.document,
+          sellingPercentage: item.sellingPercentage,
+          item: item.item,
+          sellingCurrency: item.sellingCurrency,
+          incomeCurrency: item.incomeCurrency,
+          incomePrice: item.incomePrice,
+          sellingPrice: item.sellingPrice,
+          currency: item.currency,
+        ),
+      );
+    } else {
+      final currenItem = sellProducts[existingItemOfIndex];
+      final updatedItem = currenItem.copyWith(qty: currenItem.qty! + 1);
+      sellProducts[existingItemOfIndex] = updatedItem;
+    }
     updateTotals();
   }
 
-  void editProduct(BuildContext context, DocItemModel docItem) {
+  void editProduct(BuildContext context, StoreItem storeItem) {
     final TextEditingController sellingPriceController = TextEditingController(
-      text: docItem.selling_price.toStringAsFixed(3),
+      text: storeItem.sellingPrice!.toStringAsFixed(3),
     );
     final TextEditingController qtyController = TextEditingController(
-      text: docItem.qty.toStringAsFixed(0),
+      text: storeItem.qty!.toStringAsFixed(3),
     );
 
     // int selected_unit_id = docItem.item.units.first.id;
 
     double updatePrice() {
-      double qtyKg = 0.0;
+      double qty = 0.0;
       double sellingPrice = 0.0;
 
       if (sellingPriceController.text.isNotEmpty) {
         sellingPrice = double.parse(sellingPriceController.text);
       }
 
-      return qtyKg * sellingPrice;
+      return qty * sellingPrice;
     }
 
     // Create a FocusNode to handle focus and keyboard events
     final FocusNode focusNode = FocusNode();
 
     void updateItem() {
-      int index = sellProductDocItems
-          .indexWhere((item) => item.item.barcode == docItem.item.barcode);
-      sellProductDocItems[index].qty =
-          double.parse(qtyController.text.toString());
-      sellProductDocItems[index].selling_price = double.parse(
-        double.parse(sellingPriceController.text.toString()).toStringAsFixed(3),
+      int index = sellProducts
+          .indexWhere((item) => item.item!.barcode == storeItem.item!.barcode);
+      sellProducts[index] = sellProducts[index].copyWith(
+        qty: double.tryParse(qtyController.text.trim()) ?? 0.0,
+        sellingPrice: double.tryParse(
+              double.tryParse(sellingPriceController.text.trim())
+                      ?.toStringAsFixed(3) ??
+                  '0.0',
+            ) ??
+            0.0,
       );
 
-      sellProductDocItems[index] = sellProductDocItems[index];
+      sellProducts[index] = sellProducts[index];
     }
 
     Get.dialog(
@@ -132,7 +151,7 @@ class TradeCtl extends GetxController {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(docItem.item.name),
+              Text(storeItem.item!.name!),
               IconButton(
                 onPressed: () => Get.back(),
                 icon: const Icon(
@@ -160,17 +179,6 @@ class TradeCtl extends GetxController {
                 },
                 child: Column(
                   children: [
-                    // if (false)
-                    //   UnitSelectionWidget(
-                    //     doc_item: doc_item,
-                    //     onSelectId: (p0) {
-                    //       setState(
-                    //         () {
-                    //           selected_unit_id = p0;
-                    //         },
-                    //       );
-                    //     },
-                    //   ),
                     TextField(
                       style: textStyleBlack20,
                       controller: qtyController,
@@ -195,7 +203,6 @@ class TradeCtl extends GetxController {
                       },
                     ),
                     const SizedBox(height: 16),
-
                     const SizedBox(height: 16),
                     TextField(
                       style: textStyleBlack20,
@@ -212,7 +219,7 @@ class TradeCtl extends GetxController {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      "${PlaceholderTexts.income_price}: ${formatPriceAtUZS(docItem.income_price)}",
+                      "${PlaceholderTexts.income_price}: ${formatPriceAtUZS(storeItem.incomePrice!)}",
                       style: textStyleBlack20,
                     ),
                     const SizedBox(height: 16),
@@ -251,16 +258,14 @@ class TradeCtl extends GetxController {
   }
 
   void updateTotals() {
-    double totalKg = 0;
     double totalPrice = 0.0;
     double totalCount = 0.0;
 
-    for (DocItemModel item in sellProductDocItems) {
-      totalCount += item.qty;
+    for (StoreItem item in sellProducts) {
+      totalCount += item.qty!;
+      totalPrice += (item.qty! * item.sellingPrice!);
     }
 
-    // Update the total counts and prices
-    totalSelledProductKg.value = totalKg;
     totalSelledProductPrice.value = totalPrice;
     totalSelledProductCount.value = totalCount;
 
@@ -268,65 +273,55 @@ class TradeCtl extends GetxController {
   }
 
   void incrementQty(String barcode) {
-    int index = sellProductDocItems.indexWhere((item) {
-      return item.item.barcode == barcode;
+    int index = sellProducts.indexWhere((item) {
+      return item.item!.barcode == barcode;
     });
     if (index != -1) {
-      var balanceItem = store_doc_items.firstWhere(
-        (element) => element.item.id == sellProductDocItems[index].item.id,
+      sellProducts[index] = sellProducts[index].copyWith(
+        qty: sellProducts[index].qty! + 1,
       );
 
-      if (balanceItem.qty == sellProductDocItems[index].qty) {
-        UserNotifier.showSnackBar(
-            label: "Ombordagi barcha mahsulot belgilandi",
-            type: TypeOfSnackBar.alert,
-            duration: const Duration(seconds: 8),
-            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 300));
-      } else {
-        sellProductDocItems[index].qty += 1;
-
-        sellProductDocItems[index] =
-            sellProductDocItems[index]; // Force the update
-      }
-
-      updateTotals(); // Update totals after changing qty
+      updateTotals();
     }
   }
 
   void calculateDiscount(String barcode) {
     int index =
-        sellProductDocItems.indexWhere((item) => item.item.barcode == barcode);
+        sellProducts.indexWhere((item) => item.item!.barcode! == barcode);
 
     if (index != -1) {
-      var item = sellProductDocItems[index];
+      var item = sellProducts[index];
 
-      item.selling_price = (item.selling_price * 0.99).ceilToDouble();
+      item = item.copyWith(
+          sellingPrice: (item.sellingPrice! * 0.99).ceilToDouble());
 
       // Ensure the discount price does not go below the income price
-      if (item.selling_price < item.income_price) {
-        item.selling_price = item.selling_price;
+      if (item.sellingPrice! < item.incomePrice!) {
+        item = item.copyWith(sellingPrice: item.sellingPrice);
       }
       // Force update in the list
-      sellProductDocItems[index] = item;
+      sellProducts[index] = item;
       updateTotals(); // Update totals after changing price
     }
   }
 
   void decrementQty(String barcode) {
     int index =
-        sellProductDocItems.indexWhere((item) => item.item.barcode == barcode);
-    if (index != -1 && sellProductDocItems[index].qty > 0) {
-      sellProductDocItems[index].qty = sellProductDocItems[index].qty - 1;
-      sellProductDocItems[index] =
-          sellProductDocItems[index]; // Force the update
+        sellProducts.indexWhere((item) => item.item!.barcode == barcode);
+    if (index != -1 && sellProducts[index].qty! > 0) {
+      sellProducts[index] = sellProducts[index].copyWith(
+        qty: sellProducts[index].qty! - 1,
+      );
+
       updateTotals(); // Update totals after changing qty
+      update();
     }
   }
 
   deleteItemFromSelledProductList(String barcode) {
     try {
-      sellProductDocItems
-          .removeWhere((doc_item) => doc_item.item.barcode == barcode);
+      sellProducts
+          .removeWhere((storeItem) => storeItem.item!.barcode! == barcode);
 
       updateTotals();
     } catch (e) {

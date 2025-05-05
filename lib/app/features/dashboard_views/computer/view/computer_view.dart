@@ -1,10 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/computer/logic/display/display_controller.dart';
-import 'package:osonkassa/app/styles/app_colors.dart';
-import 'package:osonkassa/app/utils/texts/button_texts.dart';
 
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/helper/button_size_manager.dart';
@@ -118,7 +114,7 @@ class ComputerView extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.all(10),
+                                    padding: const EdgeInsets.all(10),
                                     child: AddButton(
                                       onClick: () =>
                                           Navigator.of(context).pop(),
@@ -140,7 +136,7 @@ class ComputerView extends StatelessWidget {
                           Container(
                             margin:
                                 EdgeInsets.only(top: screenSize.height / 125),
-                            child: CustomDataTable(
+                            child: const CustomDataTable(
                               columns: [
                                 TableTexts.index,
                                 "Size",
@@ -226,7 +222,7 @@ class ComputerView extends StatelessWidget {
                           Container(
                             margin:
                                 EdgeInsets.only(top: screenSize.height / 125),
-                            child: CustomDataTable(
+                            child: const CustomDataTable(
                               columns: [
                                 TableTexts.index,
                                 "Size",
@@ -265,11 +261,11 @@ class ComputerView extends StatelessWidget {
                                       XButton()
                                     ],
                                   ),
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
 
                                   // Name Field
                                   TextField(
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       labelText: "Nomi: IPS, AV, NT",
                                       border: OutlineInputBorder(),
                                     ),
@@ -277,7 +273,7 @@ class ComputerView extends StatelessWidget {
                                       // Save name value
                                     },
                                   ),
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
 
                                   // Refresh Rate Section
                                   const Text(
@@ -323,7 +319,8 @@ class ComputerView extends StatelessWidget {
                                         );
                                       },
                                       shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       itemCount:
                                           displayController.refreshRates.length,
                                     ),
@@ -345,12 +342,12 @@ class ComputerView extends StatelessWidget {
                                   // SizedBox(height: 16),
                                   //
                                   // // Resolution Section
-                                  Text(
+                                  const Text(
                                     "Ekran o'lchami tanlang",
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(height: 8),
+                                  const SizedBox(height: 8),
                                   Obx(
                                     () => ListView.builder(
                                       itemBuilder: (context, index) {
@@ -388,14 +385,15 @@ class ComputerView extends StatelessWidget {
                                         );
                                       },
                                       shrinkWrap: true,
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
                                       itemCount:
                                           displayController.resolutions.length,
                                     ),
                                   ),
 
                                   TextField(
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       labelText:
                                           "O'ziz istagan o'lchamni kiriting (e.g., 1920x1080)",
                                       border: OutlineInputBorder(),
@@ -454,13 +452,13 @@ class ComputerView extends StatelessWidget {
                                     ),
                                   ),
                                   TextField(
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       labelText:
                                           "O'ziz istagan display o'lchamini kiriting.  (Faqat raqam kiritilsin )",
                                       border: OutlineInputBorder(),
                                     ),
                                     keyboardType:
-                                        TextInputType.numberWithOptions(
+                                        const TextInputType.numberWithOptions(
                                             decimal: true),
                                     onChanged: (value) {},
                                   ),
@@ -476,7 +474,7 @@ class ComputerView extends StatelessWidget {
                           Container(
                             margin:
                                 EdgeInsets.only(top: screenSize.height / 125),
-                            child: CustomDataTable(
+                            child: const CustomDataTable(
                               columns: [
                                 TableTexts.index,
                                 "Turlari",

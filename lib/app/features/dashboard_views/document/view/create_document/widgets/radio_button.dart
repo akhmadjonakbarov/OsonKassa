@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../../core/enums/currency_type.dart';
 import '../../../../../../styles/text_styles.dart';
-import '../edit_product_doc_item_screen.dart';
 
 class CustomRadioButton extends StatefulWidget {
   final String label;

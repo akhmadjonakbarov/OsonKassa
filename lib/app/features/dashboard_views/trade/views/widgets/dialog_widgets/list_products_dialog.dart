@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
 
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/texts/button_texts.dart';
@@ -106,9 +107,9 @@ class ListStoreProduct extends StatelessWidget {
         separatorBuilder: (context, index) => const SizedBox(
           height: 10,
         ),
-        itemCount: storeCtl.list.length,
+        itemCount: storeCtl.productsInStore.length,
         itemBuilder: (context, index) {
-          DocItemModel product = storeCtl.list[index];
+          StoreItem product = storeCtl.productsInStore[index];
           return StoreItemDialog(
             storeCtl: storeCtl,
             index: index + 1,
@@ -133,7 +134,7 @@ class StoreItemDialog extends StatelessWidget {
   });
   final int index;
   final StoreCtl storeCtl;
-  final DocItemModel product;
+  final StoreItem product;
   final TextEditingController searchController;
   final Size screenSize;
 
@@ -143,10 +144,7 @@ class StoreItemDialog extends StatelessWidget {
       splashColor: Colors.lightBlueAccent,
       borderRadius: BorderRadius.circular(10),
       onTap: () {
-        storeCtl.searchByBarCode(
-          product.item.barcode,
-          isShowAlert: true,
-        );
+        storeCtl.selectProduct(product);
         searchController.clear();
       },
       child: Container(
@@ -176,7 +174,7 @@ class StoreItemDialog extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "(${product.item.category.name}) ${product.item.name}",
+                  "(${product.item!.category}) ${product.item!.name}",
                   style: textStyleBlack20,
                 ),
               ],
@@ -191,12 +189,10 @@ class StoreItemDialog extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Text(
-                    //   "Qolgan: ${product.qty} ${product.item.units.firstWhere(
-                    //         (element) => element.value == 'qop',
-                    //       ).value}",
-                    //   style: textStyleBlack18Bold,
-                    // ),
+                    Text(
+                      "Qoldi: ${product.qty} ${product.item!.unit}",
+                      style: textStyleBlack18Bold,
+                    ),
                   ],
                 ),
                 Column(
@@ -204,11 +200,11 @@ class StoreItemDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Kelish: ${product.income_price} ${product.currency_type}",
+                      "Kelish: ${product.incomePrice} ${product.incomeCurrency}",
                       style: textStyleBlack18Bold,
                     ),
                     Text(
-                      "Sotilish: ${product.selling_price} ${product.currency_type}",
+                      "Sotilish: ${product.sellingPrice} ${product.sellingCurrency}",
                       style: textStyleBlack18Bold,
                     )
                   ],

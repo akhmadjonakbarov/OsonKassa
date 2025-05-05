@@ -2,19 +2,19 @@ import '../../../../../core/interfaces/api/api_interfaces.dart';
 import '../../models/doc_item_model.dart';
 
 class DocItemService {
-  final FetchItemsById<DocItemModel> _fetchItemsById;
-  final GetAll<DocItemModel> _getAll;
+  final FetchItemsById<DocumentItem> _fetchItemsById;
+  final GetAll<DocumentItem> _getAll;
   final Delete<int> _deleteRepository;
 
   DocItemService(
-      {required FetchItemsById<DocItemModel> fetchItemsById,
-      required GetAll<DocItemModel> getAll,
+      {required FetchItemsById<DocumentItem> fetchItemsById,
+      required GetAll<DocumentItem> getAll,
       required Delete<int> deleteRepository})
       : _fetchItemsById = fetchItemsById,
         _getAll = getAll,
         _deleteRepository = deleteRepository;
 
-  Future<List<DocItemModel>> fetchProductDocItemsByProductDocId(
+  Future<List<DocumentItem>> fetchProductDocItemsByProductDocId(
       int product_doc_id) async {
     try {
       return await _fetchItemsById.fetchItemsById(product_doc_id);
@@ -23,7 +23,7 @@ class DocItemService {
     }
   }
 
-  Future<List<DocItemModel>> fetchItems() async {
+  Future<List<DocumentItem>> fetchItems() async {
     try {
       return await _getAll.getAll();
     } catch (e) {
@@ -41,13 +41,13 @@ class DocItemService {
 }
 
 class BoughtProductDocItemService {
-  final GetAll<DocItemModel> _getAll;
+  final GetAll<DocumentItem> _getAll;
 
   BoughtProductDocItemService({
-    required GetAll<DocItemModel> getAll,
+    required GetAll<DocumentItem> getAll,
   }) : _getAll = getAll;
 
-  Future<List<DocItemModel>> fetchItems() async {
+  Future<List<DocumentItem>> fetchItems() async {
     try {
       return await _getAll.getAll();
     } catch (e) {

@@ -9,7 +9,7 @@ import '../models/note_model.dart';
 import 'note_repository.dart';
 import 'note_services.dart';
 
-class NoteCtl extends MainController<NoteModel> {
+class NoteCtl extends MainController<Note> {
   late final SpiskaRepository spiskaRepository;
   late final SpiskaService spiskaService;
 
@@ -18,14 +18,14 @@ class NoteCtl extends MainController<NoteModel> {
     final Dio dio = DioProvider().createDio();
     spiskaRepository = SpiskaRepository(dio: dio);
     spiskaService = SpiskaService(
-      getAllRepository: spiskaRepository as GetAll<NoteModel>,
+      getAllRepository: spiskaRepository as GetAll<Note>,
     );
     super.onInit();
   }
 
   void searchProvider(String text) {
     searchItem(text, (provider, searchText) {
-      return provider.item.name
+      return provider.item!.name!
           .toLowerCase()
           .contains(searchText.toLowerCase());
     });
@@ -35,7 +35,7 @@ class NoteCtl extends MainController<NoteModel> {
   void fetchItems() async {
     try {
       isLoading(true);
-      List<NoteModel> providers = await spiskaService.getAllProviders();
+      List<Note> providers = await spiskaService.getAllProviders();
       list(providers);
     } catch (e) {
       handleError(e.toString());

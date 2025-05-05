@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
 
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
@@ -34,16 +35,14 @@ class _DebtTableState extends State<StoreTable> {
           TableTexts.name,
           TableTexts.category,
           TableTexts.income_price,
-          TableTexts.income_price_usd,
           TableTexts.selling_price,
           TableTexts.remainder,
-          TableTexts.total_of_product,
           TableTexts.buttons
         ],
         rows: widget.storeCtl.list.asMap().entries.map(
           (entry) {
             int index = entry.key;
-            DocItemModel product = entry.value;
+            StoreItem product = entry.value;
 
             return DataRow(
               cells: <DataCell>[
@@ -53,38 +52,27 @@ class _DebtTableState extends State<StoreTable> {
                 )),
                 DataCell(
                   CenterText(
-                    text: product.item.name,
+                    text: product.item!.name!,
                   ),
                 ),
                 DataCell(
                   CenterText(
-                    text: product.item.category.name,
+                    text: product.item!.category!,
                   ),
                 ),
                 DataCell(CenterText(
-                  text: "${product.income_price} ",
+                  text:
+                      "${PriceFomatter.formatPrice(product.incomePrice!)} ${product.incomeCurrency}",
                   style: textStyleBlack18Bold,
                 )),
-                DataCell(
-                  CenterText(
-                    text: "${product.income_price_usd}",
-                    style: textStyleBlack18Bold,
-                  ),
-                ),
                 DataCell(CenterText(
-                  text: "${product.selling_price}",
+                  text:
+                      "${PriceFomatter.formatPrice(product.sellingPrice!)} ${product.sellingCurrency}",
                   style: textStyleBlack18Bold,
                 )),
                 DataCell(
                   CenterText(
                     text: "${product.qty.toString()} ${DisplayTexts.stay}",
-                    style: textStyleBlack18Bold,
-                  ),
-                ),
-                DataCell(
-                  CenterText(
-                    text:
-                        "${formatUZSNumber(double.parse((product.qty).toString()))} ",
                     style: textStyleBlack18Bold,
                   ),
                 ),
@@ -100,9 +88,9 @@ class _DebtTableState extends State<StoreTable> {
                         iconColor: Colors.red,
                         onDelete: () => Get.dialog(
                           DeleteDialog(
-                            title: product.item.name,
+                            title: product.item!.name!,
                             onConfirmDelete: () =>
-                                widget.storeCtl.removeItem(product.id),
+                                widget.storeCtl.removeItem(product.id!),
                           ),
                         ),
                       ),

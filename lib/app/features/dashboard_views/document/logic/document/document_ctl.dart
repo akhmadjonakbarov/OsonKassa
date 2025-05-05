@@ -10,7 +10,7 @@ import '../../models/document_model.dart';
 import 'document_repository.dart';
 import 'document_service.dart';
 
-class DocumentCtl extends MainController<DocumentModel> {
+class DocumentCtl extends MainController<Document> {
   var error = ''.obs;
   var isToday = true.obs;
 
@@ -24,7 +24,7 @@ class DocumentCtl extends MainController<DocumentModel> {
     documentService = DocumentService(
       addRepository: documentRepository as Add<Map<String, dynamic>>,
       deleteRepository: documentRepository as Delete<int>,
-      getAllRepository: documentRepository as GetAll<DocumentModel>,
+      getAllRepository: documentRepository as GetAll<Document>,
     );
     super.onInit();
   }
@@ -39,7 +39,7 @@ class DocumentCtl extends MainController<DocumentModel> {
     UserNotifier.showSnackBar(text: message);
   }
 
-  void setList(List<DocumentModel> newList) {
+  void setList(List<Document> newList) {
     list(newList);
   }
 
@@ -56,31 +56,8 @@ class DocumentCtl extends MainController<DocumentModel> {
   void addItem(item) async {
     try {
       setLoading(true);
-      List<Map<String, dynamic>> prdItems = [];
 
-      for (Map<String, dynamic> e in item['product_doc_items']) {
-        prdItems.add(
-          {
-            'qty': e['qty'],
-            'qty_kg': e['qty_kg'],
-            'item': e['item'],
-            'currency_type': e['currency_type'],
-            'income_price': e['income_price'],
-            'income_price_usd': e['income_price_usd'],
-            'can_be_cheaper': e['can_be_cheaper'],
-            'selling_price': e['selling_price'],
-            'selling_percentage': e['selling_percentage'],
-            'currency': e['currency'],
-          },
-        );
-      }
-
-      Map<String, dynamic> productData = {
-        "reg_date": item['reg_date'],
-        "doc_type": item['doc_type'],
-        "product_doc_items": prdItems
-      };
-      bool isSuccess = await documentService.addProductDoc(productData);
+      bool isSuccess = await documentService.addDocument(item);
       if (isSuccess) {
         UserNotifier.showSnackBar(
           label: "Product Document qo'shildi",
@@ -100,7 +77,7 @@ class DocumentCtl extends MainController<DocumentModel> {
     try {
       setLoading(true);
 
-      final documents = await documentService.getAllProductDocs();
+      final documents = await documentService.getDocuments();
 
       list(documents);
       sortBySell();
@@ -136,16 +113,16 @@ class DocumentCtl extends MainController<DocumentModel> {
   }
 
   @override
-  void updateItem(DocumentModel item) {
+  void updateItem(Document item) {
     // TODO: implement updateItem
   }
 
   // Method to sort by doc_type in ascending or descending order// Method to sort by doc_type and createdAt in ascending or descending order
   void sortDocuments({bool ascending = true}) {
-    List<DocumentModel> documents = List.from(list);
+    List<Document> documents = List.from(list);
     if (isToday.value) {
       documents = documents.where((element) {
-        return DateTime.parse(element.created_at.toString()).day ==
+        return DateTime.parse(element!.createdAt!.toString()).day ==
             DateTime.now().day;
       }).toList();
     }
@@ -153,12 +130,12 @@ class DocumentCtl extends MainController<DocumentModel> {
     // Sorting by doc_type first, then createdAt if doc_type is the same
     documents.sort((a, b) {
       int docTypeComparison = ascending
-          ? a.doc_type.compareTo(b.doc_type)
-          : b.doc_type.compareTo(a.doc_type);
+          ? a.docType!.compareTo(b.docType!)
+          : b.docType!.compareTo(a.docType!);
 
       // If doc_type is the same, compare by createdAt
       if (docTypeComparison == 0) {
-        return b.created_at.compareTo(a.created_at);
+        return b.createdAt!.compareTo(a.createdAt!);
       }
 
       return docTypeComparison;

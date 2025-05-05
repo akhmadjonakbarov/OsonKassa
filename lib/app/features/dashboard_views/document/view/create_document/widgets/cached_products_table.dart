@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/document/models/draf_product.dart';
 
 import '../../../../../../styles/container_decoration.dart';
 import '../../../../../../styles/text_styles.dart';
@@ -22,9 +23,11 @@ class _ProviderTableState extends State<CachedProductsTable> {
     return Obx(
       () => widget.manageProductDocItemCtl.productDocItems.isNotEmpty
           ? BasicContainer(
-              decoration: containerDecoration,
+              padding: EdgeInsets.zero,
               child: DataTable(
                 sortColumnIndex: 0,
+                border:
+                    TableBorder.all(borderRadius: BorderRadius.circular(16)),
                 headingTextStyle: textStyleBlack18.copyWith(fontSize: 16),
                 dataTextStyle: textStyleBlack14.copyWith(
                   fontSize: 14,
@@ -32,26 +35,28 @@ class _ProviderTableState extends State<CachedProductsTable> {
                 ),
                 columns: const <DataColumn>[
                   DataColumn(label: Text(TableTexts.index)),
-                  DataColumn(label: Text("Mahsulot")),
-                  DataColumn(label: Text("Soni")),
+                  DataColumn(label: Text(TableTexts.product)),
+                  DataColumn(label: Text(TableTexts.qty)),
                   DataColumn(label: Text(TableTexts.income_price)),
                   DataColumn(label: Text(TableTexts.selling_price)),
                   DataColumn(label: Text(TableTexts.buttons)),
                 ],
-                rows: widget.manageProductDocItemCtl.productDocItems
-                    .asMap()
-                    .entries
-                    .map(
-                  (entry) {
-                    int index = entry.key;
-                    Map<String, dynamic> product = entry.value;
+                rows: List.generate(
+                  widget.manageProductDocItemCtl.productDocItems.length,
+                  (index) {
+                    final product =
+                        widget.manageProductDocItemCtl.productDocItems[index];
+
                     return DataRow(
                       cells: <DataCell>[
-                        DataCell(Text("${index + 1}")),
-                        DataCell(Text(product['item']['name'])),
-                        DataCell(Text(product['qty'].toString())),
-                        DataCell(Text(product['income_price'].toString())),
-                        DataCell(Text(product['selling_price'].toString())),
+                        DataCell(CenterText(text: "${index + 1}")),
+                        DataCell(CenterText(text: product.itemName)),
+                        DataCell(
+                            CenterText(text: "${product.qty} ${product.unit}")),
+                        DataCell(
+                            CenterText(text: product.incomePrice.toString())),
+                        DataCell(
+                            CenterText(text: product.sellingPrice.toString())),
                         DataCell(
                           Row(
                             children: [
@@ -62,8 +67,7 @@ class _ProviderTableState extends State<CachedProductsTable> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    widget.manageProductDocItemCtl
-                                        .editProductDocItem(product);
+                                    // widget.manageProductDocItemCtl.editProductDocItem();
                                   });
                                 },
                               ),
@@ -86,7 +90,7 @@ class _ProviderTableState extends State<CachedProductsTable> {
                       ],
                     );
                   },
-                ).toList(),
+                ),
               ),
             )
           : const SizedBox.shrink(),

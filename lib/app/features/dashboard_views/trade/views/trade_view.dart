@@ -35,7 +35,7 @@ class _TradeViewState extends State<TradeView> {
   final TradeCtl tradeCtl = Get.find<TradeCtl>();
   final ClientCtl clientCtl = Get.find<ClientCtl>();
   final StoreCtl storeCtl = Get.find<StoreCtl>();
-  final NoteCtl spiskaCtl = Get.find<NoteCtl>();
+  final NoteCtl noteCtl = Get.find<NoteCtl>();
 
   // TextEditingController
   TextEditingController barCodeController = TextEditingController();
@@ -52,19 +52,14 @@ class _TradeViewState extends State<TradeView> {
   void initState() {
     fetchCtls();
     _initPrinter();
-    setStoreItems();
 
     super.initState();
   }
 
   fetchCtls() {
     clientCtl.fetchItems();
-    storeCtl.fetchItems();
-    spiskaCtl.fetchItems();
-  }
-
-  void setStoreItems() {
-    tradeCtl.setStoreItems(storeCtl.list);
+    storeCtl.fetchProductInStore();
+    noteCtl.fetchItems();
   }
 
   @override
@@ -84,10 +79,10 @@ class _TradeViewState extends State<TradeView> {
   }
 
   sell() async {
-    if (tradeCtl.sellProductDocItems.isNotEmpty) {
-      await _printer.printSoldReceipt(
-        tradeCtl.sellProductDocItems,
-      );
+    if (tradeCtl.sellProducts.isNotEmpty) {
+      // await _printer.printSoldReceipt(
+      //   tradeCtl.sellProductDocItems,
+      // );
       if (is_debt) {
         if (selectedClient != null) {
           await tradeCtl.sell(
@@ -125,7 +120,7 @@ class _TradeViewState extends State<TradeView> {
       debtData = null;
     });
     storeCtl.clearList();
-    spiskaCtl.fetchItems();
+    noteCtl.fetchItems();
 
     tradeCtl.clearData();
   }
@@ -238,7 +233,7 @@ class _TradeViewState extends State<TradeView> {
                     controller: barCodeController,
                     focusNode: addressFocusNode,
                     onSubmitted: (value) {
-                      storeCtl.searchByBarCode(value);
+                      storeCtl.searchByBarCode(value, isShowAlert: false);
                       barCodeController.clear();
                       FocusScope.of(context).requestFocus(addressFocusNode);
                     },
@@ -262,7 +257,7 @@ class _TradeViewState extends State<TradeView> {
             ),
           ),
           Obx(() {
-            if (tradeCtl.sellProductDocItems.isNotEmpty) {
+            if (tradeCtl.sellProducts.isNotEmpty) {
               return ListSellProduct(
                 tradeCtl: tradeCtl,
                 constraints: constraints,

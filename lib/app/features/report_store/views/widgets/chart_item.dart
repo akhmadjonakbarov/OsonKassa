@@ -29,20 +29,20 @@ class ListItem extends StatelessWidget {
       child: Column(
         children: [
           HeaderTitle2(title: categoryModel.name),
-          PieChartGraph(
-            data: storeCtl.list
-                    .where(
-                      (p0) => p0.item.category.id == categoryModel.id,
-                    )
-                    .toList()
-                    .isNotEmpty
-                ? storeCtl.list
-                    .where(
-                      (p0) => p0.item.category.id == categoryModel.id,
-                    )
-                    .toList()
-                : [], // Convert Iterable to List
-          ),
+          // PieChartGraph(
+          //   data: storeCtl.list
+          //           .where(
+          //             (p0) => p0.item.category.id == categoryModel.id,
+          //           )
+          //           .toList()
+          //           .isNotEmpty
+          //       ? storeCtl.list
+          //           .where(
+          //             (p0) => p0.item.category.id == categoryModel.id,
+          //           )
+          //           .toList()
+          //       : [], // Convert Iterable to List
+          // ),
         ],
       ),
     );

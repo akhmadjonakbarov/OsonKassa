@@ -66,6 +66,7 @@ class ItemCtl extends MainController<Item> {
     );
 
     super.onInit();
+    fetchItems();
   }
 
   @override
@@ -597,7 +598,7 @@ class ItemCtl extends MainController<Item> {
                           fieldBackgroundColor: primary,
                           optionsBackgroundColor: primary,
                           singleSelectItemStyle: textStyleBlack18,
-                          hint: ProductViewTexts.category,
+                          hint: ProductViewTexts.unit,
                           optionTextStyle: textStyleBlack14.copyWith(
                             fontWeight: FontWeight.w800,
                           ),

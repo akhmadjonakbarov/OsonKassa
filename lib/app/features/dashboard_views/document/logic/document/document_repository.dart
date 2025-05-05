@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../../core/network/status_codes.dart';
@@ -7,7 +8,7 @@ import '../../models/document_model.dart';
 
 class DocumentRepository
     implements
-        GetAll<DocumentModel>,
+        GetAll<Document>,
         Add<Map<String, dynamic>>,
         Update,
         Delete<int> {
@@ -25,7 +26,8 @@ class DocumentRepository
         data: productDocData,
       );
       return response.statusCode == 201;
-    } on DioException {
+    } on DioException catch (e) {
+      LogHelper.logError(e.response!.data);
       rethrow;
     }
   }
@@ -41,9 +43,9 @@ class DocumentRepository
   }
 
   @override
-  Future<List<DocumentModel>> getAll() async {
+  Future<List<Document>> getAll() async {
     try {
-      List<DocumentModel> productDocs = [];
+      List<Document> productDocs = [];
 
       Response response = await dio.get('$_baseUrl/all');
       if (response.statusCode == 200) {
@@ -51,12 +53,8 @@ class DocumentRepository
 
         if (ResponseValidator.isNotEmptyAndIsList(resData)) {
           for (var productData in resData) {
-            if (ResponseValidator.isMap(productData)) {
-              DocumentModel productDoc = DocumentModel.fromMap(productData);
-              productDocs.add(productDoc);
-            } else {
-              throw Exception('Unexpected data format');
-            }
+            Document productDoc = Document.fromJson(productData);
+            productDocs.add(productDoc);
           }
         }
 
@@ -66,8 +64,8 @@ class DocumentRepository
           'Failed to fetch data with status code: ${response.statusCode}',
         );
       }
-    } catch (e) {
-      print(e);
+    } on DioException catch (e) {
+      LogHelper.logError(e.response!.data);
       rethrow;
     }
   }

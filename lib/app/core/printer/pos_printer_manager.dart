@@ -30,7 +30,7 @@ class PosPrinterManager {
     _printer.disconnect();
   }
 
-  Future<void> printSoldReceipt(List<DocItemModel> items) async {
+  Future<void> printSoldReceipt(List<DocumentItem> items) async {
     try {
       if (await _connectPrinter()) {
         // Print Header
@@ -88,14 +88,14 @@ class PosPrinterManager {
         double total = 0;
         int index = 0;
         for (var item in items) {
-          double price_selected = item.selling_price;
-          final itemTotal = item.qty * price_selected;
+          double price_selected = item.sellingPrice!;
+          final itemTotal = item.qty! * price_selected;
           total += itemTotal;
           index++;
 
           // Print Product Name with Index
           _printer.text(
-            '$index.  ${item.item.name}',
+            '$index.  ${item.item!.name!}',
             styles: const PosStyles(
               align: PosAlign.left,
               height: PosTextSize.size1,
@@ -112,7 +112,7 @@ class PosPrinterManager {
 
           // Print Quantity, Price, and Total
           _printer.text(
-            '${item.qty} x ${formatUZSNumber(item.selling_price, isAddWord: false)}     ${formatUZSNumber(itemTotal, isAddWord: false)}',
+            '${item.qty} x ${formatUZSNumber(item.sellingPrice!, isAddWord: false)}     ${formatUZSNumber(itemTotal, isAddWord: false)}',
             styles: const PosStyles(
               align: PosAlign.center,
               height: PosTextSize.size1,
@@ -174,7 +174,7 @@ class PosPrinterManager {
     }
   }
 
-  Future<void> printProductDoc(List<DocItemModel> items) async {
+  Future<void> printProductDoc(List<DocumentItem> items) async {
     try {
       if (await _connectPrinter()) {
         // Print Header
@@ -232,14 +232,14 @@ class PosPrinterManager {
         double total = 0;
         int index = 0;
         for (var item in items) {
-          double price_selected = item.selling_price;
-          final itemTotal = item.qty * price_selected;
+          double price_selected = item.sellingPrice!;
+          final itemTotal = item.qty! * price_selected;
           total += itemTotal;
           index++;
 
           // Print Product Name with Index
           _printer.text(
-            '$index.  ${item.item.name}',
+            '$index.  ${item.item!.name!}',
             styles: const PosStyles(
               align: PosAlign.left,
               height: PosTextSize.size1,

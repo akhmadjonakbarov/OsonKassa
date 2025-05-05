@@ -4,4 +4,5 @@ class ProductViewTexts {
   static const status = "Holat";
   static const search = "Qidirish";
   static const add = "Mahsulot qo'shish";
+  static const unit = "O'lchov birligi";
 }

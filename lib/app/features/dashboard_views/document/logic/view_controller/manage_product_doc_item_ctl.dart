@@ -1,33 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/document/models/draf_product.dart';
+import 'package:osonkassa/app/features/dashboard_views/item/models/item.dart';
+import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../../core/display/user_notifier.dart';
+import '../../../../../core/enums/currency_type.dart';
 import '../../../../../core/enums/type_of_snackbar.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/texts/alert_texts.dart';
 import '../../../../../utils/texts/button_texts.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
 import '../../../../shared/export_commons.dart';
+import '../../../currency/models/models.dart';
 
 class ManageProductDocItemCtl extends GetxController {
-  var productDocItems = <Map<String, dynamic>>[].obs;
+  // Keys
+  final formKey = GlobalKey<FormState>();
 
-  // Add a product to the list
-  void storeProductDocItem(Map<String, dynamic> productDocItem) {
-    productDocItems.add(productDocItem);
-    UserNotifier.showSnackBar(
-      type: TypeOfSnackBar.success,
-      label: AlertTexts.addAlert(productDocItem['item']['name']),
-    );
+  // TextEditingControllers
+  final incomePriceController = TextEditingController();
+  final sellPriceController = TextEditingController();
+  final quantityController = TextEditingController();
+
+  // Rx variables
+  var productDocItems = <DraftProduct>[].obs;
+  var unitValue = "".obs;
+  var incomePrice = 0.0.obs;
+  var exchangePrice = 0.0.obs;
+  var sellPrice = 0.0.obs;
+  var qty = 0.0.obs;
+  var profitPercentage = 0.0.obs;
+  var sellingPercentage = 0.0.obs;
+  var sellingCurrency = CurrencyType.uzs.obs;
+  var incomeCurrency = CurrencyType.usd.obs;
+  Rx<CurrencyModel> currency = CurrencyModel.empty().obs;
+  Rx<Item> item = Item.empty().obs;
+
+  @override
+  void onClose() {
+    incomePriceController.dispose();
+    sellPriceController.dispose();
+    quantityController.dispose();
+    super.onClose();
   }
 
-  void editProductDocItem(Map<String, dynamic> productDocItem) {
+  void setIncomeCurrency(CurrencyType ic) {
+    incomeCurrency.value = ic;
+  }
+
+  void setItem(Item itm) {
+    LogHelper.logInfo("Item was selected ${itm.toString()}");
+    item.value = itm;
+  }
+
+  void removeItem() {
+    LogHelper.logInfo("Item was removed");
+    item.value = Item.empty();
+  }
+
+  void setSellingCurrency(CurrencyType sc) {
+    sellingCurrency.value = sc;
+  }
+
+  // Add a product to the list
+  void storeProductDocItem(BuildContext context) {
+    DraftProduct draftProduct = DraftProduct(
+      itemId: item.value.id,
+      itemName: item.value.name,
+      currencyId: currency.value.id,
+      incomeCurrency: incomeCurrency.value.name.toString().toLowerCase(),
+      incomePrice: incomePrice.value,
+      sellingCurrency: sellingCurrency.value.name.toString().toLowerCase(),
+      sellingPrice: sellPrice.value,
+      id: productDocItems.length + 1,
+      qty: double.parse(quantityController.text),
+      sellingPercentage:
+          double.parse(profitPercentage.value.toStringAsFixed(5)),
+      unit: item.value.unit.value,
+    );
+    productDocItems.add(draftProduct);
+    UserNotifier.showFlutterSnackBar(
+      context: context,
+      type: TypeOfSnackBar.success,
+      label: AlertTexts.addAlert(draftProduct.itemName),
+    );
+    reset();
+  }
+
+  void editProductDocItem(DraftProduct draftProduct) {
     // Initialize TextEditingController with the current selling price
-    TextEditingController sellingPriceController = TextEditingController(
-      text: productDocItem['selling_price']?.toString() ?? '',
+    TextEditingController _sellingPriceController = TextEditingController(
+      text: draftProduct.sellingPrice.toString(),
     );
 
-    int product_index = productDocItems.indexOf(productDocItem);
+    int productIndex = productDocItems.indexOf(draftProduct);
 
     Get.dialog(
       StatefulBuilder(
@@ -39,7 +106,7 @@ class ManageProductDocItemCtl extends GetxController {
               children: [
                 // Selling Price Input
                 TextField(
-                  controller: sellingPriceController,
+                  controller: _sellingPriceController,
                   style: textStyleBlack18,
                   decoration: InputDecoration(
                     labelText: PlaceholderTexts.selling_price,
@@ -65,20 +132,22 @@ class ManageProductDocItemCtl extends GetxController {
                 text: ButtonTexts.edit,
                 onClick: () {
                   // Parse the selling price input
-                  if (sellingPriceController.text.isNotEmpty) {
-                    productDocItem['selling_price'] =
-                        double.tryParse(sellingPriceController.text) ?? 0.0;
+                  if (_sellingPriceController.text.isNotEmpty) {
+                    draftProduct.copyWith(
+                        sellingPrice:
+                            double.tryParse(_sellingPriceController.text) ??
+                                0.0);
                   }
 
-                  productDocItems[product_index] = productDocItem;
+                  // productDocItems[productIndex] = productDocItem;
                   update();
 
                   Get.back(); // Close dialog
-                  UserNotifier.showSnackBar(
-                    type: TypeOfSnackBar.alert,
-                    label:
-                        AlertTexts.updateAlert(productDocItem['item']['name']),
-                  );
+                  // UserNotifier.showSnackBar(
+                  //   type: TypeOfSnackBar.alert,
+                  //   label:
+                  //       AlertTexts.updateAlert(productDocItem['item']['name']),
+                  // );
                 },
                 textStyle: textStyleBlack14,
               )
@@ -94,7 +163,92 @@ class ManageProductDocItemCtl extends GetxController {
     productDocItems.clear(); // Correct way to clear the list
   }
 
-  void removeItemFromStoreList(Map<String, dynamic> productDocItem) {
-    productDocItems.remove(productDocItem);
+  void removeItemFromStoreList(int drafProductId) {
+    productDocItems.removeWhere(
+      (element) => element.id == drafProductId,
+    );
+  }
+
+  void setSellPrice(BuildContext context) {
+    String textSellingPrice = sellPriceController.text;
+    if (textSellingPrice.isEmpty) {
+      return;
+    }
+    if (double.tryParse(textSellingPrice) == null) {
+      UserNotifier.showFlutterSnackBar(
+          context: context,
+          text: "Iltimos raqam kiriting",
+          type: TypeOfSnackBar.alert);
+      return;
+    }
+    double sp = double.parse(textSellingPrice);
+    sellPrice.value = sp;
+    calculateSellingProfitPercentage();
+    LogHelper.logInfo("SellPrice is ${sellPrice.value}");
+  }
+
+  void setIncomePrice(BuildContext context) {
+    String textIncomePrice = incomePriceController.text;
+    if (textIncomePrice.isEmpty) {
+      return;
+    }
+    if (double.tryParse(textIncomePrice) == null) {
+      UserNotifier.showFlutterSnackBar(
+          context: context,
+          text: "Iltimos raqam kiriting",
+          type: TypeOfSnackBar.alert);
+      return;
+    }
+    double ip = double.parse(textIncomePrice);
+
+    if (currency.value.id != -1 &&
+        incomeCurrency.value.toString().toLowerCase().contains('usd')) {
+      exchangePrice.value = ip * currency.value.value;
+    }
+    incomePrice.value = ip;
+    LogHelper.logInfo("IncomePrice is ${incomePrice.value}");
+  }
+
+  Future<void> setCurrency({required CurrencyModel cry}) async {
+    LogHelper.logInfo("Currency was selected. ${cry.toString()}");
+    currency.value = cry;
+  }
+
+  void calculateSellingProfitPercentage() {
+    if (currency.value.id != -1 &&
+        incomeCurrency.value.toString().toLowerCase().contains('usd')) {
+      LogHelper.logInfo("ExchangeRate: ${exchangePrice.value}");
+      profitPercentage.value =
+          ((sellPrice.value * 100) / exchangePrice.value) - 100;
+    } else {
+      profitPercentage.value = 0.0;
+    }
+  }
+
+  void reset() {
+    incomePriceController.clear();
+    sellPriceController.clear();
+    quantityController.clear();
+    qty.value = 0.0;
+    sellPrice.value = 0.0;
+    incomePrice.value = 0.0;
+    unitValue.value = "";
+    sellingPercentage.value = 0.0;
+    removeItem();
+  }
+
+  void setQty(BuildContext context) {
+    String textQty = incomePriceController.text;
+    if (textQty.isEmpty) {
+      return;
+    }
+    if (double.tryParse(textQty) == null) {
+      UserNotifier.showFlutterSnackBar(
+          context: context,
+          text: "Iltimos raqam kiriting",
+          type: TypeOfSnackBar.alert);
+      return;
+    }
+    qty.value = double.parse(textQty);
   }
 }

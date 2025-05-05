@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
+import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
 
 import '../../../../../styles/colors.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/media/get_screen_size.dart';
 import '../../../../shared/export_commons.dart';
-import '../../../document/models/doc_item_model.dart';
 
 class SellProductItem extends StatefulWidget {
   final Function() onEdit;
@@ -13,7 +14,7 @@ class SellProductItem extends StatefulWidget {
   final Function() decrementQty;
   final Function() deleteItem;
   final Function() cheapenClick;
-  final DocItemModel sellProductDocItem;
+  final StoreItem sellProductDocItem;
   final double height;
 
   const SellProductItem({
@@ -53,11 +54,11 @@ class _SellProductItemState extends State<SellProductItem> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "(${widget.sellProductDocItem.item.category.name}) ${widget.sellProductDocItem.item.name}",
+                "(${widget.sellProductDocItem.item!.category}) ${widget.sellProductDocItem.item!.name}",
                 style: textStyleBlack18,
               ),
               Text(
-                widget.sellProductDocItem.item.barcode,
+                widget.sellProductDocItem.item!.barcode!,
                 style: textStyleBlack14.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
@@ -85,45 +86,17 @@ class _SellProductItemState extends State<SellProductItem> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          widget.sellProductDocItem.qty.toStringAsFixed(0),
+                          widget.sellProductDocItem.qty!.toStringAsFixed(3),
                           textAlign: TextAlign.center,
                           style: textStyleBlack18.copyWith(
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(width: 2),
-                        // Text(
-                        //   widget.sellProductDocItem.item.units
-                        //       .firstWhere(
-                        //         (element) =>
-                        //             element.value.toLowerCase() == 'kg',
-                        //       )
-                        //       .value,
-                        //   textAlign: TextAlign.center,
-                        //   style: textStyleBlack14,
-                        // )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
                         Text(
-                          widget.sellProductDocItem.qty.toStringAsFixed(0),
+                          widget.sellProductDocItem.item!.unit!,
                           textAlign: TextAlign.center,
-                          style: textStyleBlack18.copyWith(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(width: 2),
-                        // Text(
-                        //   widget.sellProductDocItem.item.units
-                        //       .firstWhere(
-                        //         (element) =>
-                        //             element.value.toLowerCase() == 'qop',
-                        //       )
-                        //       .value,
-                        //   textAlign: TextAlign.center,
-                        //   style: textStyleBlack14,
-                        // )
+                          style: textStyleBlack14,
+                        )
                       ],
                     ),
                   ],
@@ -138,15 +111,17 @@ class _SellProductItemState extends State<SellProductItem> {
             ],
           ),
           Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${widget.sellProductDocItem.selling_price.toStringAsFixed(2)} ${widget.sellProductDocItem.currency_type}",
+                      "${PriceFomatter.formatPrice(widget.sellProductDocItem.sellingPrice!)} ${widget.sellProductDocItem.sellingCurrency}",
                       style: textStyleBlack18.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -162,9 +137,10 @@ class _SellProductItemState extends State<SellProductItem> {
                 ],
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    "${widget.sellProductDocItem.income_price.toStringAsFixed(2)} ${widget.sellProductDocItem.currency_type}",
+                    "${PriceFomatter.formatPrice(widget.sellProductDocItem.incomePrice!)} ${widget.sellProductDocItem.incomeCurrency}",
                     style: textStyleBlack18.copyWith(
                       fontWeight: FontWeight.w700,
                     ),

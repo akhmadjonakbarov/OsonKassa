@@ -62,4 +62,77 @@ class UserNotifier {
       messageText: Text(text, style: textStyleWhite18.copyWith(fontSize: 20)),
     );
   }
+
+  static void showFlutterSnackBar({
+    required BuildContext context,
+    String label = "Xatolik!",
+    String text = "",
+    TypeOfSnackBar type = TypeOfSnackBar.delete,
+    Duration duration = const Duration(seconds: 3),
+    EdgeInsets margin =
+        const EdgeInsets.symmetric(vertical: 5, horizontal: 300),
+  }) {
+    Color snackBarColor = Colors.green;
+
+    switch (type) {
+      case TypeOfSnackBar.error:
+        snackBarColor = Colors.red;
+        break;
+      case TypeOfSnackBar.success:
+        snackBarColor = Colors.green;
+        break;
+      case TypeOfSnackBar.delete:
+        snackBarColor = Colors.blue;
+        break;
+      case TypeOfSnackBar.update:
+        snackBarColor = Colors.orange;
+        break;
+      case TypeOfSnackBar.alert:
+        snackBarColor = Colors.deepOrange;
+        break;
+    }
+
+    // Close the current snackbar if open
+    ScaffoldMessenger.of(context).clearSnackBars();
+
+    final snackBar = SnackBar(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: snackBarColor,
+      duration: duration,
+      margin: margin,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: textStyleWhite18.copyWith(fontSize: 22),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  text,
+                  style: textStyleWhite18.copyWith(fontSize: 20),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            },
+            icon: const Icon(Icons.close, color: Colors.white),
+          ),
+        ],
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 }

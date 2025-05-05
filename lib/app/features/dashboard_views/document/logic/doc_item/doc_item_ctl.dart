@@ -12,8 +12,8 @@ import '../../models/doc_item_model.dart';
 import 'doc_item_repository.dart';
 import 'doc_item_service.dart';
 
-class DocItemCtl extends MainController<DocItemModel> {
-  var docItemsByDoc = <DocItemModel>[].obs;
+class DocItemCtl extends MainController<DocumentItem> {
+  var docItemsByDoc = <DocumentItem>[].obs;
   var totalSelledProductCount = 0.obs;
   var totalSelledProductPrice = 0.0.obs;
 
@@ -28,8 +28,8 @@ class DocItemCtl extends MainController<DocItemModel> {
     final Dio dio = DioProvider().createDio();
     _docItemsRepository = DocItemRepository(dio);
     _docItemsService = DocItemService(
-      getAll: _docItemsRepository as GetAll<DocItemModel>,
-      fetchItemsById: _docItemsRepository as FetchItemsById<DocItemModel>,
+      getAll: _docItemsRepository as GetAll<DocumentItem>,
+      fetchItemsById: _docItemsRepository as FetchItemsById<DocumentItem>,
       deleteRepository: _docItemsRepository as Delete<int>,
     );
 
@@ -42,7 +42,7 @@ class DocItemCtl extends MainController<DocItemModel> {
   void fetchItems() async {
     try {
       isLoading(true);
-      List<DocItemModel> product_doc_item_list =
+      List<DocumentItem> product_doc_item_list =
           await _docItemsService.fetchItems();
 
       list(product_doc_item_list);
@@ -77,13 +77,13 @@ class DocItemCtl extends MainController<DocItemModel> {
     }
   }
 
-  List<DocItemModel> filterProductByKeywords(
-      List<DocItemModel> products, List<String> keywords) {
+  List<DocumentItem> filterProductByKeywords(
+      List<DocumentItem> products, List<String> keywords) {
     // Filter products by checking if all keywords match either product name or category
     return products.where((product) {
-      final productName = product.item.name.toLowerCase();
-      final categoryName = product.item.category.name.toLowerCase();
-      final barcode = product.item.barcode.toLowerCase();
+      final productName = product.item!.name!.toLowerCase();
+      final categoryName = product.item!.category!.toLowerCase();
+      final barcode = product.item!.barcode!.toLowerCase();
 
       // Check if all keywords are found in either product name or category name
       return keywords.every((keyword) =>
@@ -96,7 +96,7 @@ class DocItemCtl extends MainController<DocItemModel> {
   void fetchByProductId(int product_id) async {
     try {
       isLoading(true);
-      List<DocItemModel> products =
+      List<DocumentItem> products =
           await _docItemsService.fetchProductDocItemsByProductDocId(product_id);
       docItemsByDoc(products);
       isLoading(false);
