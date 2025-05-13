@@ -34,7 +34,7 @@ class _ChartDataState extends State<ChartData> {
 
   @override
   void initState() {
-    widget.statisticsCtl.fetchWeeklyPriceStatistics();
+    widget.statisticsCtl.getWeeklyPriceStatistics();
     super.initState();
   }
 
@@ -47,12 +47,16 @@ class _ChartDataState extends State<ChartData> {
         return const Loading();
       } else {
         List<BarChartGroupData> barGroups = [];
-        if (widget.statisticsCtl.list.isNotEmpty) {
-          for (int i = 0; i < widget.statisticsCtl.list.length; i++) {
+        if (widget.statisticsCtl.dailySalesRates.isNotEmpty) {
+          for (int i = 0;
+              i < widget.statisticsCtl.dailySalesRates.length;
+              i++) {
             final barGroup = makeGroupData(
               i,
-              widget.statisticsCtl.list[i].price, // Scaling the price
-              widget.statisticsCtl.list[i].profit, // Scaling the price
+              widget.statisticsCtl.dailySalesRates[i].sales!,
+              // Scaling the price
+              widget.statisticsCtl.dailySalesRates[i]
+                  .profit!, // Scaling the price
             );
 
             barGroups.add(barGroup);
@@ -79,7 +83,7 @@ class _ChartDataState extends State<ChartData> {
                     ),
                     IconButton(
                       onPressed: () {
-                        widget.statisticsCtl.fetchWeeklyPriceStatistics();
+                        widget.statisticsCtl.getWeeklyPriceStatistics();
                       },
                       icon: const Icon(Icons.refresh),
                     ),
@@ -100,7 +104,7 @@ class _ChartDataState extends State<ChartData> {
                                 BottomTitles(
                               value: value,
                               meta: meta,
-                              statistics: widget.statisticsCtl.list,
+                              statistics: widget.statisticsCtl.dailySalesRates,
                             ),
                             reservedSize: 35,
                           ),
@@ -225,12 +229,12 @@ class _ChartDataState extends State<ChartData> {
       x: x,
       barRods: [
         BarChartRodData(
-          toY: price,
+          toY: price / 1000,
           color: leftBarColor, // For price
           width: 10,
         ),
         BarChartRodData(
-          toY: profit,
+          toY: profit / 1000,
           color: rightBarColor, // For profit
           width: 10,
         ),

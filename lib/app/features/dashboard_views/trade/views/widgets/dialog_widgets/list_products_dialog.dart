@@ -5,7 +5,7 @@ import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.d
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/texts/button_texts.dart';
 import '../../../../../shared/export_commons.dart';
-import '../../../../document/models/doc_item_model.dart';
+import '../../../../document/models/document_item.dart';
 import '../../../../store/logic/store_ctl.dart';
 
 class ListProductsDialog extends StatelessWidget {

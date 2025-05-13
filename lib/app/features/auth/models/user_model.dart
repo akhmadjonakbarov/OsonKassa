@@ -270,7 +270,7 @@ class EmployeeModel {
   factory EmployeeModel.fromMap(Map<String, dynamic> map) {
     return EmployeeModel(
       id: map['id'] as int,
-      baseSalary: map['base_salary'] as double,
+      baseSalary: double.parse(map['base_salary'].toString()),
       salaryType:
           SalaryTypeModel.fromMap(map['salary_type'] as Map<String, dynamic>),
       createdAt: DateTime.parse(map['created_at']),

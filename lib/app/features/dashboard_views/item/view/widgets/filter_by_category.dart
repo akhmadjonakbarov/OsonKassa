@@ -11,7 +11,7 @@ import '../../../category/models/category_models.dart';
 
 class FilterByCategory extends StatelessWidget {
   final MultiSelectController? multiSelectController;
-  final Function(int) onSearchByCategory;
+  final Function(String) onSearchByCategory;
   final Function()? onClearSelectedCategory;
   final List<CategoryModel> categories;
   bool isSearchEnabled;
@@ -37,7 +37,7 @@ class FilterByCategory extends StatelessWidget {
         onOptionSelected: (List<ValueItem> selectedOptions) {
           if (selectedOptions.isNotEmpty) {
             onSearchByCategory(
-              selectedOptions.first.value,
+              selectedOptions.first.label,
             );
           }
         },

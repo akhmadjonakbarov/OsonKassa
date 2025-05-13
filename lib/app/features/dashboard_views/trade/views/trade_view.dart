@@ -10,8 +10,8 @@ import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/alert_texts.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../shared/export_commons.dart';
-import '../../customer/logic/client_ctl.dart';
-import '../../customer/models/client_model.dart';
+import '../../customer/logic/customer_ctl.dart';
+import '../../customer/models/customer.dart';
 import '../../note/logic/note_controller.dart';
 import '../../store/logic/store_ctl.dart';
 import '../../store/view/widgets/card_button.dart';
@@ -33,7 +33,7 @@ class TradeView extends StatefulWidget {
 class _TradeViewState extends State<TradeView> {
   // Controllers
   final TradeCtl tradeCtl = Get.find<TradeCtl>();
-  final ClientCtl clientCtl = Get.find<ClientCtl>();
+  final CustomerCtl clientCtl = Get.find<CustomerCtl>();
   final StoreCtl storeCtl = Get.find<StoreCtl>();
   final NoteCtl noteCtl = Get.find<NoteCtl>();
 
@@ -43,9 +43,8 @@ class _TradeViewState extends State<TradeView> {
 
   FocusNode addressFocusNode = FocusNode();
   late final PosPrinterManager _printer;
-  CustomerModel? selectedClient;
+  Customer? selectedClient;
   bool is_first = true;
-  Map<String, dynamic>? debtData;
   bool is_debt = false;
 
   @override
@@ -83,20 +82,15 @@ class _TradeViewState extends State<TradeView> {
       // await _printer.printSoldReceipt(
       //   tradeCtl.sellProductDocItems,
       // );
-      if (is_debt) {
-        if (selectedClient != null) {
-          await tradeCtl.sell(
-            clientId: selectedClient!.id,
-            isDebt: true,
-          );
-        }
-        if (debtData != null) {
-          await tradeCtl.sell(debtData: debtData, isDebt: true);
-        }
+      if (is_debt && selectedClient != null) {
+        await tradeCtl.sell(
+          customer_id: selectedClient!.id,
+          isDebt: true,
+        );
       } else {
         if (selectedClient != null) {
           await tradeCtl.sell(
-            clientId: selectedClient!.id,
+            customer_id: selectedClient!.id,
           );
         } else {
           await tradeCtl.sell();
@@ -117,7 +111,6 @@ class _TradeViewState extends State<TradeView> {
     setState(() {
       selectedClient = null;
       is_debt = false;
-      debtData = null;
     });
     storeCtl.clearList();
     noteCtl.fetchItems();
@@ -125,60 +118,7 @@ class _TradeViewState extends State<TradeView> {
     tradeCtl.clearData();
   }
 
-  void showAddBuilderModelDialog() {
-    final formKey = GlobalKey<FormState>();
-    final fishController = TextEditingController();
-    final phoneNumberController = TextEditingController();
-    final phoneNumber2Controller = TextEditingController();
-    final addressController = TextEditingController();
-
-    Get.dialog(
-      AddDebtForm(
-        formKey: formKey,
-        nameController: fishController,
-        phoneNumberController: phoneNumberController,
-        phoneNumber2Controller: phoneNumber2Controller,
-        addressController: addressController,
-        onCancel: () {
-          setState(() {
-            debtData = null;
-          });
-          Navigator.of(context).pop();
-        },
-        onClick: () {
-          if (formKey.currentState!.validate()) {
-            setState(
-              () {
-                final newBuilderModel = CustomerModel(
-                  id: -1,
-                  full_name: fishController.text.trim(),
-                  phone_number: phoneNumberController.text.trim(),
-                  phone_number2: phoneNumber2Controller.text.trim(),
-                  address: addressController.text,
-                  created_at: DateTime.now(),
-                  updated_at: DateTime.now(),
-                );
-                debtData = newBuilderModel.toMap();
-              },
-            );
-
-            Navigator.of(context).pop(); // Close the dialog
-          }
-        },
-      ),
-    );
-  }
-
-  showDebtDialog() {
-    Get.dialog(
-      ShowDebtOption(
-        showBuilderDialog: () => showSelectClient(),
-        addNewDebtInfoDialog: () => showAddBuilderModelDialog(),
-      ),
-    );
-  }
-
-  showSelectClient() {
+  showCustomers() {
     Get.dialog(
       ClientSelector(
         builderCtl: clientCtl,
@@ -298,13 +238,13 @@ class _TradeViewState extends State<TradeView> {
                       setState(() {
                         is_debt = true;
                       });
-                      showDebtDialog();
+                      showCustomers();
                     },
                   ),
                   CardButton(
                     label: ButtonTexts.for_builder,
                     onClick: () {
-                      showSelectClient();
+                      showCustomers();
                     },
                   )
                 ],

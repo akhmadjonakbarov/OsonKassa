@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/config/app_paths.dart';
 
 import '../../../../../utils/formatter_functions/format_phone_number.dart';
 import '../../../../../utils/texts/display_texts.dart';
 import '../../../../../utils/texts/table_texts.dart';
-import '../../../../client_detail/logic/ctl/client_debt_ctl.dart';
-import '../../../../client_detail/views/client_detail_screen.dart';
+
+import '../../../../customer_detail/logic/customer_detail_ctl.dart';
+import '../../../../customer_detail/views/customer_detail_screen.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
-import '../../logic/client_ctl.dart';
-import '../../models/client_model.dart';
+import '../../logic/customer_ctl.dart';
+import '../../models/customer.dart';
 
 class ClientTable extends StatefulWidget {
-  final ClientCtl builderController;
+  final CustomerCtl builderController;
 
   const ClientTable({super.key, required this.builderController});
 
@@ -21,7 +23,7 @@ class ClientTable extends StatefulWidget {
 }
 
 class _ClientTableState extends State<ClientTable> {
-  ClientDebtCtl clientDebtCtl = Get.find<ClientDebtCtl>();
+  CustomerDetailCtl customerDetailCtl = Get.find<CustomerDetailCtl>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,24 +41,23 @@ class _ClientTableState extends State<ClientTable> {
         ],
         rows: widget.builderController.list.asMap().entries.map((entry) {
           int index = entry.key;
-          CustomerModel client = entry.value;
+          Customer client = entry.value;
           return DataRow(
             onSelectChanged: (_) {
-              Get.to(
-                () => const ClientDetailScreen(),
+              Get.toNamed(
+                AppPaths.clientDetail,
                 arguments: client,
               );
             },
             cells: <DataCell>[
               DataCell(CenterText(text: "${index + 1}")),
-              DataCell(CenterText(text: client.full_name)),
-              DataCell(
-                  CenterText(text: formatPhoneNumber(client.phone_number))),
+              DataCell(CenterText(text: client.fullName!)),
+              DataCell(CenterText(text: formatPhoneNumber(client.phoneNumber!))),
               DataCell(CenterText(
-                  text: client.phone_number2 != ""
-                      ? formatPhoneNumber(client.phone_number2)
+                  text: client.phoneNumber2 != ""
+                      ? formatPhoneNumber(client.phoneNumber2!)
                       : DisplayTexts.no_extra_number)),
-              DataCell(CenterText(text: client.address)),
+              DataCell(CenterText(text: client.address!)),
               DataCell(
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -77,9 +78,9 @@ class _ClientTableState extends State<ClientTable> {
                       onPressed: () => showDialog(
                         context: context,
                         builder: (context) => DeleteDialog(
-                          title: client.full_name,
+                          title: client.fullName!,
                           onConfirmDelete: () =>
-                              widget.builderController.removeItem(client.id),
+                              widget.builderController.removeItem(client.id!),
                         ),
                       ),
                     ),

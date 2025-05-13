@@ -8,12 +8,13 @@ import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/interfaces/getx_controller/main_controller.dart';
 import '../../../../utils/texts/alert_texts.dart';
 import '../../../shared/models/api_data.dart';
-import '../models/models.dart';
+import '../models/currency.dart';
 import 'currency_repository.dart';
 import 'currency_service.dart';
 
-class CurrencyCtl extends MainController<CurrencyModel> {
-  var selectedCurrency = CurrencyModel.empty().obs;
+class CurrencyCtl extends MainController<Currency> {
+  var selectedCurrency =
+      Currency(createdAt: DateTime.now(), id: -1, value: 0.0).obs;
 
   late final CurrencyRepository currencyRepository;
   late final CurrencyService currencyService;
@@ -24,7 +25,7 @@ class CurrencyCtl extends MainController<CurrencyModel> {
     currencyRepository = CurrencyRepository(dio);
     currencyService = CurrencyService(
       addRepository: currencyRepository as Add<Map<String, dynamic>>,
-      updateRepository: currencyRepository as Update<CurrencyModel>,
+      updateRepository: currencyRepository as Update<Currency>,
       deleteRepository: currencyRepository as Delete<int>,
       getAllRepository: currencyRepository as GetAllWithPagination<ApiData>,
     );
@@ -33,7 +34,7 @@ class CurrencyCtl extends MainController<CurrencyModel> {
   }
 
   void resetCurrency() {
-    selectedCurrency.value = CurrencyModel.empty();
+    selectedCurrency.value =  Currency(createdAt: DateTime.now(), id: -1, value: 0.0);
   }
 
   @override
@@ -42,7 +43,7 @@ class CurrencyCtl extends MainController<CurrencyModel> {
       isLoading(true);
       var apiCurrencies =
           await currencyService.fetchCurrencies(page: page.value);
-      list(apiCurrencies.items.cast<CurrencyModel>());
+      list(apiCurrencies.items.cast<Currency>());
       pagination(apiCurrencies.pagination);
       isLoading(false);
     } catch (e) {
@@ -57,7 +58,7 @@ class CurrencyCtl extends MainController<CurrencyModel> {
     fetchItems();
   }
 
-  void selectCurrency(CurrencyModel currency) {
+  void selectCurrency(Currency currency) {
     selectedCurrency(currency);
   }
 
@@ -75,7 +76,7 @@ class CurrencyCtl extends MainController<CurrencyModel> {
         return productName.toString().contains(text.toString());
       }).toList();
       // Update the observable list with the filtered products
-      list(filteredCurrencies.cast<CurrencyModel>());
+      list(filteredCurrencies.cast<Currency>());
     } catch (e) {
       handleError(e.toString());
     }
@@ -124,7 +125,7 @@ class CurrencyCtl extends MainController<CurrencyModel> {
   }
 
   @override
-  void updateItem(CurrencyModel item) async {
+  void updateItem(Currency item) async {
     try {
       isLoading(true);
       await currencyService.updateCurrency(currency: item);

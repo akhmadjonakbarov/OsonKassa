@@ -11,13 +11,14 @@ import '../../../../../shared/export_commons.dart';
 import '../../../../../shared/widgets/delete_dialog.dart';
 import '../../../../note/logic/note_controller.dart';
 import '../../../logic/doc_item/doc_item_ctl.dart';
-import '../../../models/doc_item_model.dart';
+import '../../../models/document_item.dart';
 
 class DocItemTableDialog extends StatefulWidget {
   final PosPrinterManager printerManager;
   final NoteCtl spiskaCtl;
   final DocItemCtl docItemCtl;
   final Size size;
+
   const DocItemTableDialog({
     super.key,
     required this.printerManager,
@@ -31,14 +32,6 @@ class DocItemTableDialog extends StatefulWidget {
 }
 
 class _DocItemTableDialogState extends State<DocItemTableDialog> {
-  double calculateProfit(
-    double sellPrice,
-    double incomePrice,
-    double qty,
-  ) {
-    return (qty * (sellPrice - incomePrice));
-  }
-
   double totalQty = 0.0;
 
   double totalProfit = 0.0;
@@ -150,8 +143,6 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                                       onConfirmDelete: () {
                                         widget.docItemCtl
                                             .removeItem(docItem.id!);
-                                        widget.spiskaCtl.fetchItems();
-
                                         Navigator.of(context).pop();
                                       },
                                     ),

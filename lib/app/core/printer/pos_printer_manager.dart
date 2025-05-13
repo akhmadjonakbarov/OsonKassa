@@ -1,7 +1,7 @@
 import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 
-import '../../features/dashboard_views/document/models/doc_item_model.dart';
+import '../../features/dashboard_views/document/models/document_item.dart';
 import '../../utils/formatter_functions/format_phone_number.dart';
 import '../../utils/formatter_functions/formatter_currency.dart';
 import '../../utils/formatter_functions/formatter_date.dart';

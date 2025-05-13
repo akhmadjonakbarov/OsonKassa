@@ -8,7 +8,7 @@ import '../../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../../core/interfaces/getx_controller/main_controller.dart';
 import '../../../category/logic/category_controller.dart';
 import '../../../trade/logic/trade_ctl.dart';
-import '../../models/doc_item_model.dart';
+import '../../models/document_item.dart';
 import 'doc_item_repository.dart';
 import 'doc_item_service.dart';
 

@@ -7,13 +7,13 @@ import '../../../../core/network/status_codes.dart';
 import '../../../../core/validator/response_validator.dart';
 import '../../../shared/models/api_data.dart';
 import '../../../shared/models/pagination_model.dart';
-import '../models/models.dart';
+import '../models/currency.dart';
 
 class CurrencyRepository
     implements
         GetAllWithPagination<ApiData>,
         Add<Map<String, dynamic>>,
-        Update<CurrencyModel>,
+        Update<Currency>,
         Delete<int> {
   final Dio dio;
 
@@ -53,7 +53,7 @@ class CurrencyRepository
   }
 
   @override
-  Future<bool> update(CurrencyModel currency) async {
+  Future<bool> update(Currency currency) async {
     try {
       Map<String, dynamic> currencyData = {
         'value': currency.value,
@@ -70,10 +70,10 @@ class CurrencyRepository
 
   @override
   Future<ApiData> getAll(int page, int pageSize) async {
-    ApiData<CurrencyModel> data =
+    ApiData<Currency> data =
         ApiData(pagination: PaginationModel.empty(), items: []);
     try {
-      List<CurrencyModel> currencies = [];
+      List<Currency> currencies = [];
       PaginationModel pagination = PaginationModel.empty();
       Response response = await dio.get(
         '$baseUrl/all?page=$page&size=$pageSize',
@@ -82,13 +82,11 @@ class CurrencyRepository
       if (response.statusCode == StatusCodes.OK_200) {
         var resData = response.data['data']['list'];
         var paginationData = response.data['data']['pagination'];
-        if (ResponseValidator.isNotEmptyAndIsList(resData)) {
-          for (var currency in resData) {
-            if (ResponseValidator.isMap(currency)) {
-              currencies.add(CurrencyModel.fromMap(currency));
-            } else {
-              throw NotMapDataFormat();
-            }
+        for (var currency in resData) {
+          if (ResponseValidator.isMap(currency)) {
+            currencies.add(Currency.fromJson(currency));
+          } else {
+            throw NotMapDataFormat();
           }
         }
         if (ResponseValidator.isMap(paginationData)) {

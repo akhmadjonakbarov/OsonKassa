@@ -4,25 +4,25 @@ import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/network/status_codes.dart';
 import '../../../../core/validator/response_validator.dart';
-import '../../debt/models/builder_debt_model.dart';
-import '../models/client_model.dart';
+
+import '../models/customer.dart';
 
 const String _baseUrl = '/customers';
 
 class ClientRepository
     implements
-        GetAll<CustomerModel>,
+        GetAll<Customer>,
         Add<Map<String, dynamic>>,
-        Update<CustomerModel>,
+        Update<Customer>,
         Delete<int> {
   final Dio dio;
 
   ClientRepository({required this.dio});
 
   @override
-  Future<List<CustomerModel>> getAll() async {
+  Future<List<Customer>> getAll() async {
     try {
-      List<CustomerModel> clients = [];
+      List<Customer> clients = [];
       Response response = await dio.get(
         '$_baseUrl/all',
       );
@@ -32,7 +32,7 @@ class ClientRepository
         if (ResponseValidator.isNotEmptyAndIsList(resData)) {
           for (var client in resData) {
             if (ResponseValidator.isMap(client)) {
-              clients.add(CustomerModel.fromMap(client));
+              clients.add(Customer.fromJson(client));
             }
           }
         }
@@ -59,18 +59,18 @@ class ClientRepository
   }
 
   @override
-  Future<CustomerModel?> update(CustomerModel value) async {
+  Future<Customer?> update(Customer value) async {
     try {
       Map<String, dynamic> builderData = {
         'id': value.id,
-        'name': value.full_name,
-        'phone_number': value.phone_number,
-        'phone_number2': value.phone_number2,
+        'full_name': value.fullName,
+        'phone_number': value.phoneNumber,
+        'phone_number2': value.phoneNumber2,
         'address': value.address,
       };
 
       Response response = await dio.patch(
-        '$_baseUrl/update/${value.id}/',
+        '$_baseUrl/update/${value.id}',
         data: builderData,
       );
 
@@ -78,7 +78,7 @@ class ClientRepository
         throw DataNotFoundException(message: "Builder not found");
       }
       if (response.statusCode == StatusCodes.OK_200) {
-        return CustomerModel.fromMap(response.data['data']['item']);
+        return Customer.fromJson(response.data['data']['item']);
       } else {
         return null;
       }
@@ -91,7 +91,7 @@ class ClientRepository
   Future<bool> add(Map<String, dynamic> builderData) async {
     try {
       Response response = await dio.post(
-        '$_baseUrl/add/',
+        '$_baseUrl/add',
         data: builderData,
       );
 
@@ -102,49 +102,6 @@ class ClientRepository
       } else {
         rethrow;
       }
-    }
-  }
-}
-
-class BuilderDebtRepository
-    implements FetchItemsById<BuilderDebt>, Update<int> {
-  final Dio dio;
-
-  BuilderDebtRepository(this.dio);
-
-  @override
-  Future<List<BuilderDebt>> fetchItemsById(int id) async {
-    try {
-      List<BuilderDebt> debts = [];
-      Response response = await dio.get(
-        '$_baseUrl/debts/$id/',
-      );
-      if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
-        if (ResponseValidator.isNotEmptyAndIsList(resData)) {
-          for (var element in resData) {
-            if (ResponseValidator.isMap(element)) {
-              debts.add(BuilderDebt.fromMap(element));
-            }
-          }
-        }
-      }
-
-      return debts;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  @override
-  Future<bool> update(int debt_id) async {
-    try {
-      Response response = await dio.patch(
-        '$_baseUrl/pay/$debt_id',
-      );
-      return response.statusCode == StatusCodes.OK_200;
-    } catch (e) {
-      rethrow;
     }
   }
 }

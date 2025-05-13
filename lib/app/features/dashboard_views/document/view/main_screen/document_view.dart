@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/config/app_views.dart';
-import 'package:osonkassa/app/core/routes/app_routes.dart';
 
 import '../../../../../core/enums/product_doc_type.dart';
 import '../../../../../core/permission/permissions.dart';

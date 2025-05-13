@@ -86,7 +86,8 @@ class ItemRepo
   @override
   Future<bool> update(Item item) async {
     try {
-      Map<String, dynamic> itemMap = item.toMap();
+      Map<String, dynamic> itemMap = item.toJson();
+      print(itemMap);
       Response response = await dio.patch(
         '$_baseURL/update/${item.id}',
         data: itemMap,
@@ -127,7 +128,7 @@ class ItemRepo
         var resData = response.data['data']['list'];
         var paginationData = response.data['data']['pagination'];
         for (var element in resData) {
-          Item item = Item.fromMap(element);
+          Item item = Item.fromJson(element);
           products.add(item);
         }
         if (ResponseValidator.isMap(paginationData)) {

@@ -8,7 +8,7 @@ import '../../../../../utils/texts/display_texts.dart';
 import '../../../../../utils/texts/table_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
-import '../../../document/models/doc_item_model.dart';
+import '../../../document/models/document_item.dart';
 import '../../logic/store_ctl.dart';
 
 class StoreTable extends StatefulWidget {

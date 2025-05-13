@@ -100,7 +100,7 @@ class _StoreViewState extends State<StoreView> {
           ],
         ),
         SizedBox(
-          height: screenSize.width * 0.01 / 2,
+          height: screenSize.height * 0.01 / 2,
         ),
         SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.63,

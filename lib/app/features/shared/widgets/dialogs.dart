@@ -9,7 +9,7 @@ import '../../../styles/container_decoration.dart';
 import '../../../styles/text_styles.dart';
 import '../../../utils/media/get_screen_size.dart';
 import '../../../utils/texts/table_texts.dart';
-import '../../dashboard_views/document/models/doc_item_model.dart';
+import '../../dashboard_views/document/models/document_item.dart';
 import 'custom_data_table.dart';
 import 'custom_textfields.dart';
 
@@ -64,7 +64,7 @@ class DialogTable extends StatelessWidget {
                           Icons.close,
                         ),
                       ),
-                      if (products.isNotEmpty)
+                      if (products.isNotEmpty && printer != null)
                         Padding(
                           padding: const EdgeInsets.only(left: 25),
                           child: Material(

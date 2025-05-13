@@ -1,16 +1,16 @@
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../shared/models/api_data.dart';
-import '../models/models.dart';
+import '../models/currency.dart';
 
 class CurrencyService {
   final Add<Map<String, dynamic>> _addRepository;
-  final Update<CurrencyModel> _updateRepository;
+  final Update<Currency> _updateRepository;
   final Delete<int> _deleteRepository;
   final GetAllWithPagination<ApiData> _getAllRepository;
 
   CurrencyService({
     required Add<Map<String, dynamic>> addRepository,
-    required Update<CurrencyModel> updateRepository,
+    required Update<Currency> updateRepository,
     required Delete<int> deleteRepository,
     required GetAllWithPagination<ApiData> getAllRepository,
   })  : _addRepository = addRepository,
@@ -34,7 +34,7 @@ class CurrencyService {
     }
   }
 
-  Future<bool> updateCurrency({required CurrencyModel currency}) async {
+  Future<bool> updateCurrency({required Currency currency}) async {
     try {
       return await _updateRepository.update(currency);
     } catch (e) {

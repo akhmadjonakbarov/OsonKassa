@@ -46,7 +46,7 @@ class StoreRepository
   Future<bool> update(StoreItem value) async {
     try {
       Response response = await dio.patch(
-        "$_baseURL/update/${value.id}",
+        "$_baseURL/update-item-balance/${value.id}",
         data: value.toJson(),
       );
       return response.statusCode == StatusCodes.OK_200;

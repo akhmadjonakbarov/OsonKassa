@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
 
 import '../../../../styles/chart_colors.dart';
-import '../../../dashboard_views/document/models/doc_item_model.dart';
+import '../../../dashboard_views/document/models/document_item.dart';
 import 'indicator.dart';
 
 class PieChartGraph extends StatefulWidget {

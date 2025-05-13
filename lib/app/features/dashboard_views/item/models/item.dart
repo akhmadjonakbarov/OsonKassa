@@ -1,95 +1,75 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 
-import 'package:osonkassa/app/features/dashboard_views/category/models/category_models.dart';
-import 'package:osonkassa/app/features/dashboard_views/company/models/company_model.dart';
-import 'package:osonkassa/app/features/unit/models/unit_model.dart';
+import 'dart:convert';
 
 class Item {
-  int id;
-  String name;
-  String barcode;
-  UnitModel unit;
-  CompanyModel? company;
-  CategoryPublicModel category;
-  DateTime created_at;
-  DateTime updated_at;
+  final int? id;
+  final String? name;
+  final String? barcode;
+  final String? category;
+  final String? unit;
+  final String? company;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
-  Item(
-      {required this.id,
-      required this.name,
-      required this.barcode,
-      required this.unit,
-      this.company,
-      required this.category,
-      required this.created_at,
-      required this.updated_at});
-
-  factory Item.empty() {
-    return Item(
-      id: 0,
-      created_at: DateTime.now(),
-      updated_at: DateTime.now(),
-      name: '',
-      barcode: '',
-      unit: UnitModel.empty(),
-      company: CompanyModel.empty(),
-      category: CategoryPublicModel.empty(),
-    );
-  }
+  Item({
+    this.id,
+    this.name,
+    this.barcode,
+    this.category,
+    this.unit,
+    this.company,
+    this.createdAt,
+    this.updatedAt,
+  });
 
   Item copyWith({
     int? id,
     String? name,
     String? barcode,
-    UnitModel? unit,
-    CompanyModel? company,
-    CategoryPublicModel? category,
-    DateTime? created_at,
-    DateTime? updated_at,
-  }) {
-    return Item(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      barcode: barcode ?? this.barcode,
-      unit: unit ?? this.unit,
-      company: company ?? this.company,
-      category: category ?? this.category,
-      created_at: created_at ?? this.created_at,
-      updated_at: updated_at ?? this.updated_at,
-    );
-  }
+    String? category,
+    String? unit,
+    String? company,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) =>
+      Item(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        barcode: barcode ?? this.barcode,
+        category: category ?? this.category,
+        unit: unit ?? this.unit,
+        company: company ?? this.company,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+      );
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'barcode': barcode,
-      'unit': unit?.toMap(),
-      'company': company?.toMap(),
-      'category': category.toMap(),
-      'created_at': created_at.millisecondsSinceEpoch,
-      'updated_at': updated_at.millisecondsSinceEpoch,
-    };
-  }
+  factory Item.fromRawJson(String str) => Item.fromJson(json.decode(str));
 
-  factory Item.fromMap(Map<String, dynamic> map) {
-    return Item(
-      id: map['id'] as int,
-      name: map['name'] as String,
-      barcode: map['barcode'] as String,
-      unit: UnitModel.fromMap(map['unit'] as Map<String, dynamic>),
-      company: map['company'] != null
-          ? CompanyModel.fromMap(map['company'] as Map<String, dynamic>)
-          : null,
-      category:
-          CategoryPublicModel.fromMap(map['category'] as Map<String, dynamic>),
-      created_at: DateTime.parse(map['created_at']),
-      updated_at: DateTime.parse(map['updated_at']),
-    );
-  }
+  String toRawJson() => json.encode(toJson());
 
-  @override
-  String toString() {
-    return 'ItemModel(id: $id, name: $name, barcode: $barcode, unit: $unit, company: $company, category: $category, created_at: $created_at, updated_at: $updated_at)';
-  }
+  factory Item.fromJson(Map<String, dynamic> json) => Item(
+    id: json["id"],
+    name: json["name"],
+    barcode: json["barcode"],
+    category: json["category"],
+    unit: json["unit"],
+    company: json["company"],
+    createdAt: json["created_at"] == null
+        ? null
+        : DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"] == null
+        ? null
+        : DateTime.parse(json["updated_at"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "name": name,
+    "barcode": barcode,
+    "category": category,
+    "unit": unit,
+    "company": company,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
+  };
 }

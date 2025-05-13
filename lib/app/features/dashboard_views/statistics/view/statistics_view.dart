@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:osonkassa/app/features/dashboard_views/statistics/models/daily_sales_rate.dart';
 
 import '../../../../styles/app_colors.dart';
 import '../../../../styles/chart_colors.dart';
@@ -16,9 +18,9 @@ import 'widgets/chart/bottom_titles.dart';
 import 'widgets/profit_card_info.dart';
 
 class StatisticsView extends StatefulWidget {
-  const StatisticsView({super.key, required this.staticticsCtl});
+  const StatisticsView({super.key, required this.statisticsCtl});
 
-  final StatisticsCtl staticticsCtl;
+  final StatisticsCtl statisticsCtl;
 
   @override
   State<StatisticsView> createState() => _StatisticsViewState();
@@ -27,64 +29,35 @@ class StatisticsView extends StatefulWidget {
 class _StatisticsViewState extends State<StatisticsView> {
   @override
   void initState() {
+    widget.statisticsCtl.loadAllStatistics();
+    loadingChanged();
     super.initState();
   }
 
-  void fetchData() {
-    widget.staticticsCtl.fetchStatistics();
-  }
-
-  bool isLoading = true;
-
-  void loadingChanged() async {
-    await Future.delayed(const Duration(seconds: 2));
+  @override
+  void dispose() {
+    super.dispose();
     setState(() {
       isLoading = false;
     });
   }
 
-  final ScrollController _scrollController = ScrollController();
-  List<DailyTotalSellingPrice> dailyTotalSellingPrices = [
-    DailyTotalSellingPrice(
-      date: DateTime(2025, 1, 1), // Example date: January 1, 2025
-      price: 150.0,
-      profit: 50.0,
-    ),
-    DailyTotalSellingPrice(
-      date: DateTime(2025, 1, 2), // Example date: January 2, 2025
-      price: 200.0,
-      profit: 70.0,
-    ),
-    DailyTotalSellingPrice(
-      date: DateTime(2025, 1, 3), // Example date: January 3, 2025
-      price: 180.0,
-      profit: 60.0,
-    ),
-    DailyTotalSellingPrice(
-      date: DateTime(2025, 1, 4), // Example date: January 4, 2025
-      price: 220.0,
-      profit: 80.0,
-    ),
-    DailyTotalSellingPrice(
-      date: DateTime(2025, 1, 5), // Example date: January 5, 2025
-      price: 170.0,
-      profit: 55.0,
-    ),
-    DailyTotalSellingPrice(
-      date: DateTime(2025, 1, 6), // Example date: January 6, 2025
-      price: 210.0,
-      profit: 75.0,
-    ),
-    DailyTotalSellingPrice(
-      date: DateTime(2025, 1, 7), // Example date: January 7, 2025
-      price: 190.0,
-      profit: 65.0,
-    ),
-  ];
+  bool isLoading = true;
+  int? _selectedBarIndex;
+
+  void loadingChanged() async {
+    await Future.delayed(const Duration(seconds: 2)).then(
+      (value) {
+        widget.statisticsCtl.loadAllStatistics();
+        setState(() {
+          isLoading = false;
+        });
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    loadingChanged();
     final screenSize = getScreenSize(context);
     return ListView(
       children: [
@@ -117,7 +90,7 @@ class _StatisticsViewState extends State<StatisticsView> {
                   spreadRadius: 1, // How much the shadow should spread
                 ),
               ),
-              width: screenSize.width * 0.3,
+              width: screenSize.width * 0.33,
               height: screenSize.height / 5,
               padding: EdgeInsets.all(
                 Paddings.customPadding(
@@ -148,75 +121,134 @@ class _StatisticsViewState extends State<StatisticsView> {
                           ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "\$4.546",
-                            style: TextStyles.black(
-                                fontSize: screenSize.height / 35,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const PercentageDisplay(
-                            colorBg: AppColors.lightGreen,
-                            colorText: AppColors.green,
-                            text: "+15.2%",
-                          )
-                        ],
+                      Obx(
+                        () => Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${PriceFomatter.formatPriceWithWord(widget.statisticsCtl.totalWeeklyProfit.value)} uzs",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyles.black(
+                                  fontSize: screenSize.height / 38,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const PercentageDisplay(
+                              colorBg: AppColors.lightGreen,
+                              colorText: AppColors.green,
+                              text: "+15.2%",
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                  Container(
-                    height: screenSize.height / 5,
-                    // Overall height of the ListView
-                    width: screenSize.width * 0.18,
-                    // Width of the ListView
-                    child: ListView.separated(
-                      controller: _scrollController,
-                      separatorBuilder: (context, index) => SizedBox(
-                        width: screenSize.width * 0.1 / 25,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: Paddings.padding8),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 7,
-                      itemBuilder: (context, index) {
-                        // Dynamically adjust the height based on screen size or any other condition
-                        double minHeight = 30.0; // Minimum height
-                        double maxHeight =
-                            screenSize.height / 4; // Maximum height
-                        double itemHeight = minHeight +
-                            Random()
-                                .nextInt((maxHeight - minHeight).toInt())
-                                .toDouble();
-
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Expanded(
-                              child: Stack(
-                                alignment: Alignment.bottomCenter,
-                                children: [
-                                  Container(
-                                    width: screenSize.width * 0.1 / 12,
-                                    height: maxHeight,
-                                    decoration: Decorations.decoration(
-                                        color: AppColors.lightGreen),
-                                  ),
-                                  Container(
-                                    width: screenSize.width * 0.1 / 12,
-                                    height: itemHeight,
-                                    decoration: Decorations.decoration(
-                                        color: Colors.green),
-                                  ),
-                                ],
-                              ),
+                  Obx(
+                    () {
+                      return SizedBox(
+                        width: screenSize.width * 0.18,
+                        child: BarChart(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.bounceIn,
+                          BarChartData(
+                            gridData: const FlGridData(show: true),
+                            // Optional: hide grid
+                            titlesData: const FlTitlesData(
+                              show: false,
                             ),
-                            const Text("Index")
-                          ],
-                        );
-                      },
-                    ),
+                            borderData: FlBorderData(show: false),
+                            // Optional: Hide borders
+                            barGroups: widget.statisticsCtl.weeklyProfits
+                                .asMap()
+                                .map((index, profitData) {
+                                  double maxHeight = screenSize.height / 8;
+                                  double currentProfit = profitData.profit!;
+                                  double maxProfit = widget
+                                      .statisticsCtl.weeklyProfits
+                                      .map((e) => e.profit!)
+                                      .reduce((a, b) => a > b ? a : b);
+
+                                  if (maxProfit == 0) maxProfit = 1;
+
+                                  double itemHeight =
+                                      (currentProfit / maxProfit) * maxHeight;
+
+                                  if (currentProfit > 0) {
+                                    return MapEntry(
+                                      index,
+                                      BarChartGroupData(
+                                        x: index,
+                                        barRods: [
+                                          BarChartRodData(
+                                            fromY: 0,
+                                            toY: itemHeight,
+                                            width: screenSize.width * 0.1 / 10,
+                                            color: _selectedBarIndex == index
+                                                ? Colors.orange
+                                                : Colors.green,
+                                            borderRadius: BorderRadius.zero,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return MapEntry(
+                                      index,
+                                      BarChartGroupData(
+                                        x: index,
+                                        barsSpace: 25,
+                                        barRods: [
+                                          BarChartRodData(
+                                            fromY: 0,
+                                            toY: 1,
+                                            width: screenSize.width * 0.1 / 10,
+                                            color: Colors.red.shade100,
+                                            borderRadius: BorderRadius.zero,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                })
+                                .values
+                                .toList(),
+                            barTouchData: BarTouchData(
+                              touchTooltipData: BarTouchTooltipData(
+                                tooltipMargin: -40,
+                                getTooltipItem:
+                                    (group, groupIndex, rod, rodIndex) {
+                                  // Custom tooltip content
+
+                                  return BarTooltipItem(
+                                    '${PriceFomatter.formatPrice(widget.statisticsCtl.weeklyProfits[groupIndex].profit!)} uzs ',
+                                    const TextStyle(color: Colors.white),
+                                    children: [
+                                      TextSpan(
+                                        text: widget.statisticsCtl
+                                            .weeklyProfits[groupIndex].day,
+                                      )
+                                    ],
+                                  );
+                                },
+                              ),
+                              touchCallback: (FlTouchEvent event,
+                                  BarTouchResponse? response) {
+                                if (event is FlTapUpEvent &&
+                                    response != null &&
+                                    response.spot != null) {
+                                  setState(() {
+                                    _selectedBarIndex =
+                                        response.spot!.touchedBarGroupIndex;
+                                  });
+                                }
+                              },
+
+                              handleBuiltInTouches:
+                                  true, // Enable built-in touch gestures
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   )
                 ],
               ),
@@ -259,15 +291,16 @@ class _StatisticsViewState extends State<StatisticsView> {
                 spreadRadius: 1,
               ),
             ),
-            child: ChartDataExample(reports: dailyTotalSellingPrices),
-          )
+            child: ChartDataExample(
+                reports: widget.statisticsCtl.dailySalesRates),
+          ),
       ],
     );
   }
 }
 
 class ChartDataExample extends StatefulWidget {
-  final List<DailyTotalSellingPrice> reports;
+  final List<DailySaleRate> reports;
 
   const ChartDataExample({
     super.key,
@@ -294,8 +327,8 @@ class _ChartDataExampleState extends State<ChartDataExample> {
       for (int i = 0; i < widget.reports.length; i++) {
         final barGroup = makeGroupData(
           i,
-          widget.reports[i].price, // Scaling the price
-          widget.reports[i].profit, // Scaling the price
+          widget.reports[i].sales!, // Scaling the price
+          widget.reports[i].profit!, // Scaling the price
         );
 
         barGroups.add(barGroup);
@@ -380,7 +413,7 @@ class _ChartDataExampleState extends State<ChartDataExample> {
                             if (rodIndex == 0)
                               TextSpan(
                                 text:
-                                    'Savdo: \n ${formatUZSNumber(widget.reports[groupIndex].price, isAddWord: false)}',
+                                    'Savdo: \n ${formatUZSNumber(widget.reports[groupIndex].sales!, isAddWord: false)}',
                                 // Display price
                                 style: const TextStyle(
                                   color: Colors.yellow,
@@ -393,7 +426,7 @@ class _ChartDataExampleState extends State<ChartDataExample> {
                             else
                               TextSpan(
                                 text:
-                                    'Foyda: \n ${formatUZSNumber(widget.reports[groupIndex].profit, isAddWord: false)}',
+                                    'Foyda: \n ${formatUZSNumber(widget.reports[groupIndex].profit!, isAddWord: false)}',
                                 // Display profit
                                 style: const TextStyle(
                                   color: Colors.greenAccent,
@@ -431,16 +464,16 @@ class _ChartDataExampleState extends State<ChartDataExample> {
     // Use a map for specific y-axis labels at regular intervals, up to 10,000 USD
     Map<double, String> leftTitlesMap = {
       0: '0 USD',
-      1000: '1K USD',
-      2000: '2K USD',
-      3000: '3K USD',
-      4000: '4K USD',
-      5000: '5K USD',
-      6000: '6K USD',
-      7000: '7K USD',
-      8000: '8K USD',
-      9000: '9K USD',
-      10000: '10K USD',
+      1000: '1K UZS',
+      2000: '2K UZS',
+      3000: '3K UZS',
+      4000: '4K UZS',
+      5000: '5K UZS',
+      6000: '6K UZS',
+      7000: '7K UZS',
+      8000: '8K UZS',
+      9000: '9K UZS',
+      10000: '10K UZS',
     };
 
     String? text = leftTitlesMap[value];
@@ -464,12 +497,12 @@ class _ChartDataExampleState extends State<ChartDataExample> {
       x: x,
       barRods: [
         BarChartRodData(
-          toY: price,
+          toY: price / 1000,
           color: leftBarColor, // For price
           width: 10,
         ),
         BarChartRodData(
-          toY: profit,
+          toY: profit / 1000,
           color: rightBarColor, // For profit
           width: 10,
         ),

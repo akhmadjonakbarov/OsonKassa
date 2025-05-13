@@ -38,7 +38,7 @@ class ListSellProduct extends StatelessWidget {
               incrementQty: () => tradeCtl.incrementQty(
                 sellProductDocItem.item!.barcode!,
               ),
-              deleteItem: () => tradeCtl.deleteItemFromSelledProductList(
+              deleteItem: () => tradeCtl.removeItem(
                 sellProductDocItem.item!.barcode!,
               ),
               sellProductDocItem: sellProductDocItem,

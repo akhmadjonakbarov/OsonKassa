@@ -1,23 +1,23 @@
 import '../../../../core/interfaces/api/api_interfaces.dart';
-import '../models/client_model.dart';
+import '../models/customer.dart';
 
 class ClientService {
   final Add<Map<String, dynamic>> _addRepository;
-  final Update<CustomerModel> _updateRepository;
+  final Update<Customer> _updateRepository;
   final Delete<int> _deleteRepository;
-  final GetAll<CustomerModel> _getAllRepository;
+  final GetAll<Customer> _getAllRepository;
 
   ClientService({
     required Add<Map<String, dynamic>> addRepository,
-    required Update<CustomerModel> updateRepository,
+    required Update<Customer> updateRepository,
     required Delete<int> deleteRepository,
-    required GetAll<CustomerModel> getAllRepository,
+    required GetAll<Customer> getAllRepository,
   })  : _addRepository = addRepository,
         _updateRepository = updateRepository,
         _deleteRepository = deleteRepository,
         _getAllRepository = getAllRepository;
 
-  Future<List<CustomerModel>> getAllClient() async {
+  Future<List<Customer>> getAllClient() async {
     try {
       return await _getAllRepository.getAll();
     } catch (e) {
@@ -33,7 +33,7 @@ class ClientService {
     }
   }
 
-  Future<CustomerModel?> updateClient({required CustomerModel client}) async {
+  Future<Customer?> updateClient({required Customer client}) async {
     try {
       return await _updateRepository.update(client);
     } catch (e) {

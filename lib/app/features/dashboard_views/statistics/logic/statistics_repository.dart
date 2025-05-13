@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:osonkassa/app/features/dashboard_views/statistics/models/daily_sales_rate.dart';
+import 'package:osonkassa/app/features/dashboard_views/statistics/models/product_count_report.dart';
+import 'package:osonkassa/app/features/dashboard_views/statistics/models/weekly_profit.dart';
 
 import '../../../../core/network/status_codes.dart';
 import '../../../../core/validator/response_validator.dart';
@@ -53,6 +56,74 @@ class StatisticsRepository {
       }
 
       return priceList;
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
+
+class ProfitRepository {
+  final Dio dio;
+
+  ProfitRepository({required this.dio});
+
+  static const _baseUrl = '/statistics/profit';
+
+  Future<List<WeeklyProfit>> getWeeklyProfit() async {
+    List<WeeklyProfit> profits = [];
+    try {
+      Response response = await dio.get("$_baseUrl/week");
+      if (response.statusCode == StatusCodes.OK_200) {
+        final profitData = response.data;
+        for (var profit in profitData) {
+          profits.add(WeeklyProfit.fromJson(profit));
+        }
+      }
+      return profits;
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
+
+class SalesRateRepository {
+  final Dio dio;
+
+  SalesRateRepository({required this.dio});
+
+  static const _baseUrl = '/statistics';
+
+  Future<List<DailySaleRate>> getDailySalesRate() async {
+    List<DailySaleRate> sales = [];
+    try {
+      Response response = await dio.get("$_baseUrl/daily-sales-rate");
+      if (response.statusCode == StatusCodes.OK_200) {
+        final profitData = response.data;
+        for (var salesRate in profitData) {
+          sales.add(DailySaleRate.fromJson(salesRate));
+        }
+      }
+      return sales;
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
+
+class GeneralStatisticsRepository {
+  final Dio dio;
+
+  GeneralStatisticsRepository({required this.dio});
+
+  static const _baseUrl = '/statistics';
+
+  Future<ProductSummary> getProductsSummary() async {
+    try {
+      Response response = await dio.get("$_baseUrl/product-price-qty-report");
+      if (response.statusCode == StatusCodes.OK_200) {
+        return ProductSummary.fromJson(response.data);
+      }
+      return ProductSummary();
     } catch (e) {
       rethrow;
     }

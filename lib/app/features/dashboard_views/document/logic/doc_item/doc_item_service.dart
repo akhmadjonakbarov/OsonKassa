@@ -1,5 +1,5 @@
 import '../../../../../core/interfaces/api/api_interfaces.dart';
-import '../../models/doc_item_model.dart';
+import '../../models/document_item.dart';
 
 class DocItemService {
   final FetchItemsById<DocumentItem> _fetchItemsById;

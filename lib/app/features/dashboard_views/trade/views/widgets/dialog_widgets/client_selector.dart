@@ -9,13 +9,13 @@ import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/texts/button_texts.dart';
 import '../../../../../../utils/texts/display_texts.dart';
 import '../../../../../shared/widgets/buttons.dart';
-import '../../../../customer/logic/client_ctl.dart';
-import '../../../../customer/models/client_model.dart';
+import '../../../../customer/logic/customer_ctl.dart';
+import '../../../../customer/models/customer.dart';
 
 class ClientSelector extends StatefulWidget {
-  final ClientCtl builderCtl;
+  final CustomerCtl builderCtl;
 
-  final Function(CustomerModel) selectBuilder;
+  final Function(Customer) selectBuilder;
 
   const ClientSelector(
       {super.key, required this.builderCtl, required this.selectBuilder});
@@ -25,7 +25,7 @@ class ClientSelector extends StatefulWidget {
 }
 
 class _ClientSelectorState extends State<ClientSelector> {
-  CustomerModel? selectedClient;
+  Customer? selectedClient;
   String text = "Klientni tanlang";
 
   @override
@@ -62,7 +62,7 @@ class _ClientSelectorState extends State<ClientSelector> {
                       selectedClient = widget.builderCtl.list.firstWhere(
                         (e) => e.id == selectedOptions[0].value,
                       );
-                      text = selectedClient!.full_name;
+                      text = selectedClient!.fullName!;
 
                       widget.selectBuilder(selectedClient!);
                     });
@@ -70,7 +70,7 @@ class _ClientSelectorState extends State<ClientSelector> {
                   options: widget.builderCtl.list.asMap().entries.map(
                     (e) {
                       return ValueItem(
-                        label: e.value.full_name,
+                        label: e.value.fullName!,
                         value: e.value.id,
                       );
                     },

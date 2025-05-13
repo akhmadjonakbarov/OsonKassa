@@ -11,7 +11,7 @@ import '../../../../../utils/texts/button_texts.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
 import '../../../../shared/widgets/buttons.dart';
 import '../../logic/currency_controller.dart';
-import '../../models/models.dart';
+import '../../models/currency.dart';
 
 class CurrencyEditDialog extends StatefulWidget {
   final double height;
@@ -60,7 +60,7 @@ class _CurrencyEditDialogState extends State<CurrencyEditDialog> {
                 {'value': double.parse(currencyValue)},
               );
             } else {
-              final CurrencyModel currency = ctl.selectedCurrency.value
+              final Currency currency = ctl.selectedCurrency.value
                   .copyWith(value: double.parse(currencyValue));
 
               ctl.updateItem(currency);

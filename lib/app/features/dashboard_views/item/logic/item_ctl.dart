@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -36,11 +37,9 @@ import 'item_repo.dart';
 import 'item_service.dart';
 
 class ItemCtl extends MainController<Item> {
-  var category_id = 0.obs;
-  var company_id = 0.obs;
-  var unit_id = 0.obs;
+  var categoryName = ''.obs;
 
-  var selectedItem = Item.empty().obs;
+  var selectedItem = Item().obs;
 
   void setLoading(bool value) {
     isLoading.value = value;
@@ -112,7 +111,7 @@ class ItemCtl extends MainController<Item> {
   }
 
   void removeSelectedCategory() {
-    category_id(0);
+    categoryName('');
     fetchItems();
   }
 
@@ -122,7 +121,7 @@ class ItemCtl extends MainController<Item> {
       bool isSuccess = await _productService.updateItem(item);
       if (isSuccess) {
         UserNotifier.showSnackBar(
-          label: AlertTexts.updateAlert(item.name),
+          label: AlertTexts.updateAlert(item.name!),
           type: TypeOfSnackBar.update,
         );
         fetchItems();
@@ -134,22 +133,21 @@ class ItemCtl extends MainController<Item> {
     }
   }
 
-  void filterByCategory(int id) async {
+  void filterByCategory(String name) async {
     List<Item> filteredProducts = [];
     try {
-      category_id(id);
-      fetchItems();
+      categoryName(name);
+      await fetchItems();
 
       var products = list;
 
       // Filter products by category ID
       if (categoryIsSelected()) {
         filteredProducts = products
-            .where((element) => element.category.id == category_id.value)
+            .where((element) =>
+                element.category!.trim().toLowerCase() ==
+                categoryName.value.trim().toLowerCase())
             .toList();
-      } else {
-        filteredProducts =
-            products.where((element) => element.category.id == id).toList();
       }
 
       list.assignAll(filteredProducts); // Use assignAll for observable lists
@@ -172,8 +170,8 @@ class ItemCtl extends MainController<Item> {
       // Filter products based on barcode or name
       var filteredProducts = list.where((product) {
         // Convert product name and category name to lowercase only once
-        final productName = product.name.toLowerCase();
-        final categoryName = product.category.name.toLowerCase();
+        final productName = product.name!.toLowerCase();
+        final categoryName = product.category!.toLowerCase();
 
         // Check if all keywords are found in either product name or category name
         return searchKeywords.every((keyword) =>
@@ -183,7 +181,7 @@ class ItemCtl extends MainController<Item> {
       // Filter by selected category if applicable
       if (categoryIsSelected()) {
         filteredProducts = filteredProducts
-            .where((product) => product.category.id == category_id.value)
+            .where((product) => product.category == categoryName.value)
             .toList();
       }
 
@@ -196,12 +194,14 @@ class ItemCtl extends MainController<Item> {
 
   void resetItem() {
     selectedItem(
-      Item.empty(),
+      Item(),
     );
   }
 
   bool categoryIsSelected() {
-    return category_id.value != 0;
+    LogHelper.logInfo(categoryName.value.isNotEmpty.toString());
+    LogHelper.logInfo(categoryName.value.toString());
+    return categoryName.value.isNotEmpty;
   }
 
   @override
@@ -240,9 +240,9 @@ class ItemCtl extends MainController<Item> {
     Map<String, dynamic> itemData = {
       'name': '',
       'barcode': '',
-      'category': CategoryModel.empty().toMap(),
-      'unit': UnitModel.empty().toMap(),
-      'company': CompanyModel.empty().toMap(),
+      'category': '',
+      'unit': '',
+      'company': '',
     };
 
     bool isCategoryNull = false;
@@ -250,224 +250,194 @@ class ItemCtl extends MainController<Item> {
     Map<String, dynamic> unitData = UnitModel.empty().toMap();
     Map<String, dynamic> companyData = CompanyModel.empty().toMap();
 
-    bool isNull = selectedItem.value.id == 0;
+    bool isNull = selectedItem.value.id == null;
 
     final TextEditingController itemNameController = TextEditingController();
     final TextEditingController barcodeController = TextEditingController();
-
     final formKey = GlobalKey<FormState>();
 
     if (!isNull) {
-      itemNameController.text = selectedItem.value.name;
-      barcodeController.text = selectedItem.value.barcode;
-      itemData['category'] = selectedItem.value.category.toMap();
-      itemData['unit'] = selectedItem.value.unit.toMap();
-      itemData['company'] = selectedItem.value.company?.toMap();
+      itemNameController.text = selectedItem.value.name!;
+      barcodeController.text = selectedItem.value.barcode!;
+      itemData['category'] = selectedItem.value.category;
+      itemData['unit'] = selectedItem.value.unit;
+      itemData['company'] = selectedItem.value.company;
     }
 
     final String actionText = isNull ? ButtonTexts.add : ButtonTexts.edit;
 
     for (CategoryModel category in categoryCtl.list) {
-      if (category.id == itemData['category']['id']) {
+      if (category.name.toLowerCase() ==
+          itemData['category'].toString().toLowerCase()) {
         categoryData['name'] = category.name;
         categoryData['id'] = category.id;
         break;
       }
     }
 
+    for (UnitModel unit in unitCtl.list) {
+      if (unit.value.toLowerCase() ==
+          itemData['unit'].toString().toLowerCase()) {
+        unitData['value'] = unit.value;
+        unitData['id'] = unit.id;
+        break;
+      }
+    }
+
     if (itemData['company'] != null) {
       for (CompanyModel company in companyCtl.list) {
-        if (company.id == itemData['company']['id']) {
+        if (company.name.toLowerCase() ==
+            itemData['company'].toString().toLowerCase()) {
           companyData['name'] = company.name;
           companyData['id'] = company.id;
           break;
         }
       }
-    } else {
-      itemData['company'] = CompanyModel.empty().toMap();
     }
 
     double heightOfDialog = MediaQuery.of(context).size.height * 0.63;
 
-    Get.dialog(AlertDialog(
-      backgroundColor: primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      content: StatefulBuilder(
-        builder: (context, setState) {
-          if (itemData['category']['id'] != 0) {
-            setState(
-              () {
-                isCategoryNull = false;
-                heightOfDialog = MediaQuery.of(context).size.height * 0.63;
-              },
-            );
-          }
-
-          return Container(
-            width: MediaQuery.of(context).size.width * 0.3,
-            height: heightOfDialog,
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Text(
-                  isNull
-                      ? '${DisplayTexts.products} ${ButtonTexts.add}'
-                      : '${DisplayTexts.products} ${ButtonTexts.edit}',
-                  style: textStyleBlack18.copyWith(
-                    fontSize: 22,
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: primary,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+        content: StatefulBuilder(
+          builder: (context, setState) {
+            return Container(
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: heightOfDialog,
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text(
+                    isNull
+                        ? '${DisplayTexts.products} ${ButtonTexts.add}'
+                        : '${DisplayTexts.products} ${ButtonTexts.edit}',
+                    style: textStyleBlack18.copyWith(fontSize: 22),
                   ),
-                ),
-                const Divider(),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          Obx(
-                            () => SizedBox(
-                              height: 60,
-                              child: MultiSelectDropDown<int>(
-                                selectedOptions:
-                                    !isNull || company_id.value != 0
-                                        ? [
-                                            ValueItem(
-                                              label: companyData['name'],
-                                              value: companyData['id'],
-                                            ),
-                                          ]
-                                        : [],
-                                onOptionSelected:
-                                    (List<ValueItem> selectedOptions) {
-                                  setState(
-                                    () {
-                                      itemData['company']['id'] =
-                                          company_id.value != 0
-                                              ? company_id.value
-                                              : selectedOptions.first.value;
-                                      itemData['company']['name'] =
-                                          selectedOptions.last.label;
-                                    },
-                                  );
-                                },
-                                options: companyCtl.list.asMap().entries.map(
-                                  (e) {
-                                    return ValueItem(
-                                      label: e.value.name,
-                                      value: e.value.id,
-                                    );
+                  const Divider(),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      // Company Dropdown
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Obx(
+                              () => SizedBox(
+                                height: 60,
+                                child: MultiSelectDropDown<int>(
+                                  selectedOptions: companyData['id'] != null
+                                      ? [
+                                          ValueItem(
+                                            label: companyData['name'],
+                                            value: companyData['id'],
+                                          ),
+                                        ]
+                                      : [],
+                                  onOptionSelected: (selectedOptions) {
+                                    setState(() {
+                                      companyData['id'] =
+                                          selectedOptions.first.value;
+                                      companyData['name'] =
+                                          selectedOptions.first.label;
+                                    });
                                   },
-                                ).toList(),
-                                searchEnabled: true,
-                                searchLabel:
-                                    "${ButtonTexts.search} | ${DisplayTexts.company}",
-                                borderRadius: 5,
-                                selectionType: SelectionType.single,
-                                chipConfig:
-                                    const ChipConfig(wrapType: WrapType.wrap),
-                                selectedOptionTextColor: Colors.white,
-                                hintStyle: textStyleBlack18.copyWith(
-                                    color: Colors.grey),
-                                selectedOptionBackgroundColor: bgButtonColor,
-                                dropdownBackgroundColor: primary,
-                                fieldBackgroundColor: primary,
-                                optionsBackgroundColor: primary,
-                                singleSelectItemStyle: textStyleBlack18,
-                                hint: DisplayTexts.company,
-                                optionTextStyle: textStyleBlack14.copyWith(
-                                  fontWeight: FontWeight.w800,
+                                  options: companyCtl.list
+                                      .map((e) =>
+                                          ValueItem(label: e.name, value: e.id))
+                                      .toList(),
+                                  selectionType: SelectionType.single,
+                                  searchEnabled: true,
+                                  searchLabel:
+                                      "${ButtonTexts.search} | ${DisplayTexts.company}",
+                                  hint: DisplayTexts.company,
+                                  hintStyle: textStyleBlack18.copyWith(
+                                      color: Colors.grey),
+                                  selectedOptionTextColor: Colors.white,
+                                  selectedOptionBackgroundColor: bgButtonColor,
+                                  dropdownBackgroundColor: primary,
+                                  fieldBackgroundColor: primary,
+                                  optionsBackgroundColor: primary,
+                                  singleSelectItemStyle: textStyleBlack18,
+                                  optionTextStyle: textStyleBlack14.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          if (isCategoryNull)
-                            Text(
-                              "Iltimos kompaniyani tanlang",
-                              style: textStyleBlack14.copyWith(
-                                  color: Colors.red, fontSize: 16),
-                            ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                            if (isCategoryNull)
+                              Text(
+                                "Iltimos kompaniyani tanlang",
+                                style: textStyleBlack14.copyWith(
+                                    color: Colors.red, fontSize: 16),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 5),
-                    Expanded(
+                      const SizedBox(width: 5),
+                      // Category Dropdown
+                      Expanded(
                         child: Column(
-                      children: [
-                        Obx(
-                          () => SizedBox(
-                            height: 60,
-                            child: MultiSelectDropDown<int>(
-                              selectedOptions: !isNull || category_id.value != 0
-                                  ? [
-                                      ValueItem(
-                                        label: categoryData['name'],
-                                        value: categoryData['id'],
-                                      ),
-                                    ]
-                                  : [],
-                              onOptionSelected:
-                                  (List<ValueItem> selectedOptions) {
-                                setState(
-                                  () {
-                                    itemData['category']['id'] =
-                                        category_id.value != 0
-                                            ? category_id.value
-                                            : selectedOptions.first.value;
-                                    itemData['category']['name'] =
-                                        selectedOptions.last.label;
+                          children: [
+                            Obx(
+                              () => SizedBox(
+                                height: 60,
+                                child: MultiSelectDropDown<int>(
+                                  selectedOptions: categoryData['id'] != null
+                                      ? [
+                                          ValueItem(
+                                            label: categoryData['name'],
+                                            value: categoryData['id'],
+                                          ),
+                                        ]
+                                      : [],
+                                  onOptionSelected: (selectedOptions) {
+                                    setState(() {
+                                      categoryData['id'] =
+                                          selectedOptions.first.value;
+                                      categoryData['name'] =
+                                          selectedOptions.first.label;
+                                    });
                                   },
-                                );
-                              },
-                              options: categoryCtl.list.asMap().entries.map(
-                                (e) {
-                                  return ValueItem(
-                                    label: e.value.name,
-                                    value: e.value.id,
-                                  );
-                                },
-                              ).toList(),
-                              searchEnabled: true,
-                              searchLabel:
-                                  "${ButtonTexts.search} | ${DisplayTexts.categories}",
-                              borderRadius: 5,
-                              selectionType: SelectionType.single,
-                              chipConfig:
-                                  const ChipConfig(wrapType: WrapType.wrap),
-                              selectedOptionTextColor: Colors.white,
-                              hintStyle:
-                                  textStyleBlack18.copyWith(color: Colors.grey),
-                              selectedOptionBackgroundColor: bgButtonColor,
-                              dropdownBackgroundColor: primary,
-                              fieldBackgroundColor: primary,
-                              optionsBackgroundColor: primary,
-                              singleSelectItemStyle: textStyleBlack18,
-                              hint: ProductViewTexts.category,
-                              optionTextStyle: textStyleBlack14.copyWith(
-                                fontWeight: FontWeight.w800,
+                                  options: categoryCtl.list
+                                      .map((e) =>
+                                          ValueItem(label: e.name, value: e.id))
+                                      .toList(),
+                                  selectionType: SelectionType.single,
+                                  searchEnabled: true,
+                                  searchLabel:
+                                      "${ButtonTexts.search} | ${DisplayTexts.categories}",
+                                  hint: ProductViewTexts.category,
+                                  hintStyle: textStyleBlack18.copyWith(
+                                      color: Colors.grey),
+                                  selectedOptionTextColor: Colors.white,
+                                  selectedOptionBackgroundColor: bgButtonColor,
+                                  dropdownBackgroundColor: primary,
+                                  fieldBackgroundColor: primary,
+                                  optionsBackgroundColor: primary,
+                                  singleSelectItemStyle: textStyleBlack18,
+                                  optionTextStyle: textStyleBlack14.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            if (isCategoryNull)
+                              Text(
+                                "Iltimos bo'limni tanlang",
+                                style: textStyleBlack14.copyWith(
+                                    color: Colors.red, fontSize: 16),
+                              ),
+                          ],
                         ),
-                        if (isCategoryNull)
-                          Text(
-                            "Iltimos bo'limni tanlang",
-                            style: textStyleBlack14.copyWith(
-                                color: Colors.red, fontSize: 16),
-                          ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ))
-                  ],
-                ),
-                SizedBox(
-                  child: Form(
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  // Name and Barcode Fields
+                  Form(
                     key: formKey,
                     child: Row(
                       children: [
@@ -477,8 +447,7 @@ class ItemCtl extends MainController<Item> {
                             validator: (value) {
                               if (value == "") {
                                 return validField(
-                                  DisplayTexts.name_of_product.toLowerCase(),
-                                );
+                                    DisplayTexts.name_of_product.toLowerCase());
                               }
                               return null;
                             },
@@ -495,9 +464,7 @@ class ItemCtl extends MainController<Item> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 5,
-                        ),
+                        const SizedBox(width: 5),
                         Expanded(
                           child: TextFormField(
                             controller: barcodeController,
@@ -522,169 +489,131 @@ class ItemCtl extends MainController<Item> {
                       ],
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  child: ElevatedButton(
+                  const SizedBox(height: 10),
+                  // Barcode Generation Button
+                  ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                     ),
-                    child: Text(
-                      'Barcode nom asosida',
-                      style: textStyleWhite18,
-                    ),
+                    child: Text('Barcode nom asosida', style: textStyleWhite18),
                     onPressed: () {
                       if (itemNameController.text.isNotEmpty) {
                         String barCode = itemNameController.text
                             .trim()
-                            .replaceAll(' ', '')
-                            .replaceAll('(', '')
-                            .replaceAll(')', '')
+                            .replaceAll(RegExp(r'[ ()]'), '')
                             .toLowerCase();
-
-                        setState(
-                          () {
-                            barcodeController.text = barCode;
-                          },
-                        );
+                        setState(() {
+                          barcodeController.text = barCode;
+                        });
                       }
                     },
                   ),
-                ),
-                Expanded(
-                    child: Column(
-                  children: [
-                    Obx(
-                      () => SizedBox(
-                        height: 60,
-                        child: MultiSelectDropDown<int>(
-                          selectedOptions: !isNull
-                              ? [
-                                  ValueItem(
-                                    label: unitData['value'],
-                                    value: unitData['id'],
-                                  ),
-                                ]
-                              : [],
-                          onOptionSelected: (List<ValueItem> selectedOptions) {
-                            setState(
-                              () {
-                                itemData['unit']['id'] =
-                                    selectedOptions.first.value;
-                                itemData['unit']['value'] =
-                                    selectedOptions.last.label;
-                              },
-                            );
-                          },
-                          options: unitCtl.list.asMap().entries.map(
-                            (e) {
-                              return ValueItem(
-                                label: e.value.value,
-                                value: e.value.id,
-                              );
-                            },
-                          ).toList(),
-                          searchEnabled: true,
-                          searchLabel:
-                              "${ButtonTexts.search} | ${DisplayTexts.unit}",
-                          borderRadius: 5,
-                          selectionType: SelectionType.single,
-                          chipConfig: const ChipConfig(wrapType: WrapType.wrap),
-                          selectedOptionTextColor: Colors.white,
-                          hintStyle:
-                              textStyleBlack18.copyWith(color: Colors.grey),
-                          selectedOptionBackgroundColor: bgButtonColor,
-                          dropdownBackgroundColor: primary,
-                          fieldBackgroundColor: primary,
-                          optionsBackgroundColor: primary,
-                          singleSelectItemStyle: textStyleBlack18,
-                          hint: ProductViewTexts.unit,
-                          optionTextStyle: textStyleBlack14.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
+                  const SizedBox(height: 10),
+                  // Unit Selection
+                  Obx(() {
+                    final options = unitCtl.list
+                        .map((unit) =>
+                            ValueItem<int>(label: unit.value, value: unit.id))
+                        .toList();
+
+                    ValueItem<int>? selected;
+                    if (unitData['id'] != null) {
+                      selected = options.firstWhereOrNull(
+                        (item) => item.value == unitData['id'],
+                      );
+                    }
+
+                    return SizedBox(
+                      height: 60,
+                      child: MultiSelectDropDown<int>(
+                        selectedOptions: selected != null ? [selected] : [],
+                        onOptionSelected: (selectedOptions) {
+                          if (selectedOptions.isNotEmpty) {
+                            setState(() {
+                              unitData['id'] = selectedOptions.first.value;
+                              unitData['value'] = selectedOptions.first.label;
+                            });
+                          }
+                        },
+                        options: options,
+                        selectionType: SelectionType.single,
+                        searchEnabled: true,
+                        searchLabel:
+                            "${ButtonTexts.search} | ${DisplayTexts.unit}",
+                        hint: ProductViewTexts.unit,
+                        hintStyle:
+                            textStyleBlack18.copyWith(color: Colors.grey),
+                        selectedOptionTextColor: Colors.white,
+                        selectedOptionBackgroundColor: bgButtonColor,
+                        dropdownBackgroundColor: primary,
+                        fieldBackgroundColor: primary,
+                        optionsBackgroundColor: primary,
+                        singleSelectItemStyle: textStyleBlack18,
+                        optionTextStyle: textStyleBlack14.copyWith(
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
-                    ),
-                    if (isCategoryNull)
-                      Text(
-                        "Iltimos o'lchov birligini tanlang",
-                        style: textStyleBlack14.copyWith(
-                            color: Colors.red, fontSize: 16),
+                    );
+                  }),
+                  const SizedBox(height: 16),
+                  // Action Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      DialogTextButton(
+                        text: ButtonTexts.cancel,
+                        onClick: () => Navigator.of(context).pop(),
+                        textStyle: textStyleBlack14,
+                        isNegative: true,
                       ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                )),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    DialogTextButton(
-                      text: ButtonTexts.cancel,
-                      onClick: () => Navigator.of(context).pop(),
-                      textStyle: textStyleBlack14,
-                      isNegative: true,
-                    ),
-                    DialogTextButton(
-                      text: actionText,
-                      onClick: () {
-                        bool isValid = formKey.currentState!.validate();
+                      DialogTextButton(
+                        text: actionText,
+                        textStyle: textStyleBlack14,
+                        onClick: () {
+                          bool isValid = formKey.currentState!.validate();
 
-                        if (isValid && itemData['category']['id'] != 0) {
-                          String itemName = itemNameController.text.trim();
-                          String barCode = barcodeController.text.trim();
+                          if (isValid && categoryData['id'] != 0) {
+                            String itemName = itemNameController.text.trim();
+                            String barCode = barcodeController.text.trim();
 
-                          itemData = {
-                            'name': itemName.capitalize,
-                            'barcode': barCode,
-                            'category_id': itemData['category']['id'],
-                            'unit_id': itemData['unit']['id'],
-                            // 'company_id': itemData['company']['id'],
-                          };
-                          log(itemData.toString());
-                          if (isNull) {
-                            addItem(itemData);
+                            itemData = {
+                              'name': itemName.capitalize,
+                              'barcode': barCode,
+                              'category_id': categoryData['id'],
+                              'unit_id': unitData['id'],
+                              'company_id': companyData['id'],
+                            };
+
+                            if (isNull) {
+                              addItem(itemData);
+                            } else {
+                              Item item = selectedItem.value.copyWith(
+                                name: itemData['name'],
+                                barcode: itemData['barcode'],
+                                category: categoryData['name'],
+                                unit: unitData['value'],
+                                company: companyData['name'],
+                              );
+                              updateItem(item);
+                            }
+
+                            Navigator.of(context).pop();
                           } else {
-                            Item item = selectedItem.value;
-
-                            item = item.copyWith(
-                              category: CategoryPublicModel.fromMap(
-                                  itemData['category']),
-                              unit: itemData['unit'],
-                              name: itemData['name'],
-                              barcode: itemData['barcode'],
-                              company: itemData['company'] != null
-                                  ? CompanyModel.fromMap(itemData['company'])
-                                  : CompanyModel.empty(),
-                            );
-                            updateItem(item);
-                          }
-
-                          Navigator.of(context).pop();
-                        } else {
-                          setState(
-                            () {
+                            setState(() {
                               isCategoryNull = true;
-                              heightOfDialog = heightOfDialog + 50;
-                            },
-                          );
-                        }
-                      },
-                      textStyle: textStyleBlack14,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+                              heightOfDialog += 50;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
-    )).then((value) {
-      resetItem();
-      fetchItems();
-    });
+    );
   }
 }

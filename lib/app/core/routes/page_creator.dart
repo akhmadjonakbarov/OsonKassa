@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 
 import '../../config/app_paths.dart';
 import '../../features/auth/view/auth_screen.dart';
-import '../../features/client_detail/views/client_detail_screen.dart';
+import '../../features/customer_detail/views/customer_detail_screen.dart';
 import '../../features/dashboard/logic/bindings/dashboard_binding.dart';
 import '../../features/dashboard/view/dashboard_screen.dart';
 import '../../features/manage_store/manage_store_screen.dart';
@@ -39,7 +39,7 @@ class PageCreator {
     ),
     GetPage(
       name: AppPaths.clientDetail,
-      page: () => const ClientDetailScreen(),
+      page: () => const CustomerDetailScreen(),
     ),
   ];
 }

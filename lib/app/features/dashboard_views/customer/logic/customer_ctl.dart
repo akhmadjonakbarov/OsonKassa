@@ -14,12 +14,12 @@ import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/user_texts.dart';
 import '../../../shared/widgets/buttons.dart';
 import '../../../shared/widgets/custom_textfields.dart';
-import '../models/client_model.dart';
-import 'client_repository.dart';
-import 'client_services.dart';
+import '../models/customer.dart';
+import 'customer_repository.dart';
+import 'customer_services.dart';
 
-class ClientCtl extends MainController<CustomerModel> {
-  var selectedClient = CustomerModel.empty().obs;
+class CustomerCtl extends MainController<Customer> {
+  var selectedClient = Customer().obs;
 
   late final ClientRepository builderRepository;
   late final ClientService builderService;
@@ -30,15 +30,15 @@ class ClientCtl extends MainController<CustomerModel> {
     builderRepository = ClientRepository(dio: dio);
     builderService = ClientService(
       addRepository: builderRepository as Add<Map<String, dynamic>>,
-      updateRepository: builderRepository as Update<CustomerModel>,
+      updateRepository: builderRepository as Update<Customer>,
       deleteRepository: builderRepository as Delete<int>,
-      getAllRepository: builderRepository as GetAll<CustomerModel>,
+      getAllRepository: builderRepository as GetAll<Customer>,
     );
     super.onInit();
   }
 
   void resetBuilder() {
-    selectedClient(CustomerModel.empty());
+    selectedClient(Customer());
   }
 
   @override
@@ -57,7 +57,7 @@ class ClientCtl extends MainController<CustomerModel> {
     }
   }
 
-  void selectBuilder(CustomerModel builder, BuildContext context) {
+  void selectBuilder(Customer builder, BuildContext context) {
     selectedClient(builder);
     editDialog(context);
   }
@@ -76,10 +76,10 @@ class ClientCtl extends MainController<CustomerModel> {
     // Check if we are editing an existing provider
     if (!isNull) {
       // Set initial values for the controllers if an existing provider is selected
-      nameController.text = selectedClient.value.full_name;
-      phoneNumberController.text = selectedClient.value.phone_number;
-      phoneNumber2Controller.text = selectedClient.value.phone_number2;
-      addressController.text = selectedClient.value.address;
+      nameController.text = selectedClient.value.fullName!;
+      phoneNumberController.text = selectedClient.value.phoneNumber!;
+      phoneNumber2Controller.text = selectedClient.value.phoneNumber2!;
+      addressController.text = selectedClient.value.address!;
     }
 
     // Step 2: Create the method to show the dialog
@@ -149,8 +149,8 @@ class ClientCtl extends MainController<CustomerModel> {
                           String address = addressController.text.trim();
                           Map<String, dynamic> clientData = {
                             'full_name': name,
-                            'phone_number': phoneNumber,
-                            'phone_number2': phoneNumber2,
+                            'phoneNumber': phoneNumber,
+                            'phoneNumber2': phoneNumber2,
                             'address': address,
                           };
 
@@ -159,11 +159,11 @@ class ClientCtl extends MainController<CustomerModel> {
                             addItem(clientData);
                           } else {
                             // Update existing provider
-                            CustomerModel updatedClient =
+                            Customer updatedClient =
                                 selectedClient.value.copyWith(
-                              name: name,
-                              phone_number: phoneNumber,
-                              phone_number2: phoneNumber2,
+                              fullName: name,
+                              phoneNumber: phoneNumber,
+                              phoneNumber2: phoneNumber2,
                               address: address,
                             );
                             updateItem(updatedClient);
@@ -240,24 +240,22 @@ class ClientCtl extends MainController<CustomerModel> {
       return;
     }
     searchItem(text, (customer, searchText) {
-      return customer.full_name
-          .toLowerCase()
-          .contains(searchText.toLowerCase());
+      return customer.fullName!.toLowerCase().contains(searchText.toLowerCase());
     });
   }
 
   void sortByCreatedAt() {
-    List<CustomerModel> builders = List.from(list);
+    List<Customer> builders = List.from(list);
     builders.sort((a, b) {
-      return b.created_at.compareTo(a.created_at);
+      return b.createdAt!.compareTo(a.createdAt!);
     });
     list(builders);
   }
 
   void sortByName() {
-    List<CustomerModel> builders = List.from(list);
+    List<Customer> builders = List.from(list);
     builders.sort((a, b) {
-      return a.full_name.toLowerCase().compareTo(b.full_name.toLowerCase());
+      return a.fullName!.toLowerCase().compareTo(b.fullName!.toLowerCase());
     });
     list(builders);
   }
@@ -268,11 +266,11 @@ class ClientCtl extends MainController<CustomerModel> {
   }
 
   @override
-  void updateItem(CustomerModel item) async {
+  void updateItem(Customer item) async {
     try {
       await builderService.updateClient(client: item);
       UserNotifier.showSnackBar(
-        label: "${item.full_name} yangilandi!",
+        label: "${item.fullName} yangilandi!",
         type: TypeOfSnackBar.update,
       );
 

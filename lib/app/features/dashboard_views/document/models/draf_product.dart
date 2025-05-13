@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:osonkassa/app/features/dashboard_views/currency/models/models.dart';
+import 'package:osonkassa/app/features/dashboard_views/currency/models/currency.dart';
 
 import '../../item/models/item.dart';
 

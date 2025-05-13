@@ -12,7 +12,7 @@ import '../../../../../utils/texts/alert_texts.dart';
 import '../../../../../utils/texts/button_texts.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
 import '../../../../shared/export_commons.dart';
-import '../../../currency/models/models.dart';
+import '../../../currency/models/currency.dart';
 
 class ManageProductDocItemCtl extends GetxController {
   // Keys
@@ -34,8 +34,8 @@ class ManageProductDocItemCtl extends GetxController {
   var sellingPercentage = 0.0.obs;
   var sellingCurrency = CurrencyType.uzs.obs;
   var incomeCurrency = CurrencyType.usd.obs;
-  Rx<CurrencyModel> currency = CurrencyModel.empty().obs;
-  Rx<Item> item = Item.empty().obs;
+  Rx<Currency> currency = Currency().obs;
+  Rx<Item> item = Item().obs;
 
   @override
   void onClose() {
@@ -56,7 +56,7 @@ class ManageProductDocItemCtl extends GetxController {
 
   void removeItem() {
     LogHelper.logInfo("Item was removed");
-    item.value = Item.empty();
+    item.value = Item();
   }
 
   void setSellingCurrency(CurrencyType sc) {
@@ -66,9 +66,9 @@ class ManageProductDocItemCtl extends GetxController {
   // Add a product to the list
   void storeProductDocItem(BuildContext context) {
     DraftProduct draftProduct = DraftProduct(
-      itemId: item.value.id,
-      itemName: item.value.name,
-      currencyId: currency.value.id,
+      itemId: item.value.id!,
+      itemName: item.value.name!,
+      currencyId: currency.value.id!,
       incomeCurrency: incomeCurrency.value.name.toString().toLowerCase(),
       incomePrice: incomePrice.value,
       sellingCurrency: sellingCurrency.value.name.toString().toLowerCase(),
@@ -77,7 +77,7 @@ class ManageProductDocItemCtl extends GetxController {
       qty: double.parse(quantityController.text),
       sellingPercentage:
           double.parse(profitPercentage.value.toStringAsFixed(5)),
-      unit: item.value.unit.value,
+      unit: item.value.unit!,
     );
     productDocItems.add(draftProduct);
     UserNotifier.showFlutterSnackBar(
@@ -203,13 +203,13 @@ class ManageProductDocItemCtl extends GetxController {
 
     if (currency.value.id != -1 &&
         incomeCurrency.value.toString().toLowerCase().contains('usd')) {
-      exchangePrice.value = ip * currency.value.value;
+      exchangePrice.value = ip * currency.value.value!;
     }
     incomePrice.value = ip;
     LogHelper.logInfo("IncomePrice is ${incomePrice.value}");
   }
 
-  Future<void> setCurrency({required CurrencyModel cry}) async {
+  Future<void> setCurrency({required Currency cry}) async {
     LogHelper.logInfo("Currency was selected. ${cry.toString()}");
     currency.value = cry;
   }

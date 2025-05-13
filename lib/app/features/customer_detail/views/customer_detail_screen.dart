@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/customer_detail/views/widgets/purchases_box.dart';
 
-import '../../dashboard_views/customer/models/client_model.dart';
+import '../../../styles/text_styles.dart';
+import '../../../utils/texts/table_texts.dart';
+import '../../dashboard_views/customer/models/customer.dart';
 import '../../shared/widgets/app_bar.dart';
+import '../../shared/widgets/custom_data_table.dart';
 import '../../shared/widgets/grid_box.dart';
-import '../logic/ctl/client_debt_ctl.dart';
+import '../logic/customer_detail_ctl.dart';
+
 import 'widgets/debts_box.dart';
 
-class ClientDetailScreen extends StatefulWidget {
-  const ClientDetailScreen({
+class CustomerDetailScreen extends StatefulWidget {
+  const CustomerDetailScreen({
     super.key,
   });
 
   @override
-  State<ClientDetailScreen> createState() => _ClientDetailScreenState();
+  State<CustomerDetailScreen> createState() => _CustomerDetailScreenState();
 }
 
-class _ClientDetailScreenState extends State<ClientDetailScreen> {
-  CustomerModel? client;
-  final ClientDebtCtl clientDebtCtl = Get.find<ClientDebtCtl>();
+class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
+  Customer? customer;
+  final CustomerDetailCtl customerDetailCtl = Get.find<CustomerDetailCtl>();
 
   @override
   void didChangeDependencies() {
-    client = Get.arguments as CustomerModel;
-    clientDebtCtl.fetchItems(client!.id);
+    customer = Get.arguments as Customer;
+    if (customer != null) {
+      customerDetailCtl.loadCustomerDetails(context, customer!.id!);
+    }
     super.didChangeDependencies();
   }
 
@@ -35,7 +42,7 @@ class _ClientDetailScreenState extends State<ClientDetailScreen> {
         child: Column(
           children: [
             TopBar(
-              text: client!.full_name,
+              text: customer!.fullName!,
             ),
             Expanded(
               child: GridView(
@@ -47,10 +54,9 @@ class _ClientDetailScreenState extends State<ClientDetailScreen> {
                   mainAxisSpacing: 10,
                 ),
                 children: [
-                  DebtsBox(clientDebtCtl: clientDebtCtl, client: client),
-                  GridBox(
-                    child: Container(),
-                  ),
+                  DebtsBox(customerDetailCtl: customerDetailCtl, client: customer),
+                  PurchasesBox(
+                      customerDetailCtl: customerDetailCtl, customer: customer),
                   GridBox(
                     child: Container(),
                   )

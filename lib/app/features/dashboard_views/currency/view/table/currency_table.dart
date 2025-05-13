@@ -6,7 +6,7 @@ import '../../../../../utils/texts/table_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/currency_controller.dart';
-import '../../models/models.dart';
+import '../../models/currency.dart';
 
 class CurrencyTable extends StatefulWidget {
   final CurrencyCtl currencyCtl;
@@ -35,13 +35,13 @@ class _CurrencyTableState extends State<CurrencyTable> {
         rows: widget.currencyCtl.list.asMap().entries.map(
           (entry) {
             int index = entry.key;
-            CurrencyModel currency = entry.value;
+            Currency currency = entry.value;
 
             return DataRow(
               cells: <DataCell>[
                 DataCell(Text("${index + 1}")),
-                DataCell(Text(formatUZSNumber(currency.value))),
-                DataCell(Text(formatDateToUzbek(currency.created_at))),
+                DataCell(Text(formatUZSNumber(currency.value!))),
+                DataCell(Text(formatDateToUzbek(currency.createdAt!.toString()))),
                 DataCell(
                   Row(
                     children: [
@@ -55,9 +55,9 @@ class _CurrencyTableState extends State<CurrencyTable> {
                         onDelete: () {
                           return showDialog(
                             builder: (context) => DeleteDialog(
-                              title: formatUZSNumber(currency.value),
+                              title: formatUZSNumber(currency.value!),
                               onConfirmDelete: () =>
-                                  widget.currencyCtl.removeItem(currency.id),
+                                  widget.currencyCtl.removeItem(currency.id!),
                             ),
                             context: context,
                           );

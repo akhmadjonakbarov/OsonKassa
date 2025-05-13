@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:osonkassa/app/core/enums/currency_type.dart';
-import 'package:osonkassa/app/features/dashboard_views/currency/models/models.dart';
+import 'package:osonkassa/app/features/dashboard_views/currency/models/currency.dart';
 
 import '../../../../../../styles/text_styles.dart';
 

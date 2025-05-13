@@ -10,9 +10,8 @@ import '../../../dashboard_views/category/view/category_view.dart';
 import '../../../dashboard_views/computer/logic/computer_ctl.dart';
 import '../../../dashboard_views/computer/view/computer_view.dart';
 import '../../../dashboard_views/currency/view/currency_view.dart';
-import '../../../dashboard_views/customer/logic/client_ctl.dart';
+import '../../../dashboard_views/customer/logic/customer_ctl.dart';
 import '../../../dashboard_views/customer/view/customer_view.dart';
-import '../../../dashboard_views/debt/view/debt_view.dart';
 import '../../../dashboard_views/document/logic/document/document_ctl.dart';
 import '../../../dashboard_views/document/view/create_document/create_document_view.dart';
 import '../../../dashboard_views/document/view/main_screen/document_view.dart';
@@ -49,7 +48,7 @@ class _ContentBarState extends State<ContentBar> {
   final AuthCtl authCtl = Get.find<AuthCtl>();
   final ActionCtl actionCtl = Get.find<ActionCtl>();
   final DocumentCtl documentCtl = Get.find<DocumentCtl>();
-  final ClientCtl clientCtl = Get.find<ClientCtl>();
+  final CustomerCtl clientCtl = Get.find<CustomerCtl>();
   final ComputerCtl computerCtl = Get.find<ComputerCtl>();
   final DisplayController displayController = Get.find<DisplayController>();
 
@@ -74,7 +73,7 @@ class _ContentBarState extends State<ContentBar> {
                 switch (widget.dashboardCtl.selectedView.value) {
                   case AppViews.dashboard:
                     return StatisticsView(
-                      staticticsCtl: statisticsCtl,
+                      statisticsCtl: statisticsCtl,
                     );
                   case AppViews.trade:
                     return const TradeView();
@@ -101,7 +100,7 @@ class _ContentBarState extends State<ContentBar> {
                   case AppViews.client:
                     return CustomerView(
                       authCtl: authCtl,
-                      clientCtl: clientCtl,
+                      customerCtl: clientCtl,
                     );
                   case AppViews.spiska:
                     return const NoteView();
@@ -109,8 +108,7 @@ class _ContentBarState extends State<ContentBar> {
                     return CurrencyView(
                       authCtl: authCtl,
                     );
-                  case AppViews.debt:
-                    return const DebtView();
+
                   case AppViews.addProduct:
                     return const CreateDocumentView();
                   case AppViews.store:

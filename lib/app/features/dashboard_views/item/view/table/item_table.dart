@@ -40,13 +40,12 @@ class _ItemTableState extends State<ItemTable> {
           return DataRow(
             cells: <DataCell>[
               DataCell(Text('${index + 1}')),
-              DataCell(CenterText(text: item.name)),
-              DataCell(CenterText(text: item.barcode)),
-              DataCell(CenterText(text: item.category.name)),
+              DataCell(CenterText(text: item.name!)),
+              DataCell(CenterText(text: item.barcode!)),
+              DataCell(CenterText(text: item.category!)),
               DataCell(CenterText(
-                  text: item.company != null
-                      ? item.company!.name
-                      : "Belgilanmagan")),
+                  text:
+                      item.company != null ? item.company! : "Belgilanmagan")),
               DataCell(
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -59,9 +58,9 @@ class _ItemTableState extends State<ItemTable> {
                       onDelete: () => showDialog(
                         context: context,
                         builder: (context) => DeleteDialog(
-                          title: item.name,
+                          title: item.name!,
                           onConfirmDelete: () =>
-                              widget.itemCtl.removeItem(item.id),
+                              widget.itemCtl.removeItem(item.id!),
                         ),
                       ),
                     ),

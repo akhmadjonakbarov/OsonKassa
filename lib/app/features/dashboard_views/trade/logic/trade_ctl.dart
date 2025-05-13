@@ -21,6 +21,9 @@ import 'trade_repository.dart';
 import 'trade_service.dart';
 
 class TradeCtl extends GetxController {
+
+
+
   var sellProducts = <StoreItem>[].obs;
 
   var totalSelledProductCount = 0.0.obs;
@@ -42,7 +45,7 @@ class TradeCtl extends GetxController {
   }
 
   sell({
-    int? clientId = -1,
+    int? customer_id = -1,
     Map<String, dynamic>? debtData,
     bool isDebt = false,
   }) async {
@@ -54,8 +57,7 @@ class TradeCtl extends GetxController {
 
       Map<String, dynamic> data = {
         "sold_products": productList,
-        "clientId": clientId,
-        "debt_data": debtData,
+        "customer_id": customer_id,
         "is_debt": isDebt
       };
 
@@ -318,7 +320,7 @@ class TradeCtl extends GetxController {
     }
   }
 
-  deleteItemFromSelledProductList(String barcode) {
+  removeItem(String barcode) {
     try {
       sellProducts
           .removeWhere((storeItem) => storeItem.item!.barcode! == barcode);

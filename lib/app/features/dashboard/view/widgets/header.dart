@@ -106,6 +106,7 @@ class _HeaderState extends State<Header> {
     var offset = renderBox.localToGlobal(Offset.zero);
 
     return OverlayEntry(builder: (context) {
+      final screenSize = getScreenSize(context);
       return Positioned(
         width: MediaQuery.of(context).size.width * 0.5,
         left: offset.dx,
@@ -151,17 +152,68 @@ class _HeaderState extends State<Header> {
                       ),
                       Obx(
                         () => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            StatisticsItem(
-                              onClick: () {
-                                widget.dashboardCtl.changeView(AppViews.store);
-                                _hideOverlay();
-                              },
-                              backgroundColor: Colors.redAccent,
-                              icon: AppIcons.store,
-                              text: widget.storeCtl.totalProductQty.toString(),
-                              subText: DisplayTexts.products,
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  maxRadius: screenSize.height * 0.035,
+                                  backgroundColor: Colors.red,
+                                  child: SvgPicture.asset(
+                                    AppIcons.store,
+                                    height: screenSize.height * 0.04,
+                                    width: screenSize.width * 0.045,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Row(
+                                      children: [
+                                        ...widget.statisticsCtl.productSummary
+                                            .value.units!
+                                            .map(
+                                          (element) {
+                                            return Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 5,
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    element.qty.toString(),
+                                                    style: textStyleWhite18
+                                                        .copyWith(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    " ${element.unit!}",
+                                                    style: textStyleBlack18
+                                                        .copyWith(fontSize: 16),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      ],
+                                    ),
+                                    Text(
+                                      DisplayTexts.total_of_products,
+                                      style: textStyleBlack14.copyWith(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
                             StatisticsItem(
                               style: textStyleBlack18.copyWith(fontSize: 16),
@@ -353,16 +405,18 @@ class TotalPriceOfProduct extends StatelessWidget {
                 title: "",
                 height: 80,
                 width: MediaQuery.of(context).size.width * 0.1,
-                budgetAmount:
-                    "${formatUZSNumber(widget.statisticsCtl.total_value_of_products_usd.value, isAddWord: false)} \$",
+                budgetAmount: "${PriceFomatter.formatPrice(
+                  widget.statisticsCtl.productSummary.value.price!['usd']!
+                      .toDouble(),
+                )} \$",
                 bgColor: Colors.blue,
               ),
               BudgetCard(
                 title: "",
                 height: 80,
                 width: MediaQuery.of(context).size.width * 0.16,
-                budgetAmount: formatUZSCurrency(
-                    widget.statisticsCtl.total_value_of_products_uzs.value),
+                budgetAmount:
+                    "${formatUZSCurrency(widget.statisticsCtl.productSummary.value.price!['uzs']!.toDouble())} uzs",
                 bgColor: Colors.blue,
               ),
             ],

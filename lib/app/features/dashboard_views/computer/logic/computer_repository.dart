@@ -6,7 +6,7 @@ import '../../../../core/exceptions/validador_exceptions.dart';
 import '../../../../core/network/status_codes.dart';
 import '../../../../core/validator/response_validator.dart';
 import '../../../shared/models/pagination_model.dart';
-import '../../currency/models/models.dart';
+import '../../currency/models/currency.dart';
 
 class ComputerRepository extends GetAllWithPagination<ApiData> {
   final Dio dio;
@@ -17,10 +17,10 @@ class ComputerRepository extends GetAllWithPagination<ApiData> {
 
   @override
   Future<ApiData> getAll(int page, int pageSize) async {
-    ApiData<CurrencyModel> data =
+    ApiData<Currency> data =
         ApiData(pagination: PaginationModel.empty(), items: []);
     try {
-      List<CurrencyModel> currencies = [];
+      List<Currency> currencies = [];
       PaginationModel pagination = PaginationModel.empty();
       Response response = await dio.get(
         '$baseUrl/all?page=$page&size=$pageSize',
@@ -29,15 +29,7 @@ class ComputerRepository extends GetAllWithPagination<ApiData> {
       if (response.statusCode == StatusCodes.OK_200) {
         var resData = response.data['data']['list'];
         var paginationData = response.data['data']['pagination'];
-        if (ResponseValidator.isNotEmptyAndIsList(resData)) {
-          for (var currency in resData) {
-            if (ResponseValidator.isMap(currency)) {
-              currencies.add(CurrencyModel.fromMap(currency));
-            } else {
-              throw NotMapDataFormat();
-            }
-          }
-        }
+
         if (ResponseValidator.isMap(paginationData)) {
           pagination = PaginationModel.fromMap(paginationData);
         }

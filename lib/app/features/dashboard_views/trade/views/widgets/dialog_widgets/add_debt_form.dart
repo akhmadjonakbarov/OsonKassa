@@ -108,7 +108,7 @@ class AddDebtForm extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: onClick,
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.transparent),
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
           child: Text(
             ButtonTexts.save,
             style: textStyleBlack14,

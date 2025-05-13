@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/currency/models/models.dart';
+import 'package:osonkassa/app/features/dashboard_views/currency/models/currency.dart';
 import 'package:osonkassa/app/features/dashboard_views/document/models/draft_document.dart';
 
 import 'package:osonkassa/app/features/dashboard_views/document/view/create_document/widgets/currency_type_dropdown.dart';
@@ -65,7 +65,7 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
       _submitForm();
     }
     itemCtl.resetItem();
-    manageProductDocItemCtl.setCurrency(cry: CurrencyModel.empty());
+    manageProductDocItemCtl.setCurrency(cry: Currency());
     super.dispose();
   }
 
@@ -100,12 +100,17 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
         builder: (context, constraints) {
           return ListView(
             children: [
-              Obx(
-                () => HeaderCurrency(
-                  currencyValue: manageProductDocItemCtl.currency.value.value,
-                  constraints: constraints,
-                ),
-              ),
+              Obx(() {
+                if (manageProductDocItemCtl.currency.value.value != null) {
+                  return HeaderCurrency(
+                    currencyValue:
+                        manageProductDocItemCtl.currency.value.value!,
+                    constraints: constraints,
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }),
               const SizedBox(height: 15),
               Form(
                 key: manageProductDocItemCtl.formKey,
@@ -318,7 +323,7 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
                                       borderRadius: BorderRadius.circular(5)),
                                   child: ListTile(
                                     title: Text(
-                                      "${index + 1}. (${item.category.name}) ${item.name}",
+                                      "${index + 1}. (${item.category}) ${item.name}",
                                       style: textStyleBlack18.copyWith(
                                         color:
                                             itemCtl.selectedItem.value == item
