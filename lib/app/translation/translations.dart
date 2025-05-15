@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 class AppTranslations extends Translations {
   @override
@@ -44,6 +45,10 @@ class AppTranslations extends Translations {
           'product_name': 'Product Name',
           'product_price': 'Product Price',
           'product_description': 'Product Description',
+
+          // total price
+          'total_products': 'Total Products',
+          'total_price': 'Total Price',
 
           // Sales
           'sales': 'Sales',
@@ -101,12 +106,13 @@ class AppTranslations extends Translations {
           'language': 'Til',
 
           // Authentication
-          'login': 'Kirish',
-          'email': 'Elektron pochta',
-          'password': 'Parol',
-          'forgot_password': 'Parolni unutdingizmi?',
-          'sign_in': 'Tizimga kirish',
-          'sign_out': 'Chiqish',
+          TranslatedTexts.auth.login: 'Kirish',
+          TranslatedTexts.auth.email: 'Elektron pochta',
+          TranslatedTexts.auth.password: 'Parol',
+          TranslatedTexts.auth.forgotPassword: 'Parolni unutdingizmi?',
+          TranslatedTexts.auth.signIn: 'Kirish',
+          TranslatedTexts.auth.signOut: 'Chiqish',
+          TranslatedTexts.auth.signUp: 'Ro‘yxatdan o‘tish',
 
           // Dashboard
           'dashboard': 'Boshqaruv paneli',
@@ -115,29 +121,45 @@ class AppTranslations extends Translations {
           'recent_activity': 'So‘nggi faoliyat',
 
           // Clients
-          'clients': 'Mijozlar',
-          'add_client': 'Mijoz qo‘shish',
-          'edit_client': 'Mijozni tahrirlash',
-          'delete_client': 'Mijozni o‘chirish',
-          'client_details': 'Mijoz tafsilotlari',
-          'client_name': 'Mijoz nomi',
-          'client_email': 'Mijoz elektron pochtasi',
-          'client_phone': 'Mijoz telefoni',
+          TranslatedTexts.customer.customers: 'Mijozlar',
+          TranslatedTexts.customer.add: 'Mijoz qo‘shish',
+          TranslatedTexts.customer.edit: 'Mijozni tahrirlash',
+          TranslatedTexts.customer.delete: 'Mijozni o‘chirish',
+          TranslatedTexts.customer.name: 'Mijoz nomi',
+          TranslatedTexts.customer.email: 'Mijoz elektron pochtasi',
+          TranslatedTexts.customer.phone: 'Mijoz telefoni',
 
           // Products
-          'products': 'Mahsulotlar',
-          'add_product': 'Mahsulot qo‘shish',
-          'edit_product': 'Mahsulotni tahrirlash',
-          'delete_product': 'Mahsulotni o‘chirish',
-          'product_name': 'Mahsulot nomi',
-          'product_price': 'Mahsulot narxi',
-          'product_description': 'Mahsulot tavsifi',
+          TranslatedTexts.product.products: 'Mahsulotlar',
+          TranslatedTexts.product.add: 'Mahsulot qo‘shish',
+          TranslatedTexts.product.edit: 'Mahsulotni tahrirlash',
+          TranslatedTexts.product.delete: 'Mahsulotni o‘chirish',
+          TranslatedTexts.product.name: 'Mahsulot nomi',
+          TranslatedTexts.product.price: 'Mahsulot narxi',
+          TranslatedTexts.product.description: 'Mahsulot tavsifi',
+
+          // total price
+          'total_products': 'Jami mahsulotlar',
+          'total_price': 'Jami narx',
 
           // Sales
-          'sales': 'Savdo',
-          'add_sale': 'Savdo qo‘shish',
-          'sale_amount': 'Savdo summasi',
-          'sale_date': 'Savdo sanasi',
+          TranslatedTexts.sale.sales: 'Savdo',
+          TranslatedTexts.sale.add: 'Savdo qo‘shish',
+          TranslatedTexts.sale.amount: 'Savdo summasi',
+          TranslatedTexts.sale.date: 'Savdo sanasi',
+
+          //Debts
+          TranslatedTexts.debt.debts: 'Qarzdorliklar',
+          TranslatedTexts.debt.paid: 'To‘langan',
+          TranslatedTexts.debt.notPaid: 'To‘lanmagan',
+
+          //Payments
+          TranslatedTexts.payment.confirmPayment: 'To‘lovni tasdiqlash',
+          TranslatedTexts.payment.paymentSuccess:
+              'To‘lov muvaffaqiyatli amalga oshirildi',
+          TranslatedTexts.payment.paymentFailed: 'To‘lov amalga oshmadi',
+          TranslatedTexts.payment.areYouSureToPay:
+              'To‘lashga ishonchingiz komilmi?',
 
           // Tasks
           'tasks': 'Vazifalar',
@@ -154,18 +176,41 @@ class AppTranslations extends Translations {
           'new_notification': 'Yangi bildirishnoma',
 
           // Reports
-          'reports': 'Hisobotlar',
-          'generate_report': 'Hisobot yaratish',
-          'report_type': 'Hisobot turi',
-          'report_date': 'Hisobot sanasi',
+          TranslatedTexts.report.reports: 'Hisobotlar',
+          TranslatedTexts.report.salesReport: 'Savdo hisoboti',
+          TranslatedTexts.report.productReport: 'Mahsulotlar hisobotlari',
+          TranslatedTexts.report.customerReport: 'Mijozlar hisoboti',
+          TranslatedTexts.report.builderReport: 'Quruvchi hisoboti',
+          TranslatedTexts.report.providerReport: 'Ta’minotchi hisoboti',
+          TranslatedTexts.report.dailyReport: 'Kunlik hisobot',
+          TranslatedTexts.report.weeklyReport: 'Haftalik hisobot',
+          TranslatedTexts.report.monthlyReport: 'Oylik hisobot',
+          TranslatedTexts.report.yearlyReport: 'Yillik hisobot',
+
+          // Text Fields
+          TranslatedTexts.textFields.fullName: 'Familya Ism',
+          TranslatedTexts.textFields.phoneNumber: 'Telefon raqami',
+          TranslatedTexts.textFields.phoneNumber2: 'Qo‘shimcha telefon raqami',
+          TranslatedTexts.textFields.address: 'Manzil',
+          TranslatedTexts.textFields.email: 'Elektron pochta',
+          TranslatedTexts.textFields.password: 'Parol',
+          TranslatedTexts.textFields.confirmPassword: 'Parolni tasdiqlang',
+          TranslatedTexts.textFields.name: 'Nomi',
+          TranslatedTexts.textFields.description: 'Tavsif',
+          TranslatedTexts.textFields.amount: 'Miqdor',
+          TranslatedTexts.textFields.date: 'Sana',
+          TranslatedTexts.textFields.firstName: 'Ism',
+          TranslatedTexts.textFields.lastName: 'Familiya',
 
           // User Management
-          'users': 'Foydalanuvchilar',
-          'add_user': 'Foydalanuvchi qo‘shish',
-          'edit_user': 'Foydalanuvchini tahrirlash',
-          'delete_user': 'Foydalanuvchini o‘chirish',
-          'user_role': 'Foydalanuvchi roli',
-          'user_permissions': 'Foydalanuvchi ruxsatlari',
+          TranslatedTexts.users.users: 'Foydalanuvchilar',
+          TranslatedTexts.users.add: 'Foydalanuvchi qo‘shish',
+          TranslatedTexts.users.edit: 'Foydalanuvchini tahrirlash',
+          TranslatedTexts.users.delete: 'Foydalanuvchini o‘chirish',
+          TranslatedTexts.users.role: 'Foydalanuvchi roli',
+          TranslatedTexts.users.permissions: 'Foydalanuvchi ruxsatlari',
+          TranslatedTexts.buttons.edit: 'Tahrirlash',
+          TranslatedTexts.alerts.enter_price: 'Narxni kiriting',
 
           // Support
           'support': 'Yordam',
@@ -178,6 +223,78 @@ class AppTranslations extends Translations {
           'error': 'Xatolik',
           'no_internet': 'Internet aloqasi yo‘q',
           'invalid_credentials': 'Noto‘g‘ri elektron pochta yoki parol',
+          TranslatedTexts.errors.pleaseEnterNumber: 'Iltimos, raqam kiriting!',
+
+          // Table Fields
+          TranslatedTexts.table.index: 'T/r',
+          TranslatedTexts.table.name: 'Ism',
+          TranslatedTexts.table.phoneNumber: 'Telefon raqam',
+          TranslatedTexts.table.phoneNumber2: 'Qo‘shimcha telefon raqam',
+          TranslatedTexts.table.address: 'Manzil',
+          TranslatedTexts.table.buttons: 'Tugmalar',
+          TranslatedTexts.table.qty: 'Miqdor',
+          TranslatedTexts.table.incomePrice: 'Kelish narxi',
+          TranslatedTexts.table.sellingPrice: 'Sotish narxi',
+          TranslatedTexts.table.total: 'Jami',
+          TranslatedTexts.table.typeOfProduct: 'Mahsulot turi',
+          TranslatedTexts.table.totalOfProduct: 'Mahsulotlar soni',
+          TranslatedTexts.table.documentType: 'Hujjat turi',
+          TranslatedTexts.table.seeDetail: 'Tafsilotlarni ko‘rish',
+          TranslatedTexts.table.category: 'Kategoriya',
+          TranslatedTexts.table.status: 'Holat',
+          TranslatedTexts.table.currency: 'Valyuta',
+          TranslatedTexts.table.addingTime: 'Qo‘shilgan vaqt',
+          TranslatedTexts.table.date: 'Sana',
+          TranslatedTexts.table.isPaid: 'To‘langan',
+          TranslatedTexts.table.debt: 'Qarz',
+          TranslatedTexts.table.totalValue: 'Umumiy qiymat',
+          TranslatedTexts.table.totalProfit: 'Umumiy foyda',
+          TranslatedTexts.table.totalAmountPrice: 'Umumiy summa',
+          TranslatedTexts.table.company: 'Kompaniya',
+          TranslatedTexts.table.product: 'Mahsulot',
+          TranslatedTexts.table.barcode: 'Shtrix-kod',
+          TranslatedTexts.table.unit: 'O‘lchov birligi',
+
+          // Buttons
+          TranslatedTexts.buttons.enter: 'Kirish',
+          TranslatedTexts.buttons.register: 'Ro‘yxatdan o‘tish',
+          TranslatedTexts.buttons.search: 'Qidirish',
+          TranslatedTexts.buttons.cancel: 'Bekor qilish',
+          TranslatedTexts.buttons.save: 'Saqlash',
+          TranslatedTexts.buttons.delete: 'O‘chirish',
+          TranslatedTexts.buttons.add: 'Qo‘shish',
+          TranslatedTexts.buttons.edit: 'Tahrirlash',
+          TranslatedTexts.buttons.back: 'Orqaga',
+          TranslatedTexts.buttons.update: 'Yangilash',
+          TranslatedTexts.buttons.forDebt: 'Qarz uchun',
+          TranslatedTexts.buttons.pay: 'To‘lash',
+          TranslatedTexts.buttons.close: 'Yopish',
+          TranslatedTexts.buttons.forBuilder: 'Quruvchi uchun',
+          TranslatedTexts.buttons.exit: 'Chiqish',
+          TranslatedTexts.buttons.confirm: 'Tasdiqlash',
+
+
+          // Enters (Input hints/prompts)
+          TranslatedTexts.alerts.enter_price: 'Narxni kiriting',
+          TranslatedTexts.alerts.enter_name: 'Nomini kiriting',
+          TranslatedTexts.alerts.enter_description: 'Tavsifni kiriting',
+          TranslatedTexts.alerts.enter_amount: 'Miqdorini kiriting',
+          TranslatedTexts.alerts.enter_date: 'Sana kiriting',
+          TranslatedTexts.alerts.enter_client: 'Mijozni tanlang',
+          TranslatedTexts.alerts.enter_product: 'Mahsulotni tanlang',
+          TranslatedTexts.alerts.enter_category: 'Kategoriya tanlang',
+          TranslatedTexts.alerts.enter_provider: 'Ta’minotchini tanlang',
+          TranslatedTexts.alerts.enter_full_name: 'To‘liq ismni kiriting',
+          TranslatedTexts.alerts.enter_phone_number:
+              'Telefon raqamini kiriting',
+          TranslatedTexts.alerts.enter_phone_number2:
+              'Qo‘shimcha telefon raqamini kiriting',
+          TranslatedTexts.alerts.enter_first_name: 'Ismni kiriting',
+          TranslatedTexts.alerts.enter_last_name: 'Familiyani kiriting',
+          TranslatedTexts.alerts.enter_currency: 'Valyutani tanlang',
+          TranslatedTexts.alerts.enter_unit: 'O‘lchov birligini kiriting',
+          TranslatedTexts.alerts.enter_qty: 'Soni kiriting',
+          TranslatedTexts.alerts.enter_email: ' Elektron pochtani kiriting',
         },
         'ru_RU': {
           // General

@@ -20,15 +20,12 @@ class StoreCtl extends MainController<StoreItem> {
   var totalProductQty = 0.0.obs;
 
   var storeProduct = StoreItem().obs;
-  var selledProductDocItems = <StoreItem>[].obs;
   var productsInStore = <StoreItem>[].obs;
 
   final TradeCtl tradeCtl = Get.find<TradeCtl>();
 
   late final StoreRepository _storeRepository;
   late final StoreService _storeService;
-
-  // List<DocItemModel> filteredProducts = [];
 
   @override
   void onInit() {
@@ -48,18 +45,12 @@ class StoreCtl extends MainController<StoreItem> {
   @override
   Future<void> fetchItems() async {
     try {
-      // Start loading
       isLoading(true);
-      // Fetch all items from the service
-
-      // Optimized sorting using only necessary conditions
 
       ApiData storeProducts = await _storeService.getAll();
 
       list(storeProducts.items.cast<StoreItem>());
       pagination(storeProducts.pagination);
-
-      // Calculate totalProduct and totalQtyKg
     } catch (e) {
       handleError(e.toString());
     } finally {
@@ -88,9 +79,7 @@ class StoreCtl extends MainController<StoreItem> {
     );
   }
 
-  clearList() async {
-    selledProductDocItems.clear();
-  }
+  clearList() async {}
 
   Future<void> searchProduct(String text) async {
     isLoading(true);

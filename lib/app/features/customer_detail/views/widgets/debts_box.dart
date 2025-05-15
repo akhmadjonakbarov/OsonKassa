@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/customer_detail/views/widgets/purchase_item_dialog.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
@@ -55,7 +56,7 @@ class DebtsBox extends StatelessWidget {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           title: Text(
-            "Qarzlar",
+            TranslatedTexts.debt.debts.tr,
             style: textStyleBlack28.copyWith(fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
@@ -66,11 +67,11 @@ class DebtsBox extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: CustomDataTable(
-            columns: const [
-              TableTexts.index,
-              TableTexts.date,
-              TableTexts.total_amount_price,
-              TableTexts.buttons
+            columns: [
+              TranslatedTexts.table.index.tr,
+              TranslatedTexts.table.date.tr,
+              'total_price'.tr,
+              TranslatedTexts.table.buttons.tr
             ], // Your columns here
             rows: customerDetailCtl.debts
                 .asMap()
@@ -112,14 +113,13 @@ class DebtsBox extends StatelessWidget {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text('Confirm Payment'),
-                    content: Text(
-                        'Are you sure you want to mark this purchase as paid?'),
+                    title: Text(TranslatedTexts.payment.confirmPayment.tr),
+                    content: Text(TranslatedTexts.payment.areYouSureToPay.tr),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
                         // Cancel
-                        child: Text('Cancel'),
+                        child: Text(TranslatedTexts.buttons.cancel.tr),
                       ),
                       TextButton(
                         onPressed: () {
@@ -130,7 +130,7 @@ class DebtsBox extends StatelessWidget {
                             purchaseId: purchase.id!,
                           );
                         },
-                        child: Text('Confirm'),
+                        child: Text(TranslatedTexts.buttons.confirm.tr),
                       ),
                     ],
                   ),

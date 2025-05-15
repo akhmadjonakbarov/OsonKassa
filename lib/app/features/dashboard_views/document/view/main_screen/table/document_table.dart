@@ -9,6 +9,13 @@ import 'package:osonkassa/app/features/dashboard_views/document/view/main_screen
 import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controller.dart';
 import 'package:osonkassa/app/features/shared/export_commons.dart';
 import 'package:osonkassa/app/styles/text_styles.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 import 'package:osonkassa/app/utils/formatter_functions/formatter_date.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 import 'package:osonkassa/app/utils/texts/display_texts.dart';
@@ -65,14 +72,14 @@ class _DebtTableState extends State<DocumentTable> {
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(
-        columns: const [
-          TableTexts.index,
-          TableTexts.date,
-          TableTexts.type_of_product,
-          TableTexts.total_of_product,
-          TableTexts.total_amount_price,
-          TableTexts.document_type,
-          TableTexts.see_detail
+        columns: [
+          TranslatedTexts.table.index.tr,
+          TranslatedTexts.table.date.tr,
+          TranslatedTexts.table.typeOfProduct.tr,
+          TranslatedTexts.table.totalOfProduct.tr,
+          TranslatedTexts.table.totalAmountPrice.tr,
+          TranslatedTexts.table.documentType.tr,
+          TranslatedTexts.table.seeDetail.tr
         ],
         rows: widget.documentCtl.list.asMap().entries.map(
           (entry) {

@@ -139,8 +139,8 @@ class _AuthScreenState extends State<AuthScreen> {
       body: Center(
         child: BasicContainer(
           width: screenSize.width * 0.6,
-          height: screenSize.height *
-              0.8, // Increased height to accommodate new fields
+          height: screenSize.height * 0.8,
+          // Increased height to accommodate new fields
           decoration: containerDecoration,
           padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.1),
           child: Form(
@@ -165,14 +165,14 @@ class _AuthScreenState extends State<AuthScreen> {
                   TextFormField(
                     controller: _firstNameController,
                     decoration: InputDecoration(
-                      labelText: 'First Name',
+                      labelText: TranslatedTexts.textFields.firstName.tr,
                       labelStyle: textStyleBlack18.copyWith(color: Colors.grey),
                       border: const OutlineInputBorder(),
                     ),
                     style: textStyleBlack18,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your first name';
+                        return TranslatedTexts.alerts.enter_name.tr;
                       }
                       return null;
                     },
@@ -184,14 +184,14 @@ class _AuthScreenState extends State<AuthScreen> {
                   TextFormField(
                     controller: _lastNameController,
                     decoration: InputDecoration(
-                      labelText: 'Last Name',
+                      labelText: TranslatedTexts.textFields.lastName.tr,
                       labelStyle: textStyleBlack18.copyWith(color: Colors.grey),
                       border: const OutlineInputBorder(),
                     ),
                     style: textStyleBlack18,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your last name';
+                        return TranslatedTexts.alerts.enter_last_name.tr;
                       }
                       return null;
                     },
@@ -202,7 +202,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 TextFormField(
                   controller: _loginController,
                   decoration: InputDecoration(
-                    labelText: UserTexts.email,
+                    labelText: TranslatedTexts.textFields.email.tr,
                     labelStyle: textStyleBlack18.copyWith(color: Colors.grey),
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.email),
@@ -210,7 +210,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   style: textStyleBlack18,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return validField(UserTexts.email);
+                      return TranslatedTexts.alerts.enter_last_name.tr;
                     }
                     return null;
                   },
@@ -221,7 +221,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
-                    labelText: UserTexts.password,
+                    labelText: TranslatedTexts.textFields.password.tr,
                     labelStyle: textStyleBlack18.copyWith(color: Colors.grey),
                     border: const OutlineInputBorder(),
                     prefixIcon: const Icon(Icons.lock),
@@ -242,7 +242,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   TextFormField(
                     controller: _password2Controller,
                     decoration: InputDecoration(
-                      labelText: 'Confirm Password',
+                      labelText: TranslatedTexts.textFields.confirmPassword.tr,
                       labelStyle: textStyleBlack18.copyWith(color: Colors.grey),
                       border: const OutlineInputBorder(),
                       prefixIcon: const Icon(Icons.lock),
@@ -267,13 +267,15 @@ class _AuthScreenState extends State<AuthScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: _showForgotPasswordDialog,
-                      child: const Text("Parolni unutdingizmi?"),
+                      child: Text(TranslatedTexts.auth.forgotPassword.tr),
                     ),
                   ),
                 const SizedBox(height: 16.0),
 
                 SmallButtonText(
-                  text: isRegister ? ButtonTexts.register : ButtonTexts.enter,
+                  text: isRegister
+                      ? TranslatedTexts.buttons.register.tr
+                      : TranslatedTexts.buttons.enter.tr,
                   onClick: _submit,
                   buttonSize: Size(screenSize.width * 0.2, 50),
                   textStyle: textStyleBlack18,
@@ -288,8 +290,8 @@ class _AuthScreenState extends State<AuthScreen> {
                     });
                   },
                   child: Text(isRegister
-                      ? "Ҳисобингиз борми? Кириш"
-                      : "Ҳисобингиз йўқми? Рўйҳатдан ўтиш"),
+                      ? TranslatedTexts.auth.signIn.tr
+                      : TranslatedTexts.auth.signUp.tr),
                 ),
               ],
             ),

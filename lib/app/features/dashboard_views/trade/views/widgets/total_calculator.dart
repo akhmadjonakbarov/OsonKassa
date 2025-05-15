@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
-import '../../../../../utils/texts/display_texts.dart';
 import '../../logic/trade_ctl.dart';
 
 class TotalCalculate extends StatelessWidget {
@@ -38,7 +37,7 @@ class TotalCalculate extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${DisplayTexts.total_of_products}: ',
+                    "${'total_products'.tr}:",
                     style: textStyleBlack18Bold.copyWith(color: Colors.white),
                   ),
                   Row(
@@ -57,7 +56,7 @@ class TotalCalculate extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '${DisplayTexts.total_of_sum}:',
+                    "${'total_price'.tr}:",
                     style: textStyleBlack18Bold.copyWith(color: Colors.white),
                   ),
                   Text(

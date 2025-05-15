@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
@@ -279,7 +280,7 @@ class _TradeViewState extends State<TradeView> {
                           height: constraints.maxHeight,
                           alignment: Alignment.center, // To center the text
                           child: Text(
-                            ButtonTexts.cancel,
+                            TranslatedTexts.buttons.cancel.tr,
                             style: textStyleBlack18.copyWith(
                               color: Colors.white,
                               fontSize: 22,
@@ -305,7 +306,7 @@ class _TradeViewState extends State<TradeView> {
                           height: constraints.maxHeight,
                           alignment: Alignment.center, // To center the text
                           child: Text(
-                            ButtonTexts.pay,
+                            TranslatedTexts.buttons.pay.tr,
                             style: textStyleBlack28.copyWith(
                               fontSize: 28,
                               color: Colors.white,

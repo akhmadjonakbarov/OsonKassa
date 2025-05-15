@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../../utils/texts/table_texts.dart';
 import '../../../../shared/export_commons.dart';
@@ -27,11 +32,11 @@ class _CategoryTableState extends State<CategoryTable> {
       margin: EdgeInsets.zero,
       decoration: const BoxDecoration(),
       child: CustomDataTable(
-        columns: const [
-          TableTexts.index,
-          TableTexts.category,
-          TableTexts.total_of_product,
-          TableTexts.buttons,
+        columns: [
+          TranslatedTexts.table.index.tr,
+          TranslatedTexts.table.category.tr,
+          TranslatedTexts.table.totalOfProduct.tr,
+          TranslatedTexts.table.buttons.tr,
         ],
         rows: widget.categories.asMap().entries.map(
           (entry) {

@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
@@ -30,14 +37,14 @@ class _DebtTableState extends State<StoreTable> {
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(
-        columns: const [
-          TableTexts.index,
-          TableTexts.name,
-          TableTexts.category,
-          TableTexts.income_price,
-          TableTexts.selling_price,
-          TableTexts.remainder,
-          TableTexts.buttons
+        columns: [
+          TranslatedTexts.table.index.tr,
+          TranslatedTexts.table.name.tr,
+          TranslatedTexts.table.category.tr,
+          TranslatedTexts.table.incomePrice.tr,
+          TranslatedTexts.table.sellingPrice.tr,
+          TranslatedTexts.table.qty.tr,
+          TranslatedTexts.table.buttons.tr
         ],
         rows: widget.storeCtl.list.asMap().entries.map(
           (entry) {

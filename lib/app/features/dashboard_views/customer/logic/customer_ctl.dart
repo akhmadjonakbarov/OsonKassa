@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -72,7 +73,8 @@ class CustomerCtl extends MainController<Customer> {
         TextEditingController();
     final TextEditingController addressController = TextEditingController();
     final formKey = GlobalKey<FormState>();
-    String buttonText = isNull ? ButtonTexts.save : ButtonTexts.edit;
+    String buttonText =
+        isNull ? TranslatedTexts.buttons.save : TranslatedTexts.buttons.edit;
     // Check if we are editing an existing provider
     if (!isNull) {
       // Set initial values for the controllers if an existing provider is selected
@@ -100,34 +102,36 @@ class CustomerCtl extends MainController<Customer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isNull ? 'Klient  qo\'shish' : 'Klientni tahrirlash',
+                  isNull
+                      ? TranslatedTexts.customer.add.tr
+                      : TranslatedTexts.customer.edit.tr,
                   style: textStyleBlack18.copyWith(fontSize: 22),
                 ),
                 const Divider(),
                 const SizedBox(height: 16),
                 CustomDialogTextField(
                   controller: nameController,
-                  label: UserTexts.fullName,
+                  label: TranslatedTexts.textFields.fullName.tr,
                 ),
                 CustomDialogTextField(
                   controller: phoneNumberController,
-                  label: UserTexts.phone_number,
+                  label: TranslatedTexts.textFields.phoneNumber.tr,
                 ),
                 CustomDialogTextField(
                   canBeNull: true,
                   controller: phoneNumber2Controller,
-                  label: UserTexts.phoneNumber2,
+                  label: TranslatedTexts.textFields.phoneNumber2.tr,
                 ),
                 CustomDialogTextField(
                   controller: addressController,
-                  label: UserTexts.address,
+                  label: TranslatedTexts.textFields.address.tr,
                 ),
                 const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     DialogTextButton(
-                      text: ButtonTexts.cancel,
+                      text: TranslatedTexts.buttons.cancel.tr,
                       onClick: () {
                         Navigator.of(context).pop();
                       },
@@ -179,7 +183,7 @@ class CustomerCtl extends MainController<Customer> {
                         fetchItems();
                       },
                       textStyle: textStyleBlack14,
-                      text: buttonText,
+                      text: buttonText.tr,
                     ),
                   ],
                 ),
@@ -240,7 +244,9 @@ class CustomerCtl extends MainController<Customer> {
       return;
     }
     searchItem(text, (customer, searchText) {
-      return customer.fullName!.toLowerCase().contains(searchText.toLowerCase());
+      return customer.fullName!
+          .toLowerCase()
+          .contains(searchText.toLowerCase());
     });
   }
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../../utils/texts/table_texts.dart';
 import '../../../../shared/widgets/buttons.dart';
@@ -24,13 +26,13 @@ class _ItemTableState extends State<ItemTable> {
   @override
   Widget build(BuildContext context) {
     return CustomDataTable(
-      columns: const [
-        TableTexts.index,
-        TableTexts.name,
-        TableTexts.barcode,
-        TableTexts.category,
-        TableTexts.company,
-        TableTexts.buttons
+      columns: [
+        TranslatedTexts.table.index.tr,
+        TranslatedTexts.table.product.tr,
+        TranslatedTexts.table.barcode.tr,
+        TranslatedTexts.table.category.tr,
+        TranslatedTexts.table.company.tr,
+        TranslatedTexts.table.buttons.tr
       ],
       rows: widget.itemCtl.list.asMap().entries.map(
         (entry) {

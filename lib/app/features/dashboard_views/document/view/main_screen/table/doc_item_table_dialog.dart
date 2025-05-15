@@ -38,11 +38,13 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
 
   double totalSellingPrice = 0.0;
 
-  double totalIncomePrice = 0.0;
+  double totalIncomePriceUSD = 0.0;
+  double totalIncomePriceUZS = 0.0;
 
   void calculateTotalValues() {
     totalQty = 0.0;
-    totalIncomePrice = 0.0;
+    totalIncomePriceUSD = 0.0;
+    totalIncomePriceUZS = 0.0;
     totalSellingPrice = 0.0;
     totalProfit = 0.0;
 
@@ -52,7 +54,11 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
       final selling = docItem.sellingPrice ?? 0;
 
       totalQty += qty;
-      totalIncomePrice += income * qty;
+      if (docItem.incomeCurrency!.toLowerCase().contains('usd')) {
+        totalIncomePriceUSD += income * qty;
+      } else {
+        totalIncomePriceUZS += income * qty;
+      }
       totalSellingPrice += selling * qty;
       totalProfit += (selling - income) * qty;
     }
@@ -61,8 +67,22 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = getScreenSize(context);
+
     return Obx(
       () {
+        calculateTotalValues();
+        String totalIncomePrices = '';
+        if (totalIncomePriceUSD > 0 && totalIncomePriceUZS > 0) {
+          totalIncomePrices =
+              "${PriceFomatter.formatPrice(totalIncomePriceUZS)} uzs / ${PriceFomatter.formatPrice(totalIncomePriceUSD)} usd";
+        } else if (totalIncomePriceUSD > 0) {
+          totalIncomePrices =
+              "${PriceFomatter.formatPrice(totalIncomePriceUSD)} usd";
+        } else if (totalIncomePriceUZS > 0) {
+          totalIncomePrices =
+              "${PriceFomatter.formatPrice(totalIncomePriceUZS)} uzs";
+        }
+
         if (widget.docItemCtl.isLoading.value) {
           return AlertDialog(
             content: SizedBox(
@@ -88,9 +108,9 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
             columns: _columns(),
             rows: [
               ...widget.docItemCtl.docItemsByDoc.asMap().entries.map(
-                (doc_item_data) {
-                  int index = doc_item_data.key;
-                  DocumentItem docItem = doc_item_data.value;
+                (docItemData) {
+                  int index = docItemData.key;
+                  DocumentItem docItem = docItemData.value;
 
                   return DataRow(
                     cells: [
@@ -162,7 +182,7 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                   const DataCell(CenterText(text: "Jami")),
                   const DataCell(SizedBox.shrink()),
                   DataCell(CenterText(
-                    text: "${PriceFomatter.formatPrice(totalIncomePrice)} usd",
+                    text: totalIncomePrices,
                   )),
                   DataCell(CenterText(
                     text: "${PriceFomatter.formatPrice(totalSellingPrice)} uzs",

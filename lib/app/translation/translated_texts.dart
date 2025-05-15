@@ -1,20 +1,81 @@
 class TranslatedTexts {
-  static const appName = 'app_name';
-  static const hello = 'hello';
+  final appName = 'app_name';
+  final hello = 'hello';
   static const welcome = 'welcome';
-  static const logout = 'logout';
-  static const settings = 'settings';
-  static const language = 'language';
+  final logout = 'logout';
+  final settings = 'settings';
+  final language = 'language';
 
-  static const error = 'error';
-  static const noInternet = 'no_internet';
-  static const invalidCredentials = 'invalid_credentials';
+  final error = 'error';
+  final noInternet = 'no_internet';
+  final invalidCredentials = 'invalid_credentials';
 
   static _Auth get auth => _Auth();
+
   static _Dashboard get dashboard => _Dashboard();
-  static _Client get client => _Client();
+
   static _Product get product => _Product();
+
   static _Sale get sale => _Sale();
+
+  static _Errors get errors => _Errors();
+
+  static _Buttons get buttons => _Buttons();
+
+  static _Users get users => _Users();
+
+  static _Alerts get alerts => _Alerts();
+
+  static _Customer get customer => _Customer();
+
+  static _Report get report => _Report();
+
+  static _Table get table => _Table();
+
+  static _TextFields get textFields => _TextFields();
+
+  static _Debt get debt => _Debt();
+  static _Payment get payment => _Payment();
+
+}
+
+class _Buttons {
+  final enter = 'enter';
+  final register = 'register';
+  final search = 'search';
+  final cancel = 'cancel';
+  final save = 'save';
+  final delete = 'delete';
+  final add = 'add';
+  final edit = 'edit';
+  final back = 'back';
+  final update = 'update';
+  final forDebt = 'for_debt';
+  final pay = 'pay';
+  final close = 'close';
+  final forBuilder = 'for_builder';
+  final exit = 'exit';
+  final confirm = 'confirm';
+}
+
+class _Users {
+  final users = 'users';
+  final add = 'add_user';
+  final edit = 'edit_user';
+  final delete = 'delete_user';
+  final name = 'user_name';
+  final email = 'user_email';
+  final phone = 'user_phone';
+  final role = 'user_role';
+  final permissions = 'user_permissions';
+}
+
+class _Errors {
+  final noInternet = 'no_internet';
+  final invalidCredentials = 'invalid_credentials';
+  final serverError = 'server_error';
+  final unknownError = 'unknown_error';
+  final pleaseEnterNumber = 'please_enter_number';
 }
 
 class _Auth {
@@ -34,15 +95,49 @@ class _Dashboard {
   final recentActivity = 'recent_activity';
 }
 
-class _Client {
-  final clients = 'clients';
-  final add = 'add_client';
-  final edit = 'edit_client';
-  final delete = 'delete_client';
-  final details = 'client_details';
-  final name = 'client_name';
-  final email = 'client_email';
-  final phone = 'client_phone';
+class _Alerts {
+  final enter_price = 'enter_price';
+  final enter_name = 'enter_name';
+  final enter_full_name = 'enter_full_name';
+  final enter_phone_number = 'enter_phone_number';
+  final enter_phone_number2 = 'enter_phone_number2';
+  final enter_first_name = 'enter_first_name';
+  final enter_last_name = 'enter_last_name';
+  final enter_email = 'enter_email';
+  final enter_description = 'enter_description';
+  final enter_amount = 'enter_amount';
+  final enter_date = 'enter_date';
+  final enter_client = 'enter_client';
+  final enter_product = 'enter_product';
+  final enter_category = 'enter_category';
+  final enter_provider = 'enter_provider';
+  final enter_builder = 'enter_builder';
+  final enter_currency = 'enter_currency';
+  final enter_unit = 'enter_unit';
+  final enter_qty = 'enter_qty';
+}
+
+class _Customer {
+  final customers = 'customers';
+  final add = 'add_customer';
+  final edit = 'edit_customer';
+  final delete = 'delete_customer';
+  final name = 'customer_name';
+  final email = 'customer_email';
+  final phone = 'customer_phone';
+}
+
+class _Report {
+  final reports = 'reports';
+  final salesReport = 'sales_report';
+  final productReport = 'product_report';
+  final customerReport = 'customer_report';
+  final builderReport = 'builder_report';
+  final providerReport = 'provider_report';
+  final dailyReport = 'daily_report';
+  final weeklyReport = 'weekly_report';
+  final monthlyReport = 'monthly_report';
+  final yearlyReport = 'yearly_report';
 }
 
 class _Product {
@@ -60,4 +155,66 @@ class _Sale {
   final add = 'add_sale';
   final amount = 'sale_amount';
   final date = 'sale_date';
+}
+
+class _Table {
+  final index = 'index';
+  final name = 'name';
+  final phoneNumber = 'phone_number';
+  final phoneNumber2 = 'phone_number2';
+  final address = 'address';
+  final buttons = 'buttons';
+  final qty = 'qty';
+  final incomePrice = 'income_price';
+  final sellingPrice = 'selling_price';
+  final total = 'total';
+  final typeOfProduct = 'type_of_product';
+  final totalOfProduct = 'total_of_product';
+  final documentType = 'document_type';
+  final seeDetail = 'see_detail';
+  final category = 'category';
+  final status = 'status';
+  final currency = 'currency';
+  final addingTime = 'adding_time';
+  final date = 'date';
+  final isPaid = 'is_paid';
+  final debt = 'debt';
+  final totalValue = 'total_value';
+  final totalProfit = 'total_profit';
+  final totalAmountPrice = 'total_amount_price';
+  final company = 'company';
+  final product = 'product';
+  final barcode = 'barcode';
+  final unit = 'unit';
+}
+
+class _TextFields {
+  final String fullName = "full_name";
+  final String phoneNumber = "phone_number";
+  final String phoneNumber2 = "phone_number2";
+  final String address = "address";
+  final String email = "email";
+  final String password = "password";
+  final String confirmPassword = "confirm_password";
+  final String name = "name";
+  final String description = "description";
+  final String amount = "amount";
+  final String date = "date";
+  final firstName = 'first_name';
+  final lastName = 'last_name';
+}
+
+class _Debt {
+  final String debts = "debts";
+  final String paid = "paid";
+  final String notPaid = "not_paid";
+  final String extraNumber = "extra_number";
+  final String noExtraNumber = "no_extra_number";
+}
+
+class _Payment {
+  final confirmPayment = 'confirm_payment';
+  final paymentSuccess = 'payment_success';
+  final paymentFailed = 'payment_failed';
+  final areYouSureToPay = 'are_you_sure_to_pay';
 }

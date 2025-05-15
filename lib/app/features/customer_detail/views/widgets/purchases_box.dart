@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/customer_detail/views/widgets/purchase_item_dialog.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
@@ -55,7 +56,7 @@ class PurchasesBox extends StatelessWidget {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.transparent,
           title: Text(
-            "Savdolar",
+            TranslatedTexts.sale.sales.tr,
             style: textStyleBlack28.copyWith(fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
@@ -66,10 +67,10 @@ class PurchasesBox extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: CustomDataTable(
-            columns: const [
-              TableTexts.index,
-              TableTexts.date,
-              TableTexts.total_amount_price,
+            columns: [
+              TranslatedTexts.table.index.tr,
+              TranslatedTexts.table.date.tr,
+              'total_price'.tr,
             ], // Your columns here
             rows: customerDetailCtl.purchases
                 .asMap()

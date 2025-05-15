@@ -15,7 +15,7 @@ import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/content_view.dart';
 import '../logic/customer_ctl.dart';
-import 'table/client_table.dart';
+import 'table/customer_table.dart';
 
 class CustomerView extends StatefulWidget {
   final CustomerCtl customerCtl;
@@ -221,7 +221,7 @@ class _CustomerViewState extends State<CustomerView> {
             return DataList(
               isLoading: widget.customerCtl.isLoading.value,
               isNotEmpty: widget.customerCtl.list.isNotEmpty,
-              child: ClientTable(
+              child: CustomerTable(
                 builderController: widget.customerCtl,
               ),
             );

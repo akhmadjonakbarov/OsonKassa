@@ -67,7 +67,8 @@ class _ProviderTableState extends State<CachedProductsTable> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    // widget.manageProductDocItemCtl.editProductDocItem();
+                                    widget.manageProductDocItemCtl
+                                        .editProductDocItem(product);
                                   });
                                 },
                               ),

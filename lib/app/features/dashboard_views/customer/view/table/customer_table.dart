@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/config/app_paths.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../../utils/formatter_functions/format_phone_number.dart';
 import '../../../../../utils/texts/display_texts.dart';
@@ -13,16 +19,16 @@ import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/customer_ctl.dart';
 import '../../models/customer.dart';
 
-class ClientTable extends StatefulWidget {
+class CustomerTable extends StatefulWidget {
   final CustomerCtl builderController;
 
-  const ClientTable({super.key, required this.builderController});
+  const CustomerTable({super.key, required this.builderController});
 
   @override
-  State<ClientTable> createState() => _ClientTableState();
+  State<CustomerTable> createState() => _CustomerTableState();
 }
 
-class _ClientTableState extends State<ClientTable> {
+class _CustomerTableState extends State<CustomerTable> {
   CustomerDetailCtl customerDetailCtl = Get.find<CustomerDetailCtl>();
 
   @override
@@ -31,13 +37,13 @@ class _ClientTableState extends State<ClientTable> {
       padding: EdgeInsets.zero,
       decoration: const BoxDecoration(),
       child: CustomDataTable(
-        columns: const [
-          TableTexts.index,
-          TableTexts.fish,
-          TableTexts.phone_number,
-          TableTexts.phone_number2,
-          TableTexts.address,
-          TableTexts.buttons
+        columns: [
+          TranslatedTexts.table.index.tr,
+          TranslatedTexts.table.name.tr,
+          TranslatedTexts.table.phoneNumber.tr,
+          TranslatedTexts.table.phoneNumber2.tr,
+          TranslatedTexts.table.address.tr,
+          TranslatedTexts.table.buttons.tr
         ],
         rows: widget.builderController.list.asMap().entries.map((entry) {
           int index = entry.key;
@@ -52,7 +58,8 @@ class _ClientTableState extends State<ClientTable> {
             cells: <DataCell>[
               DataCell(CenterText(text: "${index + 1}")),
               DataCell(CenterText(text: client.fullName!)),
-              DataCell(CenterText(text: formatPhoneNumber(client.phoneNumber!))),
+              DataCell(
+                  CenterText(text: formatPhoneNumber(client.phoneNumber!))),
               DataCell(CenterText(
                   text: client.phoneNumber2 != ""
                       ? formatPhoneNumber(client.phoneNumber2!)

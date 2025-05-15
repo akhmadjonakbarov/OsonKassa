@@ -10,18 +10,16 @@ class TableTexts {
   static const String name = "Ном";
   static const String provider = "Еткaзиб берувчи";
   static const String income_price = "Келиш Нарх";
-  static const String income_price_usd = "Келиш Нарх USD";
   static const String selling_price = "Сотилиш Нарх";
   static const String remainder = "Қолдиқ";
   static const String total = "Жами";
   static const String type_of_product = "Маҳсулот тури";
   static const String total_of_product = "Маҳсулотлар сони";
-  static const String total_kg = "KG";
   static const String document_type = "Документ тури";
   static const String see_detail = "Кўриш";
   static const String category = "Бўлим";
   static const String status = "Ҳолати";
-  static const String currency_type = "Pul birligi";
+
   static const String currency = "Курс";
   static const String addingTime = "Қўшилган вақт";
   static const String date = "Сана";

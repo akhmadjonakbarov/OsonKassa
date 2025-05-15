@@ -8,6 +8,7 @@ import '../../../../../core/display/user_notifier.dart';
 import '../../../../../core/enums/currency_type.dart';
 import '../../../../../core/enums/type_of_snackbar.dart';
 import '../../../../../styles/text_styles.dart';
+import '../../../../../translation/translated_texts.dart';
 import '../../../../../utils/texts/alert_texts.dart';
 import '../../../../../utils/texts/button_texts.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
@@ -100,7 +101,7 @@ class ManageProductDocItemCtl extends GetxController {
       StatefulBuilder(
         builder: (context, setState) {
           return AlertDialog(
-            title: const Text("Tahrirlash"),
+            title: Text('edit'.tr),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -110,7 +111,7 @@ class ManageProductDocItemCtl extends GetxController {
                   style: textStyleBlack18,
                   decoration: InputDecoration(
                     labelText: PlaceholderTexts.selling_price,
-                    hintText: "Narx kiriting",
+                    hintText: 'enter_price'.tr,
                     labelStyle: textStyleBlack18,
                   ),
                   keyboardType: TextInputType.number,
@@ -122,14 +123,14 @@ class ManageProductDocItemCtl extends GetxController {
             actions: <Widget>[
               DialogTextButton(
                 isNegative: true,
-                text: ButtonTexts.cancel,
+                text: TranslatedTexts.buttons.cancel.tr,
                 onClick: () {
                   Get.back(); // Close dialog without changes
                 },
                 textStyle: textStyleBlack14,
               ),
               DialogTextButton(
-                text: ButtonTexts.edit,
+                text: TranslatedTexts.buttons.save.tr,
                 onClick: () {
                   // Parse the selling price input
                   if (_sellingPriceController.text.isNotEmpty) {
@@ -177,7 +178,7 @@ class ManageProductDocItemCtl extends GetxController {
     if (double.tryParse(textSellingPrice) == null) {
       UserNotifier.showFlutterSnackBar(
           context: context,
-          text: "Iltimos raqam kiriting",
+          text: 'please_enter_number'.tr,
           type: TypeOfSnackBar.alert);
       return;
     }
@@ -195,7 +196,7 @@ class ManageProductDocItemCtl extends GetxController {
     if (double.tryParse(textIncomePrice) == null) {
       UserNotifier.showFlutterSnackBar(
           context: context,
-          text: "Iltimos raqam kiriting",
+          text: 'please_enter_number'.tr,
           type: TypeOfSnackBar.alert);
       return;
     }
@@ -245,7 +246,7 @@ class ManageProductDocItemCtl extends GetxController {
     if (double.tryParse(textQty) == null) {
       UserNotifier.showFlutterSnackBar(
           context: context,
-          text: "Iltimos raqam kiriting",
+          text: 'please_enter_number'.tr,
           type: TypeOfSnackBar.alert);
       return;
     }
