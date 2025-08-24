@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
 
+import '../../../store/models/store_item.dart';
 import '../../logic/trade_ctl.dart';
 import 'sell_trade_item.dart';
 

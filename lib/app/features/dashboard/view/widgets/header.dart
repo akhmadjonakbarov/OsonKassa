@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../config/app_paths.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -12,6 +11,7 @@ import '../../../../styles/container_decoration.dart';
 import '../../../../styles/icons.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../styles/themes.dart';
+import '../../../../translation/translated_texts.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';

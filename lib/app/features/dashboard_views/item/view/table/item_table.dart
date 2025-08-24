@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/item/view/widgets/item_edit_dialog.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
 
+import '../../../../../translation/translated_texts.dart';
+import '../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../shared/widgets/buttons.dart';
 import '../../../../shared/widgets/center_text.dart';
 import '../../../../shared/widgets/custom_data_table.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/item_ctl.dart';
 import '../../models/item.dart';
+import '../widgets/item_edit_dialog.dart';
 
 class ItemTable extends StatefulWidget {
   final ItemCtl itemCtl;

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:osonkassa/app/core/network/status_codes.dart';
-import 'package:osonkassa/app/features/customer_detail/models/purchase.dart';
+
+import '../../../core/network/status_codes.dart';
+import '../models/purchase.dart';
 
 class PurchaseRepository {
   final Dio dio;

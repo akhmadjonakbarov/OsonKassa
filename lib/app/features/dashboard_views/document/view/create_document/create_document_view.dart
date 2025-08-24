@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/currency/models/currency.dart';
-import 'package:osonkassa/app/features/dashboard_views/document/models/draft_document.dart';
-
-import 'package:osonkassa/app/styles/themes.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
-import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../../core/enums/product_doc_type.dart';
 import '../../../../../core/validator/number_validator.dart';
 import '../../../../../styles/container_decoration.dart';
 import '../../../../../styles/text_input_styles.dart';
 import '../../../../../styles/text_styles.dart';
+import '../../../../../styles/themes.dart';
+import '../../../../../translation/translated_texts.dart';
+import '../../../../../utils/formatter_functions/formatter_currency.dart';
+import '../../../../../utils/helper/log_helper.dart';
 import '../../../../../utils/texts/button_texts.dart';
 import '../../../../../utils/texts/display_texts.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../category/logic/category_controller.dart';
 import '../../../currency/logic/currency_controller.dart';
-
+import '../../../currency/models/currency.dart';
 import '../../../item/logic/item_ctl.dart';
 import '../../../item/models/item.dart';
 import '../../../note/logic/note_controller.dart';
 import '../../logic/document/document_ctl.dart';
 import '../../logic/view_controller/manage_product_doc_item_ctl.dart';
+import '../../models/draft_document.dart';
 import 'widgets/cached_products_table.dart';
 import 'widgets/header_currency.dart';
 

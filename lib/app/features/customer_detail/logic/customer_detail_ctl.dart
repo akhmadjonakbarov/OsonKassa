@@ -1,9 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/core/display/user_notifier.dart';
-import 'package:osonkassa/app/core/enums/type_of_snackbar.dart';
-import 'package:osonkassa/app/utils/helper/log_helper.dart';
+import '../../../core/display/user_notifier.dart';
+import '../../../core/enums/type_of_snackbar.dart';
+import '../../../utils/helper/log_helper.dart';
 
 import '../../../config/dio_provider.dart';
 import '../models/purchase.dart';
@@ -60,7 +62,7 @@ class CustomerDetailCtl extends GetxController {
       isLoadingPurchases(true);
       purchases.value = await customerDetailService.getPurchasesByCustomerId(
           customerId: customerId);
-    } catch (e, stackTrace) {
+    } catch (e) {
       UserNotifier.showFlutterSnackBar(context: context, text: e.toString());
     } finally {
       isLoadingPurchases(false);
@@ -72,7 +74,7 @@ class CustomerDetailCtl extends GetxController {
       isLoadingDebts(true);
       debts.value = await customerDetailService.getDebtsByCustomerId(
           customerId: customerId);
-    } catch (e, stackTrace) {
+    } catch (e) {
       UserNotifier.showFlutterSnackBar(context: context, text: e.toString());
     } finally {
       isLoadingDebts(false);
@@ -88,8 +90,8 @@ class CustomerDetailCtl extends GetxController {
         customerDetailService.getPurchasesByCustomerId(customerId: customerId),
         customerDetailService.getDebtsByCustomerId(customerId: customerId),
       ]);
-      purchases.value = results[0] as List<Purchase>;
-      debts.value = results[1] as List<Purchase>;
+      purchases.value = results[0];
+      debts.value = results[1];
     } catch (e, stackTrace) {
       debugPrint("Error in loadCustomerDetails: $e");
       debugPrint("StackTrace: $stackTrace");

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../export_commons.dart';
-import '../../../utils/helper/button_size_manager.dart';
-
 import '../../../core/printer/pos_printer_manager.dart';
 import '../../../styles/container_decoration.dart';
 import '../../../styles/text_styles.dart';
+import '../../../utils/helper/button_size_manager.dart';
 import '../../../utils/media/get_screen_size.dart';
 import '../../dashboard_views/document/models/document_item.dart';
+import '../export_commons.dart';
 
 class DialogTable extends StatelessWidget {
   final String title;

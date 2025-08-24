@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/customer/view/widgets/customer_edit_dialog.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -9,8 +8,8 @@ import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/interfaces/getx_controller/main_controller.dart';
-
 import '../models/customer.dart';
+import '../view/widgets/customer_edit_dialog.dart';
 import 'customer_repository.dart';
 import 'customer_services.dart';
 

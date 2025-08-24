@@ -1,9 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/statistics/models/daily_sales_rate.dart';
-import 'package:osonkassa/app/features/dashboard_views/statistics/view/widgets/chart/weekly_profit.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'widgets/chart/weekly_profit.dart';
+import '../../../../translation/translated_texts.dart';
 
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/media/get_screen_size.dart';
@@ -173,7 +172,7 @@ class ChartDataExample extends StatelessWidget {
               ),
             );
           } else {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           }
         },
       ),

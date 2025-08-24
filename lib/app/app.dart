@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/core/init/initial_bindings.dart';
-import 'package:osonkassa/app/core/routes/page_creator.dart';
-import 'package:osonkassa/app/translation/translations.dart';
 
 import 'config/app_paths.dart';
+import 'core/init/initial_bindings.dart';
+import 'core/routes/page_creator.dart';
 import 'styles/colors.dart';
+import 'translation/translations.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

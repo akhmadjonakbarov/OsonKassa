@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
-import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
 
 import '../../../../../../styles/text_styles.dart';
+import '../../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../../../utils/texts/button_texts.dart';
 import '../../../../../shared/export_commons.dart';
-
 import '../../../../store/logic/store_ctl.dart';
+import '../../../../store/models/store_item.dart';
 
 class ListProductsDialog extends StatelessWidget {
   const ListProductsDialog({

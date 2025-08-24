@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
-import '../../../../core/interfaces/api/api_interfaces.dart';
-import '../../../shared/models/api_data.dart';
 
-import '../../../../core/exceptions/validador_exceptions.dart';
+import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/network/status_codes.dart';
 import '../../../../core/validator/response_validator.dart';
+import '../../../shared/models/api_data.dart';
 import '../../../shared/models/pagination_model.dart';
 import '../../currency/models/currency.dart';
 

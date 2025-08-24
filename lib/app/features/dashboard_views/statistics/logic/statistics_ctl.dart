@@ -1,15 +1,15 @@
-import 'package:dio/dio.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../styles/chart_colors.dart';
+import '../models/daily_sales_rate.dart';
 import '../models/daily_total_selling_price.dart';
 import '../models/product_count_report.dart';
-import '../models/daily_sales_rate.dart';
 import '../models/weekly_profit.dart';
 import 'statistics_repository.dart';
 import 'statistics_service.dart';

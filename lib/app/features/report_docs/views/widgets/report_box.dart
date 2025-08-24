@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
+import '../../../../translation/translated_texts.dart';
 
 import '../../../../utils/texts/table_texts.dart';
 import '../../../shared/widgets/center_text.dart';

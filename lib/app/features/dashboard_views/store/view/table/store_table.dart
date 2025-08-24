@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../../styles/text_styles.dart';
+import '../../../../../translation/translated_texts.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../../utils/texts/display_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/store_ctl.dart';
+import '../../models/store_item.dart';
 
 class StoreTable extends StatefulWidget {
   final StoreCtl storeCtl;

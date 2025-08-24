@@ -1,10 +1,3 @@
-import 'package:osonkassa/app/features/dashboard_views/currency/models/currency.dart';
-import 'dart:convert';
-
-import '../../item/models/item.dart';
-import 'dart:convert';
-
-import 'dart:convert';
 import 'dart:convert';
 
 class DocumentItem {

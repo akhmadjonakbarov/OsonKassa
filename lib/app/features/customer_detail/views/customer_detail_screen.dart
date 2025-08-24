@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/customer_detail/views/widgets/purchases_box.dart';
 
 import '../../dashboard_views/customer/models/customer.dart';
 import '../../shared/widgets/app_bar.dart';
 import '../../shared/widgets/grid_box.dart';
 import '../logic/customer_detail_ctl.dart';
-
 import 'widgets/debts_box.dart';
+import 'widgets/purchases_box.dart';
 
 class CustomerDetailScreen extends StatefulWidget {
   const CustomerDetailScreen({

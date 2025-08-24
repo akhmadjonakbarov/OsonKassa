@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
 
-import '../../../../../utils/texts/table_texts.dart';
+import '../../../../../translation/translated_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../logic/category_controller.dart';
 import '../../models/category_models.dart';

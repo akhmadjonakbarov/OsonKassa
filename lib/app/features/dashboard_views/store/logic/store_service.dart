@@ -1,8 +1,7 @@
-import 'package:osonkassa/app/features/dashboard_views/store/logic/store_repository.dart';
-
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../shared/models/api_data.dart';
 import '../models/store_item.dart';
+import 'store_repository.dart';
 
 class StoreService {
   final GetAllWithPagination<ApiData> _getAllRepository;

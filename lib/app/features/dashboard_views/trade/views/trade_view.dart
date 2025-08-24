@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../core/printer/pos_printer_manager.dart';
 import '../../../../styles/text_styles.dart';
+import '../../../../translation/translated_texts.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/alert_texts.dart';
 import '../../../../utils/texts/button_texts.dart';

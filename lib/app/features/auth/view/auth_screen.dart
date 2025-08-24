@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../styles/container_decoration.dart';
 import '../../../styles/text_styles.dart';
+import '../../../translation/translated_texts.dart';
 import '../../../utils/helper/valid_alert.dart';
 import '../../../utils/media/get_screen_size.dart';
 import '../../../utils/texts/button_texts.dart';
-
 import '../../../utils/texts/user_texts.dart';
 import '../../shared/widgets/app_container.dart';
 import '../../shared/widgets/buttons.dart';

@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/config/app_paths.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
 
+import '../../../../../config/app_paths.dart';
+import '../../../../../translation/translated_texts.dart';
 import '../../../../../utils/formatter_functions/format_phone_number.dart';
 import '../../../../../utils/texts/display_texts.dart';
-import '../../../../../utils/texts/table_texts.dart';
-
 import '../../../../customer_detail/logic/customer_detail_ctl.dart';
-import '../../../../customer_detail/views/customer_detail_screen.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/customer_ctl.dart';

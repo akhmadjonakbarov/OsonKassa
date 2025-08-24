@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:osonkassa/app/features/dashboard_views/category/logic/category_controller.dart';
-import 'package:osonkassa/app/features/dashboard_views/company/logic/company_ctl.dart';
-import 'package:osonkassa/app/features/dashboard_views/document/models/document_item.dart';
-import 'package:osonkassa/app/features/dashboard_views/item/logic/item_ctl.dart';
-import 'package:osonkassa/app/features/unit/logic/unit_controller.dart';
+import '../../../category/logic/category_controller.dart';
+import '../../../company/logic/company_ctl.dart';
+import '../../../document/models/document_item.dart';
+import '../../logic/item_ctl.dart';
+import '../../../../unit/logic/unit_controller.dart';
 
 import '../../../../../styles/colors.dart';
 import '../../../../../styles/text_styles.dart';

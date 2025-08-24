@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
-import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/network/status_codes.dart';
-
+import '../../../../utils/helper/log_helper.dart';
 import '../../../shared/models/api_data.dart';
 import '../../../shared/models/pagination_model.dart';
+import '../models/store_item.dart';
 
 class StoreRepository
     implements GetAllWithPagination<ApiData>, Delete<int>, Update<StoreItem> {

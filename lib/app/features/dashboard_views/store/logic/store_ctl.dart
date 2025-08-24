@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
-import 'package:osonkassa/app/utils/helper/log_helper.dart';
+import '../models/store_item.dart';
+import '../../../../utils/helper/log_helper.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';

@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/computer/logic/display/display_controller.dart';
 
 import '../../../action/logic/action_ctl.dart';
-
 import '../../../dashboard_views/category/logic/category_controller.dart';
 import '../../../dashboard_views/company/logic/company_ctl.dart';
 import '../../../dashboard_views/computer/logic/computer_ctl.dart';
+import '../../../dashboard_views/computer/logic/display/display_controller.dart';
 import '../../../dashboard_views/currency/logic/currency_controller.dart';
 import '../../../dashboard_views/customer/logic/customer_ctl.dart';
 import '../../../dashboard_views/document/logic/doc_item/doc_item_ctl.dart';

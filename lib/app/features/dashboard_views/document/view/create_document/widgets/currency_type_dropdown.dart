@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:osonkassa/app/core/enums/currency_type.dart';
 
+import '../../../../../../core/enums/currency_type.dart';
 import '../../../../../../styles/text_styles.dart';
 
 class CurrencyTypeDropdown extends StatefulWidget {

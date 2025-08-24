@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'translated_texts.dart';
 
 class AppTranslations extends Translations {
   @override

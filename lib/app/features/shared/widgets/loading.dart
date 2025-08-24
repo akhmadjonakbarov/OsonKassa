@@ -1,6 +1,6 @@
-import '../../../styles/container_decoration.dart';
 import 'package:flutter/material.dart';
 
+import '../../../styles/container_decoration.dart';
 import '../../../styles/text_styles.dart';
 
 class Loading extends StatelessWidget {

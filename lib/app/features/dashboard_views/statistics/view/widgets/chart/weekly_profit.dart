@@ -1,14 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/statistics/logic/statistics_ctl.dart';
-import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 
 import '../../../../../../styles/app_colors.dart';
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../styles/themes.dart';
 import '../../../../../../translation/translated_texts.dart';
 import '../../../../../../utils/formatter_functions/formatter_currency.dart';
+import '../../../../../../utils/media/get_screen_size.dart';
+import '../../../logic/statistics_ctl.dart';
 
 class WeeklyProfit extends StatefulWidget {
   const WeeklyProfit({super.key, required this.statisticsCtl});

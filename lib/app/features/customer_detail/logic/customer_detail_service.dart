@@ -1,5 +1,4 @@
-import 'package:osonkassa/app/features/customer_detail/models/purchase.dart';
-
+import '../models/purchase.dart';
 import 'customer_detail_repository.dart';
 
 class CustomerDetailService {

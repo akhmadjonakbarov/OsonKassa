@@ -1,12 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:osonkassa/app/features/dashboard_views/statistics/models/daily_sales_rate.dart';
-import 'package:osonkassa/app/features/dashboard_views/statistics/models/product_count_report.dart';
-import 'package:osonkassa/app/features/dashboard_views/statistics/models/weekly_profit.dart';
 
 import '../../../../core/network/status_codes.dart';
-import '../../../../core/validator/response_validator.dart';
-import '../models/daily_total_selling_price.dart';
+import '../models/daily_sales_rate.dart';
+import '../models/product_count_report.dart';
 import '../models/statistic_item_model.dart';
+import '../models/weekly_profit.dart';
 
 class StatisticsRepository {
   final Dio dio;
@@ -17,27 +15,28 @@ class StatisticsRepository {
   final String _statistic = "/statistics/all";
 
   Future<List<StatisticItemModel>> getStatistics() async {
-    List<StatisticItemModel> itemList = [];
-    try {
-      Response response = await dio.get(_statistic);
-      if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
-        if (ResponseValidator.isNotEmptyAndIsList(resData)) {
-          for (var element in resData) {
-            if (ResponseValidator.isMap(element)) {
-              StatisticItemModel statisticItemModel = StatisticItemModel(
-                name: element['name'].toString(),
-                value: double.parse(element['value'].toString()),
-              );
-              itemList.add(statisticItemModel);
-            }
-          }
-        }
-      }
-      return itemList;
-    } catch (e) {
-      rethrow;
-    }
+    return [];
+    // List<StatisticItemModel> itemList = [];
+    // try {
+    //   Response response = await dio.get(_statistic);
+    //   if (response.statusCode == StatusCodes.OK_200) {
+    //     var resData = response.data['data']['list'];
+    //     if (ResponseValidator.isNotEmptyAndIsList(resData)) {
+    //       for (var element in resData) {
+    //         if (ResponseValidator.isMap(element)) {
+    //           StatisticItemModel statisticItemModel = StatisticItemModel(
+    //             name: element['name'].toString(),
+    //             value: double.parse(element['value'].toString()),
+    //           );
+    //           itemList.add(statisticItemModel);
+    //         }
+    //       }
+    //     }
+    //   }
+    //   return itemList;
+    // } catch (e) {
+    //   rethrow;
+    // }
   }
 }
 

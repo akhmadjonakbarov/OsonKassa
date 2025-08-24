@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/customer/logic/customer_ctl.dart';
 
 import '../../../../../styles/colors.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../translation/translated_texts.dart';
 import '../../../../shared/widgets/buttons.dart' show DialogTextButton;
 import '../../../../shared/widgets/custom_textfields.dart';
+import '../../logic/customer_ctl.dart';
 import '../../models/customer.dart';
 
 class CustomerEditDialog extends StatelessWidget {

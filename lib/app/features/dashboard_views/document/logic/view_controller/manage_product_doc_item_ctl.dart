@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/document/models/draf_product.dart';
-import 'package:osonkassa/app/features/dashboard_views/item/models/item.dart';
-import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../../core/display/user_notifier.dart';
-import '../../../../../core/enums/currency_type.dart';
 import '../../../../../core/enums/type_of_snackbar.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../translation/translated_texts.dart';
+import '../../../../../utils/helper/log_helper.dart';
 import '../../../../../utils/texts/alert_texts.dart';
-import '../../../../../utils/texts/button_texts.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../currency/models/currency.dart';
+import '../../../item/models/item.dart';
+import '../../models/draf_product.dart';
 
 class ManageProductDocItemCtl extends GetxController {
   // Keys

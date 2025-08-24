@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
 
 import '../../../../styles/chart_colors.dart';
+import '../../../dashboard_views/store/models/store_item.dart';
 import 'indicator.dart';
 
 class PieChartGraph extends StatefulWidget {

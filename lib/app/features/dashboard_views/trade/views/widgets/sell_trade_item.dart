@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
-import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
 
 import '../../../../../styles/colors.dart';
 import '../../../../../styles/text_styles.dart';
+import '../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../../utils/media/get_screen_size.dart';
 import '../../../../shared/export_commons.dart';
+import '../../../store/models/store_item.dart';
 
 class SellProductItem extends StatefulWidget {
   final Function() onEdit;

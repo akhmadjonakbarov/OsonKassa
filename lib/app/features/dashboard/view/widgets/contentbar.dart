@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/computer/logic/display/display_controller.dart';
 
 import '../../../../config/app_views.dart';
 import '../../../action/logic/action_ctl.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../dashboard_views/category/view/category_view.dart';
 import '../../../dashboard_views/computer/logic/computer_ctl.dart';
+import '../../../dashboard_views/computer/logic/display/display_controller.dart';
 import '../../../dashboard_views/computer/view/computer_view.dart';
 import '../../../dashboard_views/currency/view/currency_view.dart';
 import '../../../dashboard_views/customer/logic/customer_ctl.dart';

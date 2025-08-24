@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/computer/logic/display/display_controller.dart';
 
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/helper/button_size_manager.dart';
@@ -10,6 +9,7 @@ import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/content_view.dart';
 import '../logic/computer_ctl.dart';
+import '../logic/display/display_controller.dart';
 import 'widgets/requirement_section.dart';
 
 class ComputerView extends StatelessWidget {

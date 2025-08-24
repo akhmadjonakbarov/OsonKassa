@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 
 import '../../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../../core/network/status_codes.dart';
-
 import '../../models/document_item.dart';
 
 class DocItemRepository

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:osonkassa/app/utils/helper/log_helper.dart';
+import '../../../../../utils/helper/log_helper.dart';
 
 import '../../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../../core/network/status_codes.dart';

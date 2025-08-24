@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:osonkassa/app/core/printer/pos_printer_manager.dart';
-import 'package:osonkassa/app/features/customer_detail/models/purchase.dart';
 
+import '../../../../core/printer/pos_printer_manager.dart';
 import '../../../../styles/container_decoration.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
@@ -9,6 +8,7 @@ import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/display_texts.dart';
 import '../../../../utils/texts/table_texts.dart';
 import '../../../shared/widgets/center_text.dart';
+import '../../models/purchase.dart';
 
 class PurchaseItemDialog extends StatelessWidget {
   final Purchase purchase;

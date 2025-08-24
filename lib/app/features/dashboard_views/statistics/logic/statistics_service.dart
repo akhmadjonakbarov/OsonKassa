@@ -1,4 +1,3 @@
-import '../models/daily_total_selling_price.dart';
 import '../models/statistic_item_model.dart';
 import 'statistics_repository.dart';
 
