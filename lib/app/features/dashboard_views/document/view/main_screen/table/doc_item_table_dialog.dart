@@ -36,31 +36,31 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
 
   double totalProfit = 0.0;
 
-  double totalSellingPrice = 0.0;
+  double totalSalePrice = 0.0;
 
-  double totalIncomePriceUSD = 0.0;
-  double totalIncomePriceUZS = 0.0;
+  double totalIncomePrice = 0.0;
 
   void calculateTotalValues() {
     totalQty = 0.0;
-    totalIncomePriceUSD = 0.0;
-    totalIncomePriceUZS = 0.0;
-    totalSellingPrice = 0.0;
+    totalIncomePrice = 0.0;
+    totalSalePrice = 0.0;
     totalProfit = 0.0;
 
     for (var docItem in widget.docItemCtl.docItemsByDoc) {
       final qty = docItem.qty ?? 0;
       final income = docItem.incomePrice ?? 0;
-      final selling = docItem.sellingPrice ?? 0;
+      final sale = docItem.salePrice ?? 0;
 
       totalQty += qty;
-      if (docItem.incomeCurrency!.toLowerCase().contains('usd')) {
-        totalIncomePriceUSD += income * qty;
+
+      if (docItem.currency != null) {
+        totalSalePrice += sale * qty * docItem.currency!.value!;
+        totalIncomePrice += income * qty * docItem.currency!.value!;
       } else {
-        totalIncomePriceUZS += income * qty;
+        totalSalePrice += sale * qty;
+        totalIncomePrice += income * qty;
       }
-      totalSellingPrice += selling * qty;
-      totalProfit += (selling - income) * qty;
+      totalProfit += (sale - income) * qty;
     }
   }
 
@@ -71,23 +71,14 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
     return Obx(
       () {
         calculateTotalValues();
-        String totalIncomePrices = '';
-        if (totalIncomePriceUSD > 0 && totalIncomePriceUZS > 0) {
-          totalIncomePrices =
-              "${PriceFomatter.formatPrice(totalIncomePriceUZS)} uzs / ${PriceFomatter.formatPrice(totalIncomePriceUSD)} usd";
-        } else if (totalIncomePriceUSD > 0) {
-          totalIncomePrices =
-              "${PriceFomatter.formatPrice(totalIncomePriceUSD)} usd";
-        } else if (totalIncomePriceUZS > 0) {
-          totalIncomePrices =
-              "${PriceFomatter.formatPrice(totalIncomePriceUZS)} uzs";
-        }
 
         if (widget.docItemCtl.isLoading.value) {
-          return AlertDialog(
-            content: SizedBox(
-              height: screenSize.height * 0.3,
-              width: screenSize.width * 0.2,
+          return Dialog(
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                horizontal: widget.size.width * 0.1,
+                vertical: widget.size.height * 0.05,
+              ),
               child: const Loading(
                 hasPadding: false,
               ),
@@ -112,6 +103,17 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                   int index = docItemData.key;
                   DocumentItem docItem = docItemData.value;
 
+                  double income = 0.0;
+                  double sale = 0.0;
+
+                  if (docItem.currency != null) {
+                    income = docItem.incomePrice! * docItem.currency!.value!;
+                    sale = docItem.salePrice! * docItem.currency!.value!;
+                  } else {
+                    income = docItem.incomePrice!;
+                    sale = docItem.salePrice!;
+                  }
+
                   return DataRow(
                     cells: [
                       DataCell(Container(
@@ -125,20 +127,20 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                       DataCell(Container(
                         alignment: Alignment.center,
                         child: Text(
-                          "${PriceFomatter.formatPrice(docItem.incomePrice!)} ${docItem.incomeCurrency}",
+                          "${PriceFomatter.formatPrice(income)} ",
                         ),
                       )),
                       DataCell(Container(
                         alignment: Alignment.center,
                         child: Text(
-                          "${PriceFomatter.formatPrice(docItem.sellingPrice!)} ${docItem.sellingCurrency}",
+                          "${PriceFomatter.formatPrice(sale)} ",
                         ),
                       )),
                       DataCell(
                         Container(
                           alignment: Alignment.center,
                           child: Text(
-                            docItem.qty.toString(),
+                            "${docItem.qty.toString()} ${docItem.item!.unit}",
                             style: screenSize.width <= 1366
                                 ? textStyleBlack15
                                 : textStyleBlack18Bold,
@@ -182,13 +184,13 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                   const DataCell(CenterText(text: "Jami")),
                   const DataCell(SizedBox.shrink()),
                   DataCell(CenterText(
-                    text: totalIncomePrices,
+                    text: "${PriceFomatter.formatPrice(totalIncomePrice)} uzs",
                   )),
                   DataCell(CenterText(
-                    text: "${PriceFomatter.formatPrice(totalSellingPrice)} uzs",
+                    text: "${PriceFomatter.formatPrice(totalSalePrice)} uzs",
                   )),
                   DataCell(CenterText(
-                    text: totalQty.toStringAsFixed(2),
+                    text: '',
                   )),
                   const DataCell(SizedBox.shrink()),
                 ],

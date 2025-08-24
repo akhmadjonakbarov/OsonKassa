@@ -9,8 +9,4 @@ class StatisticsService {
   Future<List<StatisticItemModel>> getStatistics() async {
     return await repository.getStatistics();
   }
-
-  Future<List<DailyTotalSellingPrice>> getWeeklyPriceStatistics() async {
-    return await repository.getWeeklySellingPrice();
-  }
 }

@@ -14,14 +14,14 @@ class SellProductItem extends StatefulWidget {
   final Function() decrementQty;
   final Function() deleteItem;
   final Function() cheapenClick;
-  final StoreItem sellProductDocItem;
+  final StoreItem product;
   final double height;
 
   const SellProductItem({
     super.key,
     required this.height,
     required this.onEdit,
-    required this.sellProductDocItem,
+    required this.product,
     required this.incrementQty,
     required this.decrementQty,
     required this.deleteItem,
@@ -54,11 +54,11 @@ class _SellProductItemState extends State<SellProductItem> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "(${widget.sellProductDocItem.item!.category}) ${widget.sellProductDocItem.item!.name}",
+                "(${widget.product.item!.category}) ${widget.product.item!.name}",
                 style: textStyleBlack18,
               ),
               Text(
-                widget.sellProductDocItem.item!.barcode!,
+                widget.product.item!.barcode!,
                 style: textStyleBlack14.copyWith(
                   fontWeight: FontWeight.w800,
                 ),
@@ -86,14 +86,14 @@ class _SellProductItemState extends State<SellProductItem> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          widget.sellProductDocItem.qty!.toStringAsFixed(3),
+                          widget.product.qty!.toStringAsFixed(3),
                           textAlign: TextAlign.center,
                           style: textStyleBlack18.copyWith(
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(width: 2),
                         Text(
-                          widget.sellProductDocItem.item!.unit!,
+                          widget.product.item!.unit!,
                           textAlign: TextAlign.center,
                           style: textStyleBlack14,
                         )
@@ -121,7 +121,11 @@ class _SellProductItemState extends State<SellProductItem> {
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      "${PriceFomatter.formatPrice(widget.sellProductDocItem.sellingPrice!)} ${widget.sellProductDocItem.sellingCurrency}",
+                      PriceFomatter.formatPrice(
+                          widget.product.currencyRateValue != null
+                              ? widget.product.salePrice! *
+                                  widget.product.currencyRateValue!
+                              : widget.product.salePrice!),
                       style: textStyleBlack18.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -140,7 +144,11 @@ class _SellProductItemState extends State<SellProductItem> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    "${PriceFomatter.formatPrice(widget.sellProductDocItem.incomePrice!)} ${widget.sellProductDocItem.incomeCurrency}",
+                    PriceFomatter.formatPrice(
+                        widget.product.currencyRateValue != null
+                            ? widget.product.incomePrice! *
+                                widget.product.currencyRateValue!
+                            : widget.product.incomePrice!),
                     style: textStyleBlack18.copyWith(
                       fontWeight: FontWeight.w700,
                     ),

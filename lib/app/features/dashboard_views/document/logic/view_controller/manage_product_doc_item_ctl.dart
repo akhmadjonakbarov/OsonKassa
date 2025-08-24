@@ -19,9 +19,6 @@ class ManageProductDocItemCtl extends GetxController {
   // Keys
   final formKey = GlobalKey<FormState>();
 
-  // TextEditingControllers
-  final incomePriceController = TextEditingController();
-  final sellPriceController = TextEditingController();
   final quantityController = TextEditingController();
 
   // Rx variables
@@ -33,21 +30,13 @@ class ManageProductDocItemCtl extends GetxController {
   var qty = 0.0.obs;
   var profitPercentage = 0.0.obs;
   var sellingPercentage = 0.0.obs;
-  var sellingCurrency = CurrencyType.uzs.obs;
-  var incomeCurrency = CurrencyType.usd.obs;
   Rx<Currency> currency = Currency().obs;
   Rx<Item> item = Item().obs;
 
   @override
   void onClose() {
-    incomePriceController.dispose();
-    sellPriceController.dispose();
     quantityController.dispose();
     super.onClose();
-  }
-
-  void setIncomeCurrency(CurrencyType ic) {
-    incomeCurrency.value = ic;
   }
 
   void setItem(Item itm) {
@@ -60,20 +49,13 @@ class ManageProductDocItemCtl extends GetxController {
     item.value = Item();
   }
 
-  void setSellingCurrency(CurrencyType sc) {
-    sellingCurrency.value = sc;
-  }
-
   // Add a product to the list
   void storeProductDocItem(BuildContext context) {
     DraftProduct draftProduct = DraftProduct(
       itemId: item.value.id!,
       itemName: item.value.name!,
-      currencyId: currency.value.id!,
-      incomeCurrency: incomeCurrency.value.name.toString().toLowerCase(),
-      incomePrice: incomePrice.value,
-      sellingCurrency: sellingCurrency.value.name.toString().toLowerCase(),
-      sellingPrice: sellPrice.value,
+      incomePrice: item.value.incomePrice ?? 0,
+      sellingPrice: item.value.salePrice ?? 0,
       id: productDocItems.length + 1,
       qty: double.parse(quantityController.text),
       sellingPercentage:
@@ -90,11 +72,7 @@ class ManageProductDocItemCtl extends GetxController {
   }
 
   void editProductDocItem(DraftProduct draftProduct) {
-    // Initialize TextEditingController with the current selling price
-    TextEditingController _sellingPriceController = TextEditingController(
-      text: draftProduct.sellingPrice.toString(),
-    );
-
+    TextEditingController qtyController = TextEditingController();
     int productIndex = productDocItems.indexOf(draftProduct);
 
     Get.dialog(
@@ -107,11 +85,11 @@ class ManageProductDocItemCtl extends GetxController {
               children: [
                 // Selling Price Input
                 TextField(
-                  controller: _sellingPriceController,
+                  controller: qtyController,
                   style: textStyleBlack18,
                   decoration: InputDecoration(
-                    labelText: PlaceholderTexts.selling_price,
-                    hintText: 'enter_price'.tr,
+                    labelText: PlaceholderTexts.qty_of_product,
+                    hintText: 'enter_qty'.tr,
                     labelStyle: textStyleBlack18,
                   ),
                   keyboardType: TextInputType.number,
@@ -132,15 +110,9 @@ class ManageProductDocItemCtl extends GetxController {
               DialogTextButton(
                 text: TranslatedTexts.buttons.save.tr,
                 onClick: () {
-                  // Parse the selling price input
-                  if (_sellingPriceController.text.isNotEmpty) {
-                    draftProduct.copyWith(
-                        sellingPrice:
-                            double.tryParse(_sellingPriceController.text) ??
-                                0.0);
-                  }
-
-                  // productDocItems[productIndex] = productDocItem;
+                  productDocItems[productIndex] = productDocItems[productIndex]
+                      .copyWith(
+                          qty: double.parse(qtyController.text.toString()));
                   update();
 
                   Get.back(); // Close dialog
@@ -170,65 +142,23 @@ class ManageProductDocItemCtl extends GetxController {
     );
   }
 
-  void setSellPrice(BuildContext context) {
-    String textSellingPrice = sellPriceController.text;
-    if (textSellingPrice.isEmpty) {
-      return;
-    }
-    if (double.tryParse(textSellingPrice) == null) {
-      UserNotifier.showFlutterSnackBar(
-          context: context,
-          text: 'please_enter_number'.tr,
-          type: TypeOfSnackBar.alert);
-      return;
-    }
-    double sp = double.parse(textSellingPrice);
-    sellPrice.value = sp;
-    calculateSellingProfitPercentage();
-    LogHelper.logInfo("SellPrice is ${sellPrice.value}");
-  }
-
-  void setIncomePrice(BuildContext context) {
-    String textIncomePrice = incomePriceController.text;
-    if (textIncomePrice.isEmpty) {
-      return;
-    }
-    if (double.tryParse(textIncomePrice) == null) {
-      UserNotifier.showFlutterSnackBar(
-          context: context,
-          text: 'please_enter_number'.tr,
-          type: TypeOfSnackBar.alert);
-      return;
-    }
-    double ip = double.parse(textIncomePrice);
-
-    if (currency.value.id != -1 &&
-        incomeCurrency.value.toString().toLowerCase().contains('usd')) {
-      exchangePrice.value = ip * currency.value.value!;
-    }
-    incomePrice.value = ip;
-    LogHelper.logInfo("IncomePrice is ${incomePrice.value}");
-  }
-
   Future<void> setCurrency({required Currency cry}) async {
     LogHelper.logInfo("Currency was selected. ${cry.toString()}");
     currency.value = cry;
   }
 
   void calculateSellingProfitPercentage() {
-    if (currency.value.id != -1 &&
-        incomeCurrency.value.toString().toLowerCase().contains('usd')) {
-      LogHelper.logInfo("ExchangeRate: ${exchangePrice.value}");
-      profitPercentage.value =
-          ((sellPrice.value * 100) / exchangePrice.value) - 100;
-    } else {
-      profitPercentage.value = 0.0;
-    }
+    // if (currency.value.id != -1 &&
+    //     incomeCurrency.value.toString().toLowerCase().contains('usd')) {
+    //   LogHelper.logInfo("ExchangeRate: ${exchangePrice.value}");
+    //   profitPercentage.value =
+    //       ((sellPrice.value * 100) / exchangePrice.value) - 100;
+    // } else {
+    //   profitPercentage.value = 0.0;
+    // }
   }
 
   void reset() {
-    incomePriceController.clear();
-    sellPriceController.clear();
     quantityController.clear();
     qty.value = 0.0;
     sellPrice.value = 0.0;
@@ -239,7 +169,7 @@ class ManageProductDocItemCtl extends GetxController {
   }
 
   void setQty(BuildContext context) {
-    String textQty = incomePriceController.text;
+    String textQty = quantityController.text;
     if (textQty.isEmpty) {
       return;
     }

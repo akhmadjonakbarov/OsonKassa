@@ -17,10 +17,8 @@ import '../../note/logic/note_controller.dart';
 import '../../store/logic/store_ctl.dart';
 import '../../store/view/widgets/card_button.dart';
 import '../logic/trade_ctl.dart';
-import 'widgets/dialog_widgets/add_debt_form.dart';
 import 'widgets/dialog_widgets/client_selector.dart';
 import 'widgets/dialog_widgets/list_products_dialog.dart';
-import 'widgets/dialog_widgets/show_debt_option.dart';
 import 'widgets/list_product.dart';
 import 'widgets/total_calculator.dart';
 

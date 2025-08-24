@@ -31,9 +31,7 @@ String formatDateToUzbek(String dateTime) {
 }
 
 String formatDate(String dateTime, {bool hasHour = false}) {
-  String? formattedDate;
-
-  return formattedDate = hasHour
+  return hasHour
       ? DateFormat('dd-MM-yyyy HH:mm:ss', 'uz').format(
           DateTime.parse(dateTime),
         )

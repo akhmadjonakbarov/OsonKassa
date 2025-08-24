@@ -1,17 +1,17 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:osonkassa/app/features/dashboard_views/document/models/document_item.dart';
-
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 import 'dart:convert';
 
 class Document {
-  final int? id;
-  final String? docType;
-  final double? typeOfItems;
-  final double? countOfItems;
-  final Map<String, double>? price;
-  final DateTime? createdAt;
+  int? id;
+  String? docType;
+  double? typeOfItems;
+  double? countOfItems;
+  double? price;
+  double? discount;
+  DateTime? createdAt;
 
   Document({
     this.id,
@@ -19,6 +19,7 @@ class Document {
     this.typeOfItems,
     this.countOfItems,
     this.price,
+    this.discount,
     this.createdAt,
   });
 
@@ -27,7 +28,8 @@ class Document {
     String? docType,
     double? typeOfItems,
     double? countOfItems,
-    Map<String, double>? price,
+    double? price,
+    double? discount,
     DateTime? createdAt,
   }) =>
       Document(
@@ -36,6 +38,7 @@ class Document {
         typeOfItems: typeOfItems ?? this.typeOfItems,
         countOfItems: countOfItems ?? this.countOfItems,
         price: price ?? this.price,
+        discount: discount ?? this.discount,
         createdAt: createdAt ?? this.createdAt,
       );
 
@@ -49,8 +52,8 @@ class Document {
         docType: json["doc_type"],
         typeOfItems: json["type_of_items"]?.toDouble(),
         countOfItems: json["count_of_items"]?.toDouble(),
-        price: Map.from(json["price"]!)
-            .map((k, v) => MapEntry<String, double>(k, v?.toDouble())),
+        price: json["price"]?.toDouble(),
+        discount: json["discount"]?.toDouble(),
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -61,8 +64,8 @@ class Document {
         "doc_type": docType,
         "type_of_items": typeOfItems,
         "count_of_items": countOfItems,
-        "price":
-            Map.from(price!).map((k, v) => MapEntry<String, dynamic>(k, v)),
+        "price": price,
+        "discount": discount,
         "created_at": createdAt?.toIso8601String(),
       };
 }

@@ -39,27 +39,6 @@ class StatisticsRepository {
       rethrow;
     }
   }
-
-  Future<List<DailyTotalSellingPrice>> getWeeklySellingPrice() async {
-    List<DailyTotalSellingPrice> priceList = [];
-    try {
-      Response response = await dio.get("$_baseUrl/sold");
-      if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
-        if (ResponseValidator.isNotEmptyAndIsList(resData)) {
-          for (var element in resData) {
-            if (ResponseValidator.isMap(element)) {
-              priceList.add(DailyTotalSellingPrice.fromMap(element));
-            }
-          }
-        }
-      }
-
-      return priceList;
-    } catch (e) {
-      rethrow;
-    }
-  }
 }
 
 class ProfitRepository {

@@ -125,6 +125,9 @@ class _DocumentViewState extends State<DocumentView> {
             )
           ],
         ),
+        const SizedBox(
+          height: 5,
+        ),
         Obx(
           () => DataList(
             isLoading: documentCtl.isLoading.value,

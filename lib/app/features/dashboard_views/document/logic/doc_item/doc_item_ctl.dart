@@ -33,7 +33,6 @@ class DocItemCtl extends MainController<DocumentItem> {
       deleteRepository: _docItemsRepository as Delete<int>,
     );
 
-    fetchItems();
     categoryCtl.fetchItems();
     super.onInit();
   }

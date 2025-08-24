@@ -146,94 +146,94 @@ class StoreCtl extends MainController<StoreItem> {
 
   void showEditProductDialog(
       StoreItem item, void Function(StoreItem updated) onSave) {
-    final incomePriceController =
-        TextEditingController(text: item.incomePrice?.toString() ?? '');
-    final sellingPriceController =
-        TextEditingController(text: item.sellingPrice?.toString() ?? '');
-    final qtyController =
-        TextEditingController(text: item.qty?.toString() ?? '');
+    // final incomePriceController =
+    //     TextEditingController(text: item.incomePrice?.toString() ?? '');
+    // final sellingPriceController =
+    //     TextEditingController(text: item.sellingPrice?.toString() ?? '');
+    // final qtyController =
+    //     TextEditingController(text: item.qty?.toString() ?? '');
 
-    Get.defaultDialog(
-      title: "✏️ Edit Product",
-      titleStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildInputField("Income Price", incomePriceController),
-          const SizedBox(height: 10),
-          _buildInputField("Selling Price", sellingPriceController),
-          const SizedBox(height: 10),
-          _buildInputField("Quantity", qtyController),
-        ],
-      ),
-      confirm: ElevatedButton.icon(
-        icon: const Icon(Icons.check_circle_outline),
-        label: const Text("Save"),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        ),
-        onPressed: () {
-          double? parsedIncomePrice =
-              double.tryParse(incomePriceController.text);
-          double? parsedSellingPrice =
-              double.tryParse(sellingPriceController.text);
-          double? parsedQty = double.tryParse(qtyController.text);
+    // Get.defaultDialog(
+    //   title: "✏️ Edit Product",
+    //   titleStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    //   contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    //   content: Column(
+    //     mainAxisSize: MainAxisSize.min,
+    //     children: [
+    //       _buildInputField("Income Price", incomePriceController),
+    //       const SizedBox(height: 10),
+    //       _buildInputField("Selling Price", sellingPriceController),
+    //       const SizedBox(height: 10),
+    //       _buildInputField("Quantity", qtyController),
+    //     ],
+    //   ),
+    //   confirm: ElevatedButton.icon(
+    //     icon: const Icon(Icons.check_circle_outline),
+    //     label: const Text("Save"),
+    //     style: ElevatedButton.styleFrom(
+    //       backgroundColor: Colors.green,
+    //       foregroundColor: Colors.white,
+    //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+    //       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    //     ),
+    //     onPressed: () {
+    //       double? parsedIncomePrice =
+    //           double.tryParse(incomePriceController.text);
+    //       double? parsedSellingPrice =
+    //           double.tryParse(sellingPriceController.text);
+    //       double? parsedQty = double.tryParse(qtyController.text);
 
-          if (parsedIncomePrice == null || parsedSellingPrice == null) {
-            Get.snackbar("Invalid input", "Please enter valid prices.",
-                backgroundColor: Colors.redAccent, colorText: Colors.white);
-            return;
-          }
+    //       if (parsedIncomePrice == null || parsedSellingPrice == null) {
+    //         Get.snackbar("Invalid input", "Please enter valid prices.",
+    //             backgroundColor: Colors.redAccent, colorText: Colors.white);
+    //         return;
+    //       }
 
-          double newSellPercentage = 0.0;
+    //       double newSellPercentage = 0.0;
 
-          StoreItem updatedItem = item.copyWith(
-            incomePrice: parsedIncomePrice,
-            sellingPrice: parsedSellingPrice,
-            qty: parsedQty,
-          );
+    //       StoreItem updatedItem = item.copyWith(
+    //         incomePrice: parsedIncomePrice,
+    //         sellingPrice: parsedSellingPrice,
+    //         qty: parsedQty,
+    //       );
 
-          final isUsd = storeProduct.value.incomeCurrency
-                  ?.toLowerCase()
-                  .contains('usd') ??
-              false;
-          if (isUsd) {
-            double convertedIncomePrice =
-                parsedIncomePrice * item.currency!.value!;
+    //       final isUsd = storeProduct.value.incomeCurrency
+    //               ?.toLowerCase()
+    //               .contains('usd') ??
+    //           false;
+    //       if (isUsd) {
+    //         double convertedIncomePrice =
+    //             parsedIncomePrice * item.currency!.value!;
 
-            newSellPercentage = ((parsedSellingPrice - convertedIncomePrice) /
-                    convertedIncomePrice) *
-                100;
+    //         newSellPercentage = ((parsedSellingPrice - convertedIncomePrice) /
+    //                 convertedIncomePrice) *
+    //             100;
 
-            // Optionally round to 2 decimal places
-            newSellPercentage =
-                double.parse(newSellPercentage.toStringAsFixed(2));
+    //         // Optionally round to 2 decimal places
+    //         newSellPercentage =
+    //             double.parse(newSellPercentage.toStringAsFixed(2));
 
-            updatedItem = updatedItem.copyWith(
-              sellingPercentage: newSellPercentage,
-            );
-          }
+    //         updatedItem = updatedItem.copyWith(
+    //           sellingPercentage: newSellPercentage,
+    //         );
+    //       }
 
-          LogHelper.logInfo(updatedItem.toRawJson());
+    //       LogHelper.logInfo(updatedItem.toRawJson());
 
-          onSave(updatedItem);
-          Get.back();
-        },
-      ),
-      cancel: TextButton.icon(
-        icon: const Icon(Icons.cancel_outlined),
-        label: const Text("Cancel"),
-        style: TextButton.styleFrom(
-          foregroundColor: Colors.grey[700],
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        ),
-        onPressed: () => Get.back(),
-      ),
-    );
+    //       onSave(updatedItem);
+    //       Get.back();
+    //     },
+    //   ),
+    //   cancel: TextButton.icon(
+    //     icon: const Icon(Icons.cancel_outlined),
+    //     label: const Text("Cancel"),
+    //     style: TextButton.styleFrom(
+    //       foregroundColor: Colors.grey[700],
+    //       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    //     ),
+    //     onPressed: () => Get.back(),
+    //   ),
+    // );
   }
 
   Widget _buildInputField(String label, TextEditingController controller) {

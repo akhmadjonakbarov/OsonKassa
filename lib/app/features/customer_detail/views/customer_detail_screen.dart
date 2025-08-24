@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/customer_detail/views/widgets/purchases_box.dart';
 
-import '../../../styles/text_styles.dart';
-import '../../../utils/texts/table_texts.dart';
 import '../../dashboard_views/customer/models/customer.dart';
 import '../../shared/widgets/app_bar.dart';
-import '../../shared/widgets/custom_data_table.dart';
 import '../../shared/widgets/grid_box.dart';
 import '../logic/customer_detail_ctl.dart';
 
@@ -54,7 +51,8 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                   mainAxisSpacing: 10,
                 ),
                 children: [
-                  DebtsBox(customerDetailCtl: customerDetailCtl, client: customer),
+                  DebtsBox(
+                      customerDetailCtl: customerDetailCtl, client: customer),
                   PurchasesBox(
                       customerDetailCtl: customerDetailCtl, customer: customer),
                   GridBox(

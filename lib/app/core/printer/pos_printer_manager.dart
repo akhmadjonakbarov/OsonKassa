@@ -88,7 +88,7 @@ class PosPrinterManager {
         double total = 0;
         int index = 0;
         for (var item in items) {
-          double price_selected = item.sellingPrice!;
+          double price_selected = item.salePrice!;
           final itemTotal = item.qty! * price_selected;
           total += itemTotal;
           index++;
@@ -112,7 +112,7 @@ class PosPrinterManager {
 
           // Print Quantity, Price, and Total
           _printer.text(
-            '${item.qty} x ${formatUZSNumber(item.sellingPrice!, isAddWord: false)}     ${formatUZSNumber(itemTotal, isAddWord: false)}',
+            '${item.qty} x ${formatUZSNumber(item.salePrice!, isAddWord: false)}     ${formatUZSNumber(itemTotal, isAddWord: false)}',
             styles: const PosStyles(
               align: PosAlign.center,
               height: PosTextSize.size1,
@@ -232,7 +232,7 @@ class PosPrinterManager {
         double total = 0;
         int index = 0;
         for (var item in items) {
-          double price_selected = item.sellingPrice!;
+          double price_selected = item.salePrice!;
           final itemTotal = item.qty! * price_selected;
           total += itemTotal;
           index++;

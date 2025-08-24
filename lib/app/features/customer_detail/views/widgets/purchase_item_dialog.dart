@@ -1,17 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:osonkassa/app/core/printer/pos_printer_manager.dart';
 import 'package:osonkassa/app/features/customer_detail/models/purchase.dart';
 
+import '../../../../styles/container_decoration.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/display_texts.dart';
 import '../../../../utils/texts/table_texts.dart';
-import '../../../dashboard_views/document/models/document_item.dart';
 import '../../../shared/widgets/center_text.dart';
-import '../../../shared/widgets/delete_dialog.dart';
-import '../../../shared/widgets/dialogs.dart';
 
 class PurchaseItemDialog extends StatelessWidget {
   final Purchase purchase;
@@ -42,7 +39,7 @@ class PurchaseItemDialog extends StatelessWidget {
     for (var docItem in purchase.products!) {
       final qty = docItem.qty ?? 0;
       final income = docItem.incomePrice ?? 0;
-      final selling = docItem.sellingPrice ?? 0;
+      final selling = docItem.salePrice ?? 0;
 
       totalQty += qty;
       totalIncomePrice += income * qty;
@@ -51,79 +48,141 @@ class PurchaseItemDialog extends StatelessWidget {
     }
   }
 
+  PosPrinterManager printer = PosPrinterManager(printerIp: 'printerIp');
+
   @override
   Widget build(BuildContext context) {
     calculateTotalValues();
     final Size screenSize = getScreenSize(context);
-    return DialogTable(
-      products: purchase.products!,
-      onClick: () => Navigator.of(context).pop(),
+    return Container(
+      width: double.infinity,
       margin: EdgeInsets.symmetric(
         horizontal: screenSize.width * 0.1,
         vertical: screenSize.height * 0.05,
       ),
-      title: DisplayTexts.full_info_about_products,
-      columns: _columns(),
-      rows: [
-        ...purchase.products!.asMap().entries.map(
-          (docItemData) {
-            int index = docItemData.key;
-            DocumentItem docItem = docItemData.value;
+      padding: EdgeInsets.zero,
+      decoration: containerDecoration,
+      child: Material(
+        borderRadius: BorderRadius.circular(16),
+        child: ListView(
+          padding: const EdgeInsets.all(10),
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    DisplayTexts.full_info_about_products,
+                    style: textStyleBlack18.copyWith(
+                        fontSize: 22, fontWeight: FontWeight.w700),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const Icon(
+                          Icons.close,
+                        ),
+                      ),
+                      // if (purchase.products!.isNotEmpty)
+                      //   Padding(
+                      //     padding: const EdgeInsets.only(left: 25),
+                      //     child: Material(
+                      //       borderRadius: BorderRadius.circular(16),
+                      //       color: Colors.blue,
+                      //       child: IconButton(
+                      //         onPressed: () async {
+                      //           await printer!.printProductDoc(products);
+                      //                                       },
+                      //         icon: const Icon(
+                      //           Icons.print,
+                      //           color: Colors.white,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            DataTable(
+              border: TableBorder.all(color: Colors.grey),
+              headingTextStyle: textStyleBlack18Bold.copyWith(fontSize: 14),
+              dataTextStyle: textStyleBlack18.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+              columnSpacing: screenSize.width * 0.005,
+              dividerThickness: 2,
+              // dataRowMaxHeight: size.width * 0.028,
+              columns: _columns(),
+              rows: [
+                ...purchase.products!.asMap().entries.map(
+                  (e) {
+                    int index = e.key;
+                    PurchaseItem docItem = e.value;
 
-            return DataRow(
-              cells: [
-                DataCell(Container(
-                  alignment: Alignment.center,
-                  child: Text("${index + 1}"),
-                )),
-                DataCell(Container(
-                  alignment: Alignment.center,
-                  child: Text(docItem.item!.name.toString()),
-                )),
-                DataCell(Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "${PriceFomatter.formatPrice(docItem.incomePrice!)} ${docItem.incomeCurrency}",
-                  ),
-                )),
-                DataCell(Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "${PriceFomatter.formatPrice(docItem.sellingPrice!)} ${docItem.sellingCurrency}",
-                  ),
-                )),
-                DataCell(
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      docItem.qty.toString(),
-                      style: screenSize.width <= 1366
-                          ? textStyleBlack15
-                          : textStyleBlack18Bold,
-                    ),
-                  ),
+                    return DataRow(
+                      cells: [
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text("${index + 1}"),
+                        )),
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text(docItem.name.toString()),
+                        )),
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            PriceFomatter.formatPrice(docItem.incomePrice!),
+                          ),
+                        )),
+                        DataCell(Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "${PriceFomatter.formatPrice(docItem.salePrice!)} ",
+                          ),
+                        )),
+                        DataCell(
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "${docItem.qty} ${docItem.unit!}",
+                              style: screenSize.width <= 1366
+                                  ? textStyleBlack15
+                                  : textStyleBlack18Bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
-
+                DataRow(
+                  cells: [
+                    const DataCell(CenterText(text: "Jami")),
+                    const DataCell(SizedBox.shrink()),
+                    DataCell(CenterText(
+                      text: PriceFomatter.formatPrice(totalIncomePrice),
+                    )),
+                    DataCell(CenterText(
+                      text: PriceFomatter.formatPrice(totalSellingPrice),
+                    )),
+                    const DataCell(
+                      CenterText(
+                        text: '',
+                      ),
+                    ),
+                  ],
+                ),
               ],
-            );
-          },
-        ),
-        DataRow(
-          cells: [
-            const DataCell(CenterText(text: "Jami")),
-            const DataCell(SizedBox.shrink()),
-            DataCell(CenterText(
-              text: "${PriceFomatter.formatPrice(totalIncomePrice)} usd",
-            )),
-            DataCell(CenterText(
-              text: "${PriceFomatter.formatPrice(totalSellingPrice)} uzs",
-            )),
-            DataCell(CenterText(
-              text: totalQty.toStringAsFixed(2),
-            )),
+            ),
           ],
         ),
-      ],
+      ),
     );
   }
 
@@ -144,7 +203,6 @@ class PurchaseItemDialog extends StatelessWidget {
       const DataColumn(
           label: Text(TableTexts.total_of_product),
           headingRowAlignment: MainAxisAlignment.center),
-
     ];
   }
 }

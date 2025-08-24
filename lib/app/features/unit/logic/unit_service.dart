@@ -1,12 +1,11 @@
 import '../../../core/interfaces/api/get_all.dart';
-import '../models/unit_model.dart';
+import '../models/unit.dart';
 
 class UnitService {
-  final GetAll<UnitModel> _getAllRepo;
+  final GetAll<Unit> _getAllRepo;
 
-  UnitService({required GetAll<UnitModel> getAllRepo})
-      : _getAllRepo = getAllRepo;
-  Future<List<UnitModel>> getAllUnits() async {
+  UnitService({required GetAll<Unit> getAllRepo}) : _getAllRepo = getAllRepo;
+  Future<List<Unit>> getAllUnits() async {
     return await _getAllRepo.getAll();
   }
 }

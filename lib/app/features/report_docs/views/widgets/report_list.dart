@@ -28,9 +28,9 @@ class _ReportListState extends State<ReportList> {
           mainAxisSpacing: 5,
           crossAxisSpacing: 5,
         ),
-        itemCount: widget.reportCtl.list.length,
+        itemCount: widget.reportCtl.reports.length,
         itemBuilder: (context, index) {
-          ReportModel report = widget.reportCtl.list[index];
+          ReportModel report = widget.reportCtl.reports[index];
           if (report.value.isNotEmpty) {
             return ReportBox(report: report);
           } else {

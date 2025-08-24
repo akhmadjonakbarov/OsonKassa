@@ -1,23 +1,30 @@
-
 import 'dart:convert';
 
 class Item {
-  final int? id;
-  final String? name;
-  final String? barcode;
-  final String? category;
-  final String? unit;
-  final String? company;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+  int? id;
+  String? name;
+  String? barcode;
+  double? salePrice;
+  double? incomePrice;
+  String? currencyType;
+  String? category;
+  String? unit;
+  dynamic company;
+  double? currencyRate;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   Item({
     this.id,
     this.name,
     this.barcode,
+    this.salePrice,
+    this.incomePrice,
+    this.currencyType,
     this.category,
     this.unit,
     this.company,
+    this.currencyRate,
     this.createdAt,
     this.updatedAt,
   });
@@ -26,9 +33,13 @@ class Item {
     int? id,
     String? name,
     String? barcode,
+    double? salePrice,
+    double? incomePrice,
+    String? currencyType,
     String? category,
     String? unit,
-    String? company,
+    dynamic company,
+    double? currencyRate,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) =>
@@ -36,9 +47,13 @@ class Item {
         id: id ?? this.id,
         name: name ?? this.name,
         barcode: barcode ?? this.barcode,
+        salePrice: salePrice ?? this.salePrice,
+        incomePrice: incomePrice ?? this.incomePrice,
+        currencyType: currencyType ?? this.currencyType,
         category: category ?? this.category,
         unit: unit ?? this.unit,
         company: company ?? this.company,
+        currencyRate: currencyRate ?? this.currencyRate,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
@@ -48,28 +63,36 @@ class Item {
   String toRawJson() => json.encode(toJson());
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
-    id: json["id"],
-    name: json["name"],
-    barcode: json["barcode"],
-    category: json["category"],
-    unit: json["unit"],
-    company: json["company"],
-    createdAt: json["created_at"] == null
-        ? null
-        : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null
-        ? null
-        : DateTime.parse(json["updated_at"]),
-  );
+        id: json["id"],
+        name: json["name"],
+        barcode: json["barcode"],
+        salePrice: json["sale_price"]?.toDouble(),
+        incomePrice: json["income_price"]?.toDouble(),
+        currencyType: json["currency_type"],
+        category: json["category"],
+        unit: json["unit"],
+        company: json["company"],
+        currencyRate: json["currency_rate"]?.toDouble(),
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "barcode": barcode,
-    "category": category,
-    "unit": unit,
-    "company": company,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-  };
+        "id": id,
+        "name": name,
+        "barcode": barcode,
+        "sale_price": salePrice,
+        "income_price": incomePrice,
+        "currency_type": currencyType,
+        "category": category,
+        "unit": unit,
+        "company": company,
+        "currency_rate": currencyRate,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+      };
 }

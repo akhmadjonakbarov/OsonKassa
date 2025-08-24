@@ -1,66 +1,138 @@
-import '../../dashboard_views/document/models/document_item.dart';
 import 'dart:convert';
 
 class Purchase {
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final int? id;
-  final int? customerId;
-  final bool? isDebt;
-  final dynamic paidDate;
-  final List<DocumentItem>? products;
+  int? id;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  int? customerId;
+  bool? isDebt;
+  dynamic paidDate;
+  List<PurchaseItem>? products;
+  double? discount;
 
   Purchase({
+    this.id,
     this.createdAt,
     this.updatedAt,
-    this.id,
     this.customerId,
     this.isDebt,
     this.paidDate,
     this.products,
+    this.discount,
   });
 
   Purchase copyWith({
+    int? id,
     DateTime? createdAt,
     DateTime? updatedAt,
-    int? id,
     int? customerId,
     bool? isDebt,
     dynamic paidDate,
-    List<DocumentItem>? products,
+    List<PurchaseItem>? products,
+    double? discount,
   }) =>
       Purchase(
+        id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
-        id: id ?? this.id,
         customerId: customerId ?? this.customerId,
         isDebt: isDebt ?? this.isDebt,
         paidDate: paidDate ?? this.paidDate,
         products: products ?? this.products,
+        discount: discount ?? this.discount,
       );
 
-  factory Purchase.fromRawJson(String str) => Purchase.fromJson(json.decode(str));
+  factory Purchase.fromRawJson(String str) =>
+      Purchase.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory Purchase.fromJson(Map<String, dynamic> json) => Purchase(
-    createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
-    id: json["id"],
-    customerId: json["customer_id"],
-    isDebt: json["is_debt"],
-    paidDate: json["paid_date"],
-    products: json["products"] == null ? [] : List<DocumentItem>.from(json["products"]!.map((x) => DocumentItem.fromJson(x))),
-  );
+        id: json["id"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+        customerId: json["customer_id"],
+        isDebt: json["is_debt"],
+        paidDate: json["paid_date"],
+        products: json["products"] == null
+            ? []
+            : List<PurchaseItem>.from(
+                json["products"]!.map((x) => PurchaseItem.fromJson(x))),
+        discount: json["discount"]?.toDouble(),
+      );
 
   Map<String, dynamic> toJson() => {
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
-    "id": id,
-    "customer_id": customerId,
-    "is_debt": isDebt,
-    "paid_date": paidDate,
-    "products": products == null ? [] : List<dynamic>.from(products!.map((x) => x.toJson())),
-  };
+        "id": id,
+        "created_at": createdAt?.toIso8601String(),
+        "updated_at": updatedAt?.toIso8601String(),
+        "customer_id": customerId,
+        "is_debt": isDebt,
+        "paid_date": paidDate,
+        "products": products == null
+            ? []
+            : List<dynamic>.from(products!.map((x) => x.toJson())),
+        "discount": discount,
+      };
 }
 
+class PurchaseItem {
+  String? name;
+  String? barcode;
+  double? incomePrice;
+  double? salePrice;
+  double? qty;
+  String? unit;
+
+  PurchaseItem({
+    this.name,
+    this.barcode,
+    this.incomePrice,
+    this.salePrice,
+    this.qty,
+    this.unit,
+  });
+
+  PurchaseItem copyWith({
+    String? name,
+    String? barcode,
+    double? incomePrice,
+    double? salePrice,
+    double? qty,
+    String? unit,
+  }) =>
+      PurchaseItem(
+        name: name ?? this.name,
+        barcode: barcode ?? this.barcode,
+        incomePrice: incomePrice ?? this.incomePrice,
+        salePrice: salePrice ?? this.salePrice,
+        qty: qty ?? this.qty,
+        unit: unit ?? this.unit,
+      );
+
+  factory PurchaseItem.fromRawJson(String str) =>
+      PurchaseItem.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory PurchaseItem.fromJson(Map<String, dynamic> json) => PurchaseItem(
+        name: json["name"],
+        barcode: json["barcode"],
+        incomePrice: json["income_price"]?.toDouble(),
+        salePrice: json["sale_price"]?.toDouble(),
+        qty: json["qty"]?.toDouble(),
+        unit: json["unit"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "barcode": barcode,
+        "income_price": incomePrice,
+        "sale_price": salePrice,
+        "qty": qty,
+        "unit": unit,
+      };
+}

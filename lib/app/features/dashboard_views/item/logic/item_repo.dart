@@ -27,6 +27,7 @@ class ItemRepo
 
   @override
   Future<bool> add(itemData) async {
+    print(itemData);
     try {
       Response response = await dio.post('$_baseURL/add', data: itemData);
       return response.statusCode == StatusCodes.CREATED_201;
@@ -87,7 +88,7 @@ class ItemRepo
   Future<bool> update(Item item) async {
     try {
       Map<String, dynamic> itemMap = item.toJson();
-      print(itemMap);
+
       Response response = await dio.patch(
         '$_baseURL/update/${item.id}',
         data: itemMap,

@@ -35,8 +35,12 @@ class TranslatedTexts {
   static _TextFields get textFields => _TextFields();
 
   static _Debt get debt => _Debt();
+
   static _Payment get payment => _Payment();
 
+  static _Profit get profit => _Profit();
+
+  static _Statistics get statistics => _Statistics();
 }
 
 class _Buttons {
@@ -148,6 +152,7 @@ class _Product {
   final name = 'product_name';
   final price = 'product_price';
   final description = 'product_description';
+  final totalValueOfProducts = 'total_value_of_products';
 }
 
 class _Sale {
@@ -160,13 +165,14 @@ class _Sale {
 class _Table {
   final index = 'index';
   final name = 'name';
+  final number = 'number';
   final phoneNumber = 'phone_number';
   final phoneNumber2 = 'phone_number2';
   final address = 'address';
   final buttons = 'buttons';
   final qty = 'qty';
   final incomePrice = 'income_price';
-  final sellingPrice = 'selling_price';
+  final salePrice = 'sale_price';
   final total = 'total';
   final typeOfProduct = 'type_of_product';
   final totalOfProduct = 'total_of_product';
@@ -217,4 +223,27 @@ class _Payment {
   final paymentSuccess = 'payment_success';
   final paymentFailed = 'payment_failed';
   final areYouSureToPay = 'are_you_sure_to_pay';
+}
+
+class _Profit {
+  final String profit = "profit";
+  final String totalProfit = "total_profit";
+  final String totalIncome = "total_income";
+  final String totalExpense = "total_expense";
+  final String profitMargin = "profit_margin";
+  final String profitPercentage = "profit_percentage";
+  final weeklyProfit = "weekly_profit";
+  final monthlyProfit = "monthly_profit";
+  final String yearlyProfit = "yearly_profit";
+  final String profitByCategory = "profit_by_category";
+  final String profitByProduct = "profit_by_product";
+}
+
+class _Statistics {
+  final String statistics = "statistics";
+  final weeklySalesStatistics = "weekly_sales_statistics";
+  final monthlySalesStatistics = "monthly_sales_statistics";
+  final String yearlySalesStatistics = "yearly_sales_statistics";
+  final String salesByCategory = "sales_by_category";
+  final String salesByProduct = "sales_by_product";
 }

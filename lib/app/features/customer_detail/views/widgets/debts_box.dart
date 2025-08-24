@@ -7,7 +7,6 @@ import '../../../../styles/text_styles.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/formatter_functions/formatter_date.dart';
 import '../../../../utils/texts/button_texts.dart';
-import '../../../../utils/texts/table_texts.dart';
 import '../../../dashboard_views/customer/models/customer.dart';
 import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/grid_box.dart';
@@ -71,6 +70,7 @@ class DebtsBox extends StatelessWidget {
               TranslatedTexts.table.index.tr,
               TranslatedTexts.table.date.tr,
               'total_price'.tr,
+              'discount'.tr,
               TranslatedTexts.table.buttons.tr
             ], // Your columns here
             rows: customerDetailCtl.debts
@@ -101,9 +101,12 @@ class DebtsBox extends StatelessWidget {
               .fold(
                 0.0,
                 (previousValue, element) => previousValue =
-                    previousValue + (element.sellingPrice! * element.qty!),
+                    previousValue + (element.salePrice! * element.qty!),
               )
               .toDouble()),
+        )),
+        DataCell(CenterText(
+          text: formatPriceAtUZS(purchase.discount ?? 0.0),
         )),
         DataCell(
           Center(

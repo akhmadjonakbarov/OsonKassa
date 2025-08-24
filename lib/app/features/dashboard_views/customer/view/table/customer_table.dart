@@ -75,7 +75,7 @@ class _CustomerTableState extends State<CustomerTable> {
                         color: Colors.green,
                       ),
                       onPressed: () => widget.builderController
-                          .selectBuilder(client, context),
+                          .selectCustomer(client, context),
                     ),
                     IconButton(
                       icon: const Icon(

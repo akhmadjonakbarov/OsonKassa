@@ -26,7 +26,7 @@ class CustomDataTable extends StatelessWidget {
         columns: columns
             .map(
               (e) => DataColumn(
-                  label: Text(e),
+                  label: Expanded(child: Text(e)),
                   headingRowAlignment: MainAxisAlignment.center),
             )
             .toList(),

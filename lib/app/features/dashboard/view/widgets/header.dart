@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../config/app_paths.dart';
-import '../../../../config/app_views.dart';
 import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../styles/app_colors.dart';
@@ -15,7 +15,6 @@ import '../../../../styles/themes.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
-import '../../../../utils/texts/display_texts.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../dashboard_views/statistics/logic/statistics_ctl.dart';
 import '../../../dashboard_views/statistics/view/widgets/statistics_item.dart';
@@ -135,10 +134,6 @@ class _HeaderState extends State<Header> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            ButtonTexts.statistics,
-                            style: textStyleBlack18.copyWith(fontSize: 28),
-                          ),
                           IconButton(
                             onPressed: () => _hideOverlay(),
                             icon: const Icon(
@@ -152,7 +147,7 @@ class _HeaderState extends State<Header> {
                       ),
                       Obx(
                         () => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Row(
                               children: [
@@ -166,6 +161,10 @@ class _HeaderState extends State<Header> {
                                     color: Colors.white,
                                   ),
                                 ),
+                                SizedBox(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.2 /
+                                        40),
                                 Column(
                                   children: [
                                     Row(
@@ -205,7 +204,7 @@ class _HeaderState extends State<Header> {
                                       ],
                                     ),
                                     Text(
-                                      DisplayTexts.total_of_products,
+                                      'total_products'.tr,
                                       style: textStyleBlack14.copyWith(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
@@ -221,9 +220,10 @@ class _HeaderState extends State<Header> {
                               backgroundColor: Colors.green,
                               icon: AppIcons.stock,
                               text: "${formatUZSNumber(
-                                widget.statisticsCtl.total_profit.toDouble(),
+                                widget.statisticsCtl.totalWeeklyProfit
+                                    .toDouble(),
                               )} USD",
-                              subText: DisplayTexts.profit_of_month,
+                              subText: TranslatedTexts.profit.monthlyProfit.tr,
                             )
                           ],
                         ),
@@ -308,7 +308,7 @@ class _HeaderState extends State<Header> {
                     _showOverlay();
                   },
                   child: BasicButton(
-                      text: ButtonTexts.statistics,
+                      text: TranslatedTexts.statistics.statistics.tr,
                       bgColor: ButtonColors.info,
                       textStyle: TextStyles.buttonTextStyle(
                           fontSize: screenSize.height / 54),
@@ -316,9 +316,9 @@ class _HeaderState extends State<Header> {
                       width: screenSize.width * 0.08),
                 ),
                 BasicButton(
-                  text: "Hisobotlar",
+                  text: TranslatedTexts.report.reports.tr,
                   onClick: () {
-                    if (widget.reportCtl.list.isNotEmpty) {
+                    if (widget.reportCtl.reports.isNotEmpty) {
                       Get.toNamed(AppPaths.reportDocs);
                     } else {
                       UserNotifier.showSnackBar(
@@ -389,7 +389,7 @@ class TotalPriceOfProduct extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          DisplayTexts.value_of_products,
+          TranslatedTexts.product.totalValueOfProducts.tr,
           style: textStyleBlack18.copyWith(
               fontSize: 22, fontWeight: FontWeight.w600),
         ),

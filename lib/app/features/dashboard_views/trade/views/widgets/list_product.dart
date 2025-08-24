@@ -41,7 +41,7 @@ class ListSellProduct extends StatelessWidget {
               deleteItem: () => tradeCtl.removeItem(
                 sellProductDocItem.item!.barcode!,
               ),
-              sellProductDocItem: sellProductDocItem,
+              product: sellProductDocItem,
               height: MediaQuery.sizeOf(context).width <= 1370
                   ? constraints.maxHeight * 0.1
                   : constraints.maxHeight * 0.08,

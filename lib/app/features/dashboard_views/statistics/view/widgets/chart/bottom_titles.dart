@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:osonkassa/app/features/dashboard_views/statistics/models/daily_sales_rate.dart';
 
 import '../../../../../../utils/formatter_functions/formatter_date.dart';
-import '../../../models/daily_total_selling_price.dart';
 
 class BottomTitles extends StatefulWidget {
   const BottomTitles({

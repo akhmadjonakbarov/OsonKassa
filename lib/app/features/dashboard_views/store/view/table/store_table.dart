@@ -2,20 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
 import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../../utils/texts/display_texts.dart';
-import '../../../../../utils/texts/table_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
-import '../../../document/models/document_item.dart';
 import '../../logic/store_ctl.dart';
 
 class StoreTable extends StatefulWidget {
@@ -42,7 +34,7 @@ class _DebtTableState extends State<StoreTable> {
           TranslatedTexts.table.name.tr,
           TranslatedTexts.table.category.tr,
           TranslatedTexts.table.incomePrice.tr,
-          TranslatedTexts.table.sellingPrice.tr,
+          TranslatedTexts.table.salePrice.tr,
           TranslatedTexts.table.qty.tr,
           TranslatedTexts.table.buttons.tr
         ],
@@ -68,13 +60,16 @@ class _DebtTableState extends State<StoreTable> {
                   ),
                 ),
                 DataCell(CenterText(
-                  text:
-                      "${PriceFomatter.formatPrice(product.incomePrice!)} ${product.incomeCurrency}",
+                  text: PriceFomatter.formatPrice(
+                      product.currencyRateValue != null &&
+                              product.currencyRateValue! > 0
+                          ? product.incomePrice! * product.currencyRateValue!
+                          : product.incomePrice!),
                   style: textStyleBlack18Bold,
                 )),
                 DataCell(CenterText(
                   text:
-                      "${PriceFomatter.formatPrice(product.sellingPrice!)} ${product.sellingCurrency}",
+                      "${PriceFomatter.formatPrice(product.currencyRateValue != null && product.currencyRateValue! > 0 ? product.salePrice! * product.currencyRateValue! : product.salePrice!)} ",
                   style: textStyleBlack18Bold,
                 )),
                 DataCell(

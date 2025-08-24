@@ -29,7 +29,7 @@ class TotalCalculate extends StatelessWidget {
           ),
           height: MediaQuery.sizeOf(context).width <= 1370
               ? constraints.maxHeight * 0.20
-              : constraints.maxHeight * 0.15,
+              : constraints.maxHeight * 0.18,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -67,6 +67,46 @@ class TotalCalculate extends StatelessWidget {
                   ),
                 ],
               ),
+              InkWell(
+                onTap: () {
+                  tradeCtl.editTotalDiscount();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "${'discount'.tr}:",
+                      style: textStyleBlack18Bold.copyWith(color: Colors.white),
+                    ),
+                    Text(
+                      PriceFomatter.formatPrice(tradeCtl.discount.value),
+                      style: textStyleBlack18Bold.copyWith(
+                          color: Colors.white, fontSize: 20),
+                    ),
+                  ],
+                ),
+              ),
+              if (tradeCtl.discount.value > 0)
+                InkWell(
+                  onTap: () {
+                    tradeCtl.editTotalDiscount();
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${'discount_price'.tr}:",
+                        style:
+                            textStyleBlack18Bold.copyWith(color: Colors.white),
+                      ),
+                      Text(
+                        PriceFomatter.formatPrice(tradeCtl.discountPrice.value),
+                        style: textStyleBlack18Bold.copyWith(
+                            color: Colors.white, fontSize: 20),
+                      ),
+                    ],
+                  ),
+                )
             ],
           ),
         );

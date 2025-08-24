@@ -137,10 +137,15 @@ class AppTranslations extends Translations {
           TranslatedTexts.product.name: 'Mahsulot nomi',
           TranslatedTexts.product.price: 'Mahsulot narxi',
           TranslatedTexts.product.description: 'Mahsulot tavsifi',
+          TranslatedTexts.product.totalValueOfProducts:
+              'Mahsulotlarning umumiy qiymati',
 
           // total price
           'total_products': 'Jami mahsulotlar',
           'total_price': 'Jami narx',
+          'total_qty': 'Jami soni',
+          'total_income_price': 'Jami kelgan narxi',
+          'total_sale_price': 'Jami savdo narxi',
 
           // Sales
           TranslatedTexts.sale.sales: 'Savdo',
@@ -234,7 +239,7 @@ class AppTranslations extends Translations {
           TranslatedTexts.table.buttons: 'Tugmalar',
           TranslatedTexts.table.qty: 'Miqdor',
           TranslatedTexts.table.incomePrice: 'Kelish narxi',
-          TranslatedTexts.table.sellingPrice: 'Sotish narxi',
+          TranslatedTexts.table.salePrice: 'Sotish narxi',
           TranslatedTexts.table.total: 'Jami',
           TranslatedTexts.table.typeOfProduct: 'Mahsulot turi',
           TranslatedTexts.table.totalOfProduct: 'Mahsulotlar soni',
@@ -273,7 +278,6 @@ class AppTranslations extends Translations {
           TranslatedTexts.buttons.exit: 'Chiqish',
           TranslatedTexts.buttons.confirm: 'Tasdiqlash',
 
-
           // Enters (Input hints/prompts)
           TranslatedTexts.alerts.enter_price: 'Narxni kiriting',
           TranslatedTexts.alerts.enter_name: 'Nomini kiriting',
@@ -295,6 +299,31 @@ class AppTranslations extends Translations {
           TranslatedTexts.alerts.enter_unit: 'O‘lchov birligini kiriting',
           TranslatedTexts.alerts.enter_qty: 'Soni kiriting',
           TranslatedTexts.alerts.enter_email: ' Elektron pochtani kiriting',
+
+          // profits
+          TranslatedTexts.profit.profit: 'Foyda',
+          TranslatedTexts.profit.totalProfit: 'Umumiy foyda',
+          TranslatedTexts.profit.totalIncome: 'Umumiy daromad',
+          TranslatedTexts.profit.totalExpense: 'Umumiy xarajat',
+          TranslatedTexts.profit.profitMargin: 'Foyda marjasi',
+          TranslatedTexts.profit.profitPercentage: 'Foyda foizi',
+          TranslatedTexts.profit.weeklyProfit: 'Haftalik foyda',
+          TranslatedTexts.profit.monthlyProfit: 'Oylik foyda',
+          TranslatedTexts.profit.yearlyProfit: 'Yillik foyda',
+          TranslatedTexts.profit.profitByCategory: 'Kategoriya bo‘yicha foyda',
+          TranslatedTexts.profit.profitByProduct: 'Mahsulot bo‘yicha foyda',
+
+          // Statistics
+          TranslatedTexts.statistics.statistics: 'Statistika',
+          TranslatedTexts.statistics.weeklySalesStatistics:
+              'Haftalik savdo statistikasi',
+          TranslatedTexts.statistics.monthlySalesStatistics:
+              'Oylik savdo statistikasi',
+          TranslatedTexts.statistics.yearlySalesStatistics:
+              'Yillik savdo statistikasi',
+          TranslatedTexts.statistics.salesByCategory:
+              'Kategoriya bo‘yicha savdo',
+          TranslatedTexts.statistics.salesByProduct: 'Mahsulot bo‘yicha savdo',
         },
         'ru_RU': {
           // General

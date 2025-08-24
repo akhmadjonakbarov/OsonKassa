@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.dart';
+import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
 
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/texts/button_texts.dart';
 import '../../../../../shared/export_commons.dart';
-import '../../../../document/models/document_item.dart';
+
 import '../../../../store/logic/store_ctl.dart';
 
 class ListProductsDialog extends StatelessWidget {
@@ -200,11 +201,11 @@ class StoreItemDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Kelish: ${product.incomePrice} ${product.incomeCurrency}",
+                      "Kelish: ${product.currency != null ? PriceFomatter.formatPrice(product.incomePrice! * product.currency!.value!) : PriceFomatter.formatPrice(product.incomePrice!)} ",
                       style: textStyleBlack18Bold,
                     ),
                     Text(
-                      "Sotilish: ${product.sellingPrice} ${product.sellingCurrency}",
+                      "Sotilish: ${product.currency != null ? PriceFomatter.formatPrice(product.salePrice! * product.currency!.value!) : PriceFomatter.formatPrice(product.salePrice!)}",
                       style: textStyleBlack18Bold,
                     )
                   ],

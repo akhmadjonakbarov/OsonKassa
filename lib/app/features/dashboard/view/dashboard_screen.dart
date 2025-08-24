@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/report_docs/logic/report_ctl.dart';
 
 import '../../../styles/app_colors.dart';
 import '../../../utils/media/get_screen_size.dart';
@@ -22,11 +23,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final AuthCtl authCtl = Get.find<AuthCtl>();
   final TokenCtl tokenCtl = Get.find<TokenCtl>();
   final ActionCtl actionCtl = Get.find<ActionCtl>();
+  final ReportCtl reportCtl = Get.find<ReportCtl>();
 
   @override
   void didChangeDependencies() {
     tokenCtl.setToken(authCtl.userModel.value.token);
     actionCtl.fetchItems();
+    reportCtl.fetchItems();
     super.didChangeDependencies();
   }
 

@@ -1,455 +1,181 @@
-import 'dart:math';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/statistics/models/daily_sales_rate.dart';
+import 'package:osonkassa/app/features/dashboard_views/statistics/view/widgets/chart/weekly_profit.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
-import '../../../../styles/app_colors.dart';
-import '../../../../styles/chart_colors.dart';
-import '../../../../styles/text_styles.dart';
-import '../../../../styles/themes.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/media/get_screen_size.dart';
-import '../../../../utils/texts/display_texts.dart';
 import '../logic/statistics_ctl.dart';
-import '../models/daily_total_selling_price.dart';
 import 'widgets/chart/bottom_titles.dart';
 import 'widgets/profit_card_info.dart';
 
-class StatisticsView extends StatefulWidget {
+class StatisticsView extends StatelessWidget {
   const StatisticsView({super.key, required this.statisticsCtl});
 
   final StatisticsCtl statisticsCtl;
 
   @override
-  State<StatisticsView> createState() => _StatisticsViewState();
-}
-
-class _StatisticsViewState extends State<StatisticsView> {
-  @override
-  void initState() {
-    widget.statisticsCtl.loadAllStatistics();
-    loadingChanged();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    setState(() {
-      isLoading = false;
-    });
-  }
-
-  bool isLoading = true;
-  int? _selectedBarIndex;
-
-  void loadingChanged() async {
-    await Future.delayed(const Duration(seconds: 2)).then(
-      (value) {
-        widget.statisticsCtl.loadAllStatistics();
-        setState(() {
-          isLoading = false;
-        });
-      },
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
     final screenSize = getScreenSize(context);
+
     return ListView(
+      padding: const EdgeInsets.all(12),
       children: [
-        Row(
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                  right: Paddings.padding8 * screenSize.width * 0.01 / 4),
-              width: screenSize.width * 0.1,
-              height: screenSize.height / 5,
-              decoration: BoxDecoration(
-                color: Colors.red,
-                borderRadius:
-                    BorderRadius.circular(BorderRadiuses.borderRadius16),
-              ),
-            ),
-            ProfitCardInfo(screenSize: screenSize),
-            ProfitCardInfo(
-              screenSize: screenSize,
-              isProfit: true,
-            ),
-            Container(
-              decoration: Decorations.decoration(
-                color: AppColors.lightWhite,
-                boxShadow: BoxShadow(
-                  color: Colors.black
-                      .withOpacity(0.4), // Shadow color with opacity
-                  offset: const Offset(0, 4), // Horizontal and vertical offset
-                  blurRadius: 3, // How much the shadow should blur
-                  spreadRadius: 1, // How much the shadow should spread
+        RefreshIndicator(
+            onRefresh: statisticsCtl.loadAllStatistics,
+            child: Row(
+              children: [
+                Expanded(child: ProfitCardInfo(screenSize: screenSize)),
+                Expanded(
+                  child: ProfitCardInfo(screenSize: screenSize, isProfit: true),
                 ),
-              ),
-              width: screenSize.width * 0.33,
-              height: screenSize.height / 5,
-              padding: EdgeInsets.all(
-                Paddings.customPadding(
-                  percentage: screenSize.height / 400,
+                Expanded(
+                  child: WeeklyProfit(statisticsCtl: statisticsCtl),
                 ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Total Profits",
-                            style: TextStyles.black(
-                                fontSize: screenSize.height / 50),
-                          ),
-                          Text(
-                            "Last week",
-                            style: TextStyles.black(
-                                fontSize: screenSize.height / 65,
-                                opacity: 0.6,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                      Obx(
-                        () => Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${PriceFomatter.formatPriceWithWord(widget.statisticsCtl.totalWeeklyProfit.value)} uzs",
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyles.black(
-                                  fontSize: screenSize.height / 38,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const PercentageDisplay(
-                              colorBg: AppColors.lightGreen,
-                              colorText: AppColors.green,
-                              text: "+15.2%",
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Obx(
-                    () {
-                      return SizedBox(
-                        width: screenSize.width * 0.18,
-                        child: BarChart(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.bounceIn,
-                          BarChartData(
-                            gridData: const FlGridData(show: true),
-                            // Optional: hide grid
-                            titlesData: const FlTitlesData(
-                              show: false,
-                            ),
-                            borderData: FlBorderData(show: false),
-                            // Optional: Hide borders
-                            barGroups: widget.statisticsCtl.weeklyProfits
-                                .asMap()
-                                .map((index, profitData) {
-                                  double maxHeight = screenSize.height / 8;
-                                  double currentProfit = profitData.profit!;
-                                  double maxProfit = widget
-                                      .statisticsCtl.weeklyProfits
-                                      .map((e) => e.profit!)
-                                      .reduce((a, b) => a > b ? a : b);
-
-                                  if (maxProfit == 0) maxProfit = 1;
-
-                                  double itemHeight =
-                                      (currentProfit / maxProfit) * maxHeight;
-
-                                  if (currentProfit > 0) {
-                                    return MapEntry(
-                                      index,
-                                      BarChartGroupData(
-                                        x: index,
-                                        barRods: [
-                                          BarChartRodData(
-                                            fromY: 0,
-                                            toY: itemHeight,
-                                            width: screenSize.width * 0.1 / 10,
-                                            color: _selectedBarIndex == index
-                                                ? Colors.orange
-                                                : Colors.green,
-                                            borderRadius: BorderRadius.zero,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  } else {
-                                    return MapEntry(
-                                      index,
-                                      BarChartGroupData(
-                                        x: index,
-                                        barsSpace: 25,
-                                        barRods: [
-                                          BarChartRodData(
-                                            fromY: 0,
-                                            toY: 1,
-                                            width: screenSize.width * 0.1 / 10,
-                                            color: Colors.red.shade100,
-                                            borderRadius: BorderRadius.zero,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }
-                                })
-                                .values
-                                .toList(),
-                            barTouchData: BarTouchData(
-                              touchTooltipData: BarTouchTooltipData(
-                                tooltipMargin: -40,
-                                getTooltipItem:
-                                    (group, groupIndex, rod, rodIndex) {
-                                  // Custom tooltip content
-
-                                  return BarTooltipItem(
-                                    '${PriceFomatter.formatPrice(widget.statisticsCtl.weeklyProfits[groupIndex].profit!)} uzs ',
-                                    const TextStyle(color: Colors.white),
-                                    children: [
-                                      TextSpan(
-                                        text: widget.statisticsCtl
-                                            .weeklyProfits[groupIndex].day,
-                                      )
-                                    ],
-                                  );
-                                },
-                              ),
-                              touchCallback: (FlTouchEvent event,
-                                  BarTouchResponse? response) {
-                                if (event is FlTapUpEvent &&
-                                    response != null &&
-                                    response.spot != null) {
-                                  setState(() {
-                                    _selectedBarIndex =
-                                        response.spot!.touchedBarGroupIndex;
-                                  });
-                                }
-                              },
-
-                              handleBuiltInTouches:
-                                  true, // Enable built-in touch gestures
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-        if (isLoading)
-          Container(
-            margin: EdgeInsets.symmetric(
-              vertical: Paddings.customPadding(
-                percentage: screenSize.height / 350,
-              ),
-            ),
-            height: screenSize.height * 0.6,
-            decoration: Decorations.decoration(
-              boxShadow: BoxShadow(
-                color: Colors.black.withOpacity(0.4),
-                offset: const Offset(0, 4),
-                blurRadius: 3,
-                spreadRadius: 1,
-              ),
-            ),
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
-          )
-        else
-          Container(
-            margin: EdgeInsets.symmetric(
-              vertical: Paddings.customPadding(
-                percentage: screenSize.height / 350,
-              ),
-            ),
-            height: screenSize.height * 0.65,
-            decoration: Decorations.decoration(
-              boxShadow: BoxShadow(
-                color: Colors.black.withOpacity(0.4),
-                offset: const Offset(0, 4),
-                blurRadius: 3,
-                spreadRadius: 1,
-              ),
-            ),
-            child: ChartDataExample(
-                reports: widget.statisticsCtl.dailySalesRates),
-          ),
+              ],
+            )),
+        const SizedBox(height: 16),
+        // ChartDataExample(statisticsCtl: statisticsCtl),
       ],
     );
   }
 }
 
-class ChartDataExample extends StatefulWidget {
-  final List<DailySaleRate> reports;
+class ChartDataExample extends StatelessWidget {
+  final StatisticsCtl statisticsCtl;
 
   const ChartDataExample({
     super.key,
-    required this.reports,
+    required this.statisticsCtl,
   });
 
   @override
-  State<ChartDataExample> createState() => _ChartDataExampleState();
-}
-
-class _ChartDataExampleState extends State<ChartDataExample> {
-  final Color leftBarColor = ChartColors.contentColorYellow;
-
-  final Color rightBarColor = ChartColors.contentColorGreen;
-
-  final Color avgColor = ChartColors.contentColorOrange.avg(
-    ChartColors.contentColorRed,
-  );
-
-  @override
   Widget build(BuildContext context) {
-    List<BarChartGroupData> barGroups = [];
-    if (widget.reports.isNotEmpty) {
-      for (int i = 0; i < widget.reports.length; i++) {
-        final barGroup = makeGroupData(
-          i,
-          widget.reports[i].sales!, // Scaling the price
-          widget.reports[i].profit!, // Scaling the price
-        );
-
-        barGroups.add(barGroup);
-      }
-    }
     return AspectRatio(
       aspectRatio: 1.8,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                const Text(
-                  DisplayTexts.weekly_rate_of_selling,
-                  style: TextStyle(fontSize: 22),
-                ),
-                // ShowReportOfPrice(
-                //   screenSize: screenSize,
-                //   widget: widget,
-                // ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.refresh),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            Expanded(
-              child: BarChart(
-                BarChartData(
-                  maxY: 10000,
-                  titlesData: FlTitlesData(
-                    bottomTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        getTitlesWidget: (double value, TitleMeta meta) =>
-                            BottomTitles(
-                          value: value,
-                          meta: meta,
-                          statistics: widget.reports,
-                        ),
-                        reservedSize: 35,
+      child: Obx(
+        () {
+          if (statisticsCtl.isChartReady.value) {
+            return Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(
+                        TranslatedTexts.statistics.weeklySalesStatistics.tr,
+                        style: const TextStyle(fontSize: 22),
                       ),
-                    ),
-                    leftTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                        showTitles: true,
-                        reservedSize: 60,
-                        interval: 1,
-                        getTitlesWidget: leftTitles,
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.refresh),
                       ),
-                    ),
+                    ],
                   ),
-                  barGroups: barGroups,
-                  borderData: FlBorderData(show: false),
-                  gridData: const FlGridData(show: true),
-                  barTouchData: BarTouchData(
-                    enabled: true, // Enable touch interaction
-                    touchTooltipData: BarTouchTooltipData(
-                      tooltipPadding: const EdgeInsets.symmetric(
-                        vertical: 5,
-                        horizontal: 50,
-                      ),
-                      // Reduce padding for better fit
-                      tooltipMargin: 8,
-                      // Adjust margin for better positioning
-                      getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                        return BarTooltipItem(
-                          "",
-                          const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 1, // Customize font size and weight
-                          ),
-                          children: [
-                            if (rodIndex == 0)
-                              TextSpan(
-                                text:
-                                    'Savdo: \n ${formatUZSNumber(widget.reports[groupIndex].sales!, isAddWord: false)}',
-                                // Display price
-                                style: const TextStyle(
-                                  color: Colors.yellow,
-                                  // Custom color for the price
-                                  fontSize: 20,
-                                  // Adjust font size for price
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              )
-                            else
-                              TextSpan(
-                                text:
-                                    'Foyda: \n ${formatUZSNumber(widget.reports[groupIndex].profit!, isAddWord: false)}',
-                                // Display profit
-                                style: const TextStyle(
-                                  color: Colors.greenAccent,
-                                  // Custom color for profit
-                                  fontSize: 20,
-
-                                  // Adjust font size for profit
-                                  fontWeight: FontWeight.w500,
-                                ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  Expanded(
+                    child: BarChart(
+                      BarChartData(
+                        maxY: 20000,
+                        titlesData: FlTitlesData(
+                          bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              getTitlesWidget: (double value, TitleMeta meta) =>
+                                  BottomTitles(
+                                value: value,
+                                meta: meta,
+                                statistics: statisticsCtl.dailySalesRates,
                               ),
-                          ],
-                        );
-                      },
+                              reservedSize: 35,
+                            ),
+                          ),
+                          leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                              showTitles: true,
+                              reservedSize: 80,
+                              interval: 1,
+                              getTitlesWidget: leftTitles,
+                            ),
+                          ),
+                        ),
+                        barGroups: statisticsCtl.barGroups,
+                        borderData: FlBorderData(show: false),
+                        gridData: const FlGridData(show: true),
+                        barTouchData: BarTouchData(
+                          enabled: true, // Enable touch interaction
+                          touchTooltipData: BarTouchTooltipData(
+                            tooltipPadding: const EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 50,
+                            ),
+                            // Reduce padding for better fit
+                            tooltipMargin: 8,
+                            // Adjust margin for better positioning
+                            getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                              return BarTooltipItem(
+                                "",
+                                const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 1, // Customize font size and weight
+                                ),
+                                children: [
+                                  if (rodIndex == 0)
+                                    TextSpan(
+                                      text:
+                                          'Savdo: \n ${PriceFomatter.formatPrice(
+                                        statisticsCtl
+                                            .dailySalesRates[groupIndex].sales!,
+                                      )}',
+                                      // Display price
+                                      style: const TextStyle(
+                                        color: Colors.yellow,
+                                        // Custom color for the price
+                                        fontSize: 20,
+                                        // Adjust font size for price
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    )
+                                  else
+                                    TextSpan(
+                                      text:
+                                          'Foyda: \n ${formatUZSNumber(statisticsCtl.dailySalesRates[groupIndex].profit!, isAddWord: false)}',
+                                      // Display profit
+                                      style: const TextStyle(
+                                        color: Colors.greenAccent,
+                                        // Custom color for profit
+                                        fontSize: 20,
+
+                                        // Adjust font size for profit
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-          ],
-        ),
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
       ),
     );
   }
@@ -461,20 +187,11 @@ class _ChartDataExampleState extends State<ChartDataExample> {
       fontSize: 14,
     );
 
-    // Use a map for specific y-axis labels at regular intervals, up to 10,000 USD
-    Map<double, String> leftTitlesMap = {
-      0: '0 USD',
-      1000: '1K UZS',
-      2000: '2K UZS',
-      3000: '3K UZS',
-      4000: '4K UZS',
-      5000: '5K UZS',
-      6000: '6K UZS',
-      7000: '7K UZS',
-      8000: '8K UZS',
-      9000: '9K UZS',
-      10000: '10K UZS',
-    };
+    Map<double, String> leftTitlesMap = {};
+
+    for (var i = 0; i <= 20; i++) {
+      leftTitlesMap[i.toDouble() * 1000] = '${i}K UZS';
+    }
 
     String? text = leftTitlesMap[value];
 
@@ -487,73 +204,6 @@ class _ChartDataExampleState extends State<ChartDataExample> {
       axisSide: meta.axisSide,
       space: 8, // Add some spacing for better readability
       child: Text(text, style: style),
-    );
-  }
-
-  // Updated makeGroupData function to include both price and profit
-  BarChartGroupData makeGroupData(int x, double price, double profit) {
-    return BarChartGroupData(
-      barsSpace: 10,
-      x: x,
-      barRods: [
-        BarChartRodData(
-          toY: price / 1000,
-          color: leftBarColor, // For price
-          width: 10,
-        ),
-        BarChartRodData(
-          toY: profit / 1000,
-          color: rightBarColor, // For profit
-          width: 10,
-        ),
-      ],
-    );
-  }
-
-  Widget makeTransactionsIcon() {
-    const width = 4.5;
-    const space = 3.5;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          width: width,
-          height: 10,
-          color: Colors.white.withOpacity(0.4),
-        ),
-        const SizedBox(
-          width: space,
-        ),
-        Container(
-          width: width,
-          height: 28,
-          color: Colors.white.withOpacity(0.8),
-        ),
-        const SizedBox(
-          width: space,
-        ),
-        Container(
-          width: width,
-          height: 42,
-          color: Colors.white.withOpacity(1),
-        ),
-        const SizedBox(
-          width: space,
-        ),
-        Container(
-          width: width,
-          height: 28,
-          color: Colors.white.withOpacity(0.8),
-        ),
-        const SizedBox(
-          width: space,
-        ),
-        Container(
-          width: width,
-          height: 10,
-          color: Colors.white.withOpacity(0.4),
-        ),
-      ],
     );
   }
 }

@@ -1,19 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-class UnitModel {
+class Unit {
   int id;
   String value;
-  UnitModel({
+  Unit({
     required this.id,
     required this.value,
   });
 
-  UnitModel copyWith({
+  Unit copyWith({
     int? id,
     String? value,
   }) {
-    return UnitModel(
+    return Unit(
       id: id ?? this.id,
       value: value ?? this.value,
     );
@@ -26,8 +26,8 @@ class UnitModel {
     };
   }
 
-  factory UnitModel.fromMap(Map<String, dynamic> map) {
-    return UnitModel(
+  factory Unit.fromMap(Map<String, dynamic> map) {
+    return Unit(
       id: map['id'] as int,
       value: map['value'] as String,
     );
@@ -35,13 +35,13 @@ class UnitModel {
 
   String toJson() => json.encode(toMap());
 
-  factory UnitModel.fromJson(String source) =>
-      UnitModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory Unit.fromJson(String source) =>
+      Unit.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'UnitModel(id: $id, value: $value)';
 
-  factory UnitModel.empty() {
-    return UnitModel(id: 0, value: '');
+  factory Unit.empty() {
+    return Unit(id: 0, value: '');
   }
 }

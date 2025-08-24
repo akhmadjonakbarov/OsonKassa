@@ -121,96 +121,92 @@ class _CustomerViewState extends State<CustomerView> {
           ],
         ),
         Container(
-          margin: EdgeInsets.symmetric(vertical: 5),
-          padding: EdgeInsets.symmetric(horizontal: 256),
+          margin: const EdgeInsets.symmetric(vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 256),
           height: screenSize.height * 0.12,
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Statistics",
-                  style: textStyleBlack20.copyWith(fontSize: 25),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Statistics",
+                style: textStyleBlack20.copyWith(fontSize: 25),
+              ),
+              Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.all(screenSize.height * 0.1 / 25),
+                          child: SvgPicture.asset(
+                            AppIcons.person,
+                            height: screenSize.height * 0.1 / 2.8,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "${widget.customerCtl.list.length} ta",
+                              style: textStyleBlack20,
+                            ),
+                            Text(
+                              "Mijozlar",
+                              style: textStyleBlack15,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.all(screenSize.height * 0.1 / 25),
+                          child: Icon(
+                            CupertinoIcons.money_dollar_circle,
+                            size: screenSize.height * 0.1 / 2.8,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "${PriceFomatter.formatPrice(customerDetailCtl.totalDebtsPrice.value)} uzs",
+                              style: textStyleBlack20,
+                            ),
+                            Text(
+                              "Qarzlar",
+                              style: textStyleBlack15,
+                            ),
+                          ],
+                        )
+                      ],
+                    )
+                  ],
                 ),
-                Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: SvgPicture.asset(
-                              AppIcons.person,
-                              height: screenSize.height * 0.1 / 2.8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade100,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding:
-                                EdgeInsets.all(screenSize.height * 0.1 / 25),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "${widget.customerCtl.list.length} ta",
-                                style: textStyleBlack20,
-                              ),
-                              Text(
-                                "Mijozlar",
-                                style: textStyleBlack15,
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Icon(
-                              CupertinoIcons.money_dollar_circle,
-                              size: screenSize.height * 0.1 / 2.8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade100,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            padding:
-                                EdgeInsets.all(screenSize.height * 0.1 / 25),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "${PriceFomatter.formatPrice(customerDetailCtl.totalDebtsPrice.value)} uzs",
-                                style: textStyleBlack20,
-                              ),
-                              Text(
-                                "Qarzlar",
-                                style: textStyleBlack15,
-                              ),
-                            ],
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         SizedBox(

@@ -1,53 +1,64 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+import 'dart:convert';
 
 class ReportItemModel {
-  String item_name;
-  double total_qty;
-  double selling_price;
-  double total_profit;
-  String currency_type;
+  String? name;
+  String? unit;
+  double? totalQty;
+  double? totalIncome;
+  double? totalSale;
+  double? totalProfit;
+
   ReportItemModel({
-    required this.item_name,
-    required this.total_qty,
-    required this.selling_price,
-    required this.total_profit,
-    required this.currency_type,
+    this.name,
+    this.unit,
+    this.totalQty,
+    this.totalIncome,
+    this.totalSale,
+    this.totalProfit,
   });
 
-  ReportItemModel copyWith(
-      {String? item_name,
-      double? total_qty,
-      double? selling_price,
-      double? total_profit,
-      String? currency_type}) {
-    return ReportItemModel(
-      item_name: item_name ?? this.item_name,
-      currency_type: currency_type ?? this.currency_type,
-      total_qty: total_qty ?? this.total_qty,
-      selling_price: selling_price ?? this.selling_price,
-      total_profit: total_profit ?? this.total_profit,
-    );
-  }
+  ReportItemModel copyWith({
+    String? name,
+    String? unit,
+    double? totalQty,
+    double? totalIncome,
+    double? totalSale,
+    double? totalProfit,
+  }) =>
+      ReportItemModel(
+        name: name ?? this.name,
+        unit: unit ?? this.unit,
+        totalQty: totalQty ?? this.totalQty,
+        totalIncome: totalIncome ?? this.totalIncome,
+        totalSale: totalSale ?? this.totalSale,
+        totalProfit: totalProfit ?? this.totalProfit,
+      );
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'item_name': item_name,
-      'total_qty': total_qty,
-      'selling_price': selling_price,
-      'total_profit': total_profit,
-    };
-  }
+  factory ReportItemModel.fromRawJson(String str) =>
+      ReportItemModel.fromJson(json.decode(str));
 
-  factory ReportItemModel.fromMap(Map<String, dynamic> map) {
-    return ReportItemModel(
-      currency_type: map['currency_type'] as String,
-      item_name: map['item_name'] as String,
-      total_qty: double.parse(map['total_qty'].toString()),
-      selling_price: map['selling_price'] as double,
-      total_profit: map['total_profit'] as double,
-    );
-  }
+  String toRawJson() => json.encode(toJson());
+
+  factory ReportItemModel.fromJson(Map<String, dynamic> json) =>
+      ReportItemModel(
+        name: json["name"],
+        unit: json["unit"],
+        totalQty: json["total_qty"]?.toDouble(),
+        totalIncome: json["total_income"]?.toDouble(),
+        totalSale: json["total_sale"]?.toDouble(),
+        totalProfit: json["total_profit"]?.toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "unit": unit,
+        "total_qty": totalQty,
+        "total_income": totalIncome,
+        "total_sale": totalSale,
+        "total_profit": totalProfit,
+      };
 }
 
 class ReportModel {
@@ -71,7 +82,7 @@ class ReportModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
-      'value': value.map((x) => x.toMap()).toList(),
+      'value': value.map((x) => x.toJson()).toList(),
     };
   }
 
@@ -80,7 +91,7 @@ class ReportModel {
       name: map['name'] as String,
       value: List<ReportItemModel>.from(
         (map['value'] as List).map<ReportItemModel>(
-          (x) => ReportItemModel.fromMap(x as Map<String, dynamic>),
+          (x) => ReportItemModel.fromJson(x as Map<String, dynamic>),
         ),
       ),
     );

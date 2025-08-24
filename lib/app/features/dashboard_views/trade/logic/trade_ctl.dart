@@ -7,7 +7,6 @@ import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
-import '../../../../core/enums/product_doc_type.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../styles/text_styles.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
@@ -21,14 +20,12 @@ import 'trade_repository.dart';
 import 'trade_service.dart';
 
 class TradeCtl extends GetxController {
-
-
-
   var sellProducts = <StoreItem>[].obs;
 
   var totalSelledProductCount = 0.0.obs;
   var totalSelledProductPrice = 0.0.obs;
-  var totalDiscount = 0.0.obs;
+  var discountPrice = 0.0.obs;
+  var discount = 0.0.obs;
 
   late TradeRepository tradeRepository;
   late TradeService tradeService;
@@ -58,7 +55,8 @@ class TradeCtl extends GetxController {
       Map<String, dynamic> data = {
         "sold_products": productList,
         "customer_id": customer_id,
-        "is_debt": isDebt
+        "is_debt": isDebt,
+        "discount": discountPrice.value
       };
 
       bool isSuccess = await tradeService.sell(data);
@@ -76,6 +74,8 @@ class TradeCtl extends GetxController {
 
   clearData() async {
     sellProducts([]);
+    discount.value = 0.0;
+    discountPrice.value = 0.0;
     updateTotals();
   }
 
@@ -88,13 +88,9 @@ class TradeCtl extends GetxController {
         0,
         StoreItem(
           qty: 1,
-          document: item.document,
-          sellingPercentage: item.sellingPercentage,
           item: item.item,
-          sellingCurrency: item.sellingCurrency,
-          incomeCurrency: item.incomeCurrency,
           incomePrice: item.incomePrice,
-          sellingPrice: item.sellingPrice,
+          salePrice: item.salePrice,
           currency: item.currency,
         ),
       );
@@ -108,13 +104,11 @@ class TradeCtl extends GetxController {
 
   void editProduct(BuildContext context, StoreItem storeItem) {
     final TextEditingController sellingPriceController = TextEditingController(
-      text: storeItem.sellingPrice!.toStringAsFixed(3),
+      text: storeItem.salePrice!.toStringAsFixed(3),
     );
     final TextEditingController qtyController = TextEditingController(
       text: storeItem.qty!.toStringAsFixed(3),
     );
-
-    // int selected_unit_id = docItem.item.units.first.id;
 
     double updatePrice() {
       double qty = 0.0;
@@ -135,7 +129,7 @@ class TradeCtl extends GetxController {
           .indexWhere((item) => item.item!.barcode == storeItem.item!.barcode);
       sellProducts[index] = sellProducts[index].copyWith(
         qty: double.tryParse(qtyController.text.trim()) ?? 0.0,
-        sellingPrice: double.tryParse(
+        salePrice: double.tryParse(
               double.tryParse(sellingPriceController.text.trim())
                       ?.toStringAsFixed(3) ??
                   '0.0',
@@ -265,7 +259,11 @@ class TradeCtl extends GetxController {
 
     for (StoreItem item in sellProducts) {
       totalCount += item.qty!;
-      totalPrice += (item.qty! * item.sellingPrice!);
+      if (item.currency != null) {
+        totalPrice += (item.qty! * item.salePrice!) * item.currency!.value!;
+      } else {
+        totalPrice += (item.qty! * item.salePrice!);
+      }
     }
 
     totalSelledProductPrice.value = totalPrice;
@@ -294,12 +292,11 @@ class TradeCtl extends GetxController {
     if (index != -1) {
       var item = sellProducts[index];
 
-      item = item.copyWith(
-          sellingPrice: (item.sellingPrice! * 0.99).ceilToDouble());
+      item = item.copyWith(salePrice: (item.salePrice! * 0.99).ceilToDouble());
 
       // Ensure the discount price does not go below the income price
-      if (item.sellingPrice! < item.incomePrice!) {
-        item = item.copyWith(sellingPrice: item.sellingPrice);
+      if (item.salePrice! < item.incomePrice!) {
+        item = item.copyWith(salePrice: item.salePrice);
       }
       // Force update in the list
       sellProducts[index] = item;
@@ -332,5 +329,67 @@ class TradeCtl extends GetxController {
         type: TypeOfSnackBar.delete,
       );
     }
+  }
+
+  void editTotalDiscount() {
+    final TextEditingController discountController = TextEditingController();
+
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          width: 450,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                "Edit Total Discount",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: discountController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                decoration: const InputDecoration(
+                  labelText: "Enter discount",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    child: const Text("Cancel"),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      final input = discountController.text;
+                      final discountValue = double.tryParse(input);
+                      if (discountValue != null && discountValue >= 0) {
+                        discountPrice.value =
+                            totalSelledProductPrice.value - discountValue;
+                        discount.value = discountValue;
+                        Get.back();
+                      } else {
+                        Get.snackbar(
+                          "Invalid input",
+                          "Please enter a valid discount amount.",
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      }
+                    },
+                    child: const Text("Save"),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

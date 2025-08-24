@@ -10,16 +10,9 @@ import 'package:osonkassa/app/features/dashboard_views/note/logic/note_controlle
 import 'package:osonkassa/app/features/shared/export_commons.dart';
 import 'package:osonkassa/app/styles/text_styles.dart';
 import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
-import 'package:osonkassa/app/translation/translated_texts.dart';
 import 'package:osonkassa/app/utils/formatter_functions/formatter_date.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
 import 'package:osonkassa/app/utils/texts/display_texts.dart';
-import 'package:osonkassa/app/utils/texts/table_texts.dart';
 
 import '../../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../logic/doc_item/doc_item_ctl.dart';
@@ -73,11 +66,12 @@ class _DebtTableState extends State<DocumentTable> {
       padding: EdgeInsets.zero,
       child: CustomDataTable(
         columns: [
-          TranslatedTexts.table.index.tr,
+          TranslatedTexts.table.number.tr,
           TranslatedTexts.table.date.tr,
           TranslatedTexts.table.typeOfProduct.tr,
           TranslatedTexts.table.totalOfProduct.tr,
-          TranslatedTexts.table.totalAmountPrice.tr,
+          'price'.tr,
+          'discount'.tr,
           TranslatedTexts.table.documentType.tr,
           TranslatedTexts.table.seeDetail.tr
         ],
@@ -102,7 +96,7 @@ class _DebtTableState extends State<DocumentTable> {
               cells: <DataCell>[
                 DataCell(
                   CenterText(
-                    text: "${index + 1}",
+                    text: document.id.toString(),
                     style: textStyleBlack18.copyWith(
                       color: isSold ? Colors.white : Colors.black,
                     ),
@@ -110,9 +104,8 @@ class _DebtTableState extends State<DocumentTable> {
                 ),
                 DataCell(
                   CenterText(
-                    text: formatDateToUzbek(
-                      document.createdAt.toString(),
-                    ),
+                    text: formatDate(document.createdAt.toString(),
+                        hasHour: true),
                     style: textStyleBlack18.copyWith(
                       color: isSold ? Colors.white : Colors.black,
                     ),
@@ -138,8 +131,16 @@ class _DebtTableState extends State<DocumentTable> {
                 ),
                 DataCell(
                   CenterText(
-                    text:
-                        "${PriceFomatter.formatPrice(double.parse(document.price!['uzs'].toString()))} uzs",
+                    text: PriceFomatter.formatPrice(document.price ?? 0.0),
+                    style: textStyleBlack18.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: isSold ? Colors.white : Colors.black,
+                    ),
+                  ),
+                ),
+                DataCell(
+                  CenterText(
+                    text: PriceFomatter.formatPrice(document.discount ?? 0.0),
                     style: textStyleBlack18.copyWith(
                       fontWeight: FontWeight.w800,
                       color: isSold ? Colors.white : Colors.black,
@@ -149,10 +150,13 @@ class _DebtTableState extends State<DocumentTable> {
                 DataCell(Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CenterText(
-                      text: isSold ? DisplayTexts.sold : DisplayTexts.received,
-                      style: textStyleBlack18.copyWith(
-                        color: isSold ? Colors.white : Colors.black,
+                    Expanded(
+                      child: CenterText(
+                        text:
+                            isSold ? DisplayTexts.sold : DisplayTexts.received,
+                        style: textStyleBlack18.copyWith(
+                          color: isSold ? Colors.white : Colors.black,
+                        ),
                       ),
                     ),
                     const SizedBox(

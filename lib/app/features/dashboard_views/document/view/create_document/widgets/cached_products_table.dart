@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/document/models/draf_product.dart';
-
-import '../../../../../../styles/container_decoration.dart';
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/texts/table_texts.dart';
 import '../../../../../shared/export_commons.dart';

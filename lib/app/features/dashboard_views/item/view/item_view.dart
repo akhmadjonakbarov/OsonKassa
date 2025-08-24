@@ -14,6 +14,7 @@ import '../../company/logic/company_ctl.dart';
 import '../logic/item_ctl.dart';
 import 'table/item_table.dart';
 import 'widgets/filter_by_category.dart';
+import 'widgets/item_edit_dialog.dart';
 
 class ItemtView extends StatefulWidget {
   final AuthCtl authCtl;
@@ -96,7 +97,7 @@ class _ItemtViewState extends State<ItemtView> {
                           ),
                           CheckedAddButton(
                             onClick: () {
-                              itemCtl.editDialog(context);
+                              Get.dialog(ItemEditDialog());
                             },
                             permission:
                                 Permissions.create_item.name.toLowerCase(),

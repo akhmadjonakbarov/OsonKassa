@@ -53,6 +53,12 @@ class _ContentBarState extends State<ContentBar> {
   final DisplayController displayController = Get.find<DisplayController>();
 
   @override
+  void initState() {
+    reportCtl.fetchItems();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       width: widget.sizeScreen.width * 0.805,
@@ -69,7 +75,6 @@ class _ContentBarState extends State<ContentBar> {
           Expanded(
             child: Obx(
               () {
-                reportCtl.fetchItems();
                 switch (widget.dashboardCtl.selectedView.value) {
                   case AppViews.dashboard:
                     return StatisticsView(

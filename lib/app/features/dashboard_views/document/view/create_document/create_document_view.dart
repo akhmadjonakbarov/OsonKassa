@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/currency/models/currency.dart';
 import 'package:osonkassa/app/features/dashboard_views/document/models/draft_document.dart';
 
-import 'package:osonkassa/app/features/dashboard_views/document/view/create_document/widgets/currency_type_dropdown.dart';
 import 'package:osonkassa/app/styles/themes.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
+import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
 import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../../core/enums/product_doc_type.dart';
@@ -145,28 +146,79 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CurrencyTypeDropdown(
-                      incomeCurrency:
-                          manageProductDocItemCtl.incomeCurrency.value,
-                      sellingCurrency:
-                          manageProductDocItemCtl.sellingCurrency.value,
-                      onSelectSellingCurrency: (sellingCurrency_) {
-                        manageProductDocItemCtl
-                            .setSellingCurrency(sellingCurrency_);
-                      },
-                      onSelectIncomeCurrency: (incomeCurrency_) {
-                        manageProductDocItemCtl
-                            .setIncomeCurrency(incomeCurrency_);
-                      },
-                    ),
                     const SizedBox(
                       height: 10,
                     ),
+                    Obx(() {
+                      if (itemCtl.selectedItem.value == null) {
+                        return const SizedBox.shrink();
+                      }
+                      final item = itemCtl.selectedItem.value;
+
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 25),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                        elevation: 0,
+                        color: Colors.white,
+                        shadowColor: Colors.black12,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 24),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "🧾 Mahsulot Tafsilotlari",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade800,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              _InfoRow(
+                                label: TranslatedTexts.table.incomePrice.tr,
+                                value: item!.incomePrice != null
+                                    ? PriceFomatter.formatPrice(
+                                        item.incomePrice!)
+                                    : "0",
+                                valueColor: Colors.teal.shade700,
+                              ),
+                              const SizedBox(height: 12),
+                              _InfoRow(
+                                label: TranslatedTexts.table.salePrice.tr,
+                                value: item.salePrice != null
+                                    ? PriceFomatter.formatPrice(item.salePrice!)
+                                    : "0",
+                                valueColor: Colors.blue.shade700,
+                              ),
+                              const SizedBox(height: 12),
+                              _InfoRow(
+                                label: TranslatedTexts.table.currency.tr,
+                                valueWidget: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      item.currencyType?.toUpperCase() ?? '-',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
-                          // mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.165,
@@ -187,45 +239,6 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
                             const SizedBox(
                               height: 10,
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.165,
-                              child: TextFormField(
-                                controller: manageProductDocItemCtl
-                                    .incomePriceController,
-                                style: textStyleBlack18,
-                                decoration: customInputDecoration(
-                                  PlaceholderTexts.income_price_with_number,
-                                ),
-                                onChanged: (value) {
-                                  manageProductDocItemCtl
-                                      .setIncomePrice(context);
-                                },
-                                validator: (p0) =>
-                                    NumberValidator.validPrice(p0!),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.165,
-                              child: TextFormField(
-                                style: textStyleBlack18,
-                                controller:
-                                    manageProductDocItemCtl.sellPriceController,
-                                decoration: customInputDecoration(
-                                  PlaceholderTexts.selling_price_with_number,
-                                ),
-                                onChanged: (value) {
-                                  manageProductDocItemCtl.setSellPrice(context);
-                                  manageProductDocItemCtl
-                                      .calculateSellingProfitPercentage();
-                                },
-                                validator: (value) =>
-                                    NumberValidator.validPrice(
-                                        value!.replaceAll(",", "")),
-                              ),
-                            ),
                           ],
                         ),
                         Column(
@@ -237,19 +250,19 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
                               ),
                               child: Column(
                                 children: [
-                                  if (manageProductDocItemCtl
-                                          .sellingCurrency.value.name
-                                          .toLowerCase() ==
-                                      'uzs')
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          "Ustma foiz: ${manageProductDocItemCtl.profitPercentage.value.toStringAsFixed(3)} %",
-                                          style: textStyleBlack18,
-                                        ),
-                                      ],
-                                    )
+                                  // if (manageProductDocItemCtl
+                                  //         .sellingCurrency.value.name
+                                  //         .toLowerCase() ==
+                                  //     'uzs')
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        "Ustma foiz: ${manageProductDocItemCtl.profitPercentage.value.toStringAsFixed(3)} %",
+                                        style: textStyleBlack18,
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
                             ),
@@ -389,6 +402,49 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
           )
         ],
       ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final String label;
+  final String? value;
+  final Widget? valueWidget;
+  final Color? valueColor;
+
+  const _InfoRow({
+    required this.label,
+    this.value,
+    this.valueWidget,
+    this.valueColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Flexible(
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        valueWidget ??
+            Text(
+              value ?? "-",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: valueColor ?? Colors.black87,
+              ),
+            ),
+      ],
     );
   }
 }

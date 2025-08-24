@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../utils/texts/table_texts.dart';
 import '../../../shared/widgets/center_text.dart';
@@ -42,7 +44,7 @@ class ReportBox extends StatelessWidget {
   }
 
   List<DataColumn> columns() {
-    return const [
+    return [
       DataColumn(
         label: Text(TableTexts.index),
         headingRowAlignment: MainAxisAlignment.center,
@@ -52,15 +54,19 @@ class ReportBox extends StatelessWidget {
         headingRowAlignment: MainAxisAlignment.center,
       ),
       DataColumn(
-        label: Text("Sotilgan soni"),
+        label: Text('total_qty'.tr),
         headingRowAlignment: MainAxisAlignment.center,
       ),
       DataColumn(
-        label: Text(TableTexts.selling_price),
+        label: Text('total_sale_price'.tr),
         headingRowAlignment: MainAxisAlignment.center,
       ),
       DataColumn(
-        label: Text(TableTexts.total_profit),
+        label: Text('total_income_price'.tr),
+        headingRowAlignment: MainAxisAlignment.center,
+      ),
+      DataColumn(
+        label: Text(TranslatedTexts.table.totalProfit.tr),
         headingRowAlignment: MainAxisAlignment.center,
       ),
     ];
@@ -73,20 +79,25 @@ class ReportBox extends StatelessWidget {
       return DataRow(
         cells: [
           DataCell(Text("${index + 1}")),
-          DataCell(CenterText(text: reportItem.item_name)),
+          DataCell(CenterText(text: reportItem.name!)),
           DataCell(
             CenterText(
-              text: reportItem.total_qty.toString(),
+              text: reportItem.totalQty.toString(),
             ),
           ),
           DataCell(
             CenterText(
-              text: "${reportItem.selling_price} ${reportItem.currency_type}",
+              text: "${reportItem.totalSale} ",
             ),
           ),
           DataCell(
             CenterText(
-              text: "${reportItem.total_profit} ${reportItem.currency_type}",
+              text: "${reportItem.totalIncome} ",
+            ),
+          ),
+          DataCell(
+            CenterText(
+              text: "${reportItem.totalProfit} ",
             ),
           ),
         ],
