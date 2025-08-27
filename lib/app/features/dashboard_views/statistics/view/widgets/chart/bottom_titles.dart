@@ -28,8 +28,8 @@ class _BottomTitlesState extends State<BottomTitles> {
     // Extract the date from the list
     String date = formatDate(widget.statistics[index].date.toString());
     return SideTitleWidget(
-      axisSide: widget.meta.axisSide,
-      space: 16,
+      meta: widget.meta,
+      space: 10,
       child: Text(
         date, // Display the day part of the date
         style: const TextStyle(

@@ -1,4 +1,4 @@
-import '../../features/auth/models/user_model.dart';
+import '../../features/auth/models/role.dart';
 
 class PermissionChecker {
   static bool hasPermission(List<Role> roles, String action) {

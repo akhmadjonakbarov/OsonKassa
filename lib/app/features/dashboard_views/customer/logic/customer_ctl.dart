@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../config/dio_provider.dart';
@@ -9,21 +8,16 @@ import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/interfaces/getx_controller/main_controller.dart';
 import '../models/customer.dart';
-import '../view/widgets/customer_edit_dialog.dart';
 import 'customer_repository.dart';
 import 'customer_services.dart';
 
-class CustomerCtl extends MainController<Customer> {
+class CustomerCtl extends PaginationController {
+  RxList<Customer> customers = RxList<Customer>();
   Rxn<Customer> selectedCustomer = Rxn(null);
+  var isLoading = false.obs;
 
   late final ClientRepository builderRepository;
   late final ClientService builderService;
-
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController phoneNumber2Controller = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
 
   @override
   void onInit() {
@@ -38,21 +32,12 @@ class CustomerCtl extends MainController<Customer> {
     super.onInit();
   }
 
-  void resetBuilder() {
-    selectedCustomer(null);
-    nameController.clear();
-    phoneNumberController.clear();
-    phoneNumber2Controller.clear();
-    addressController.clear();
-  }
-
-  @override
   void fetchItems() async {
     try {
       isLoading(true);
       var apiBuilders = await builderService.getAllClient();
 
-      list(apiBuilders);
+      customers(apiBuilders);
     } catch (e) {
       UserNotifier.showSnackBar(
         text: e.toString(),
@@ -62,26 +47,10 @@ class CustomerCtl extends MainController<Customer> {
     }
   }
 
-  void selectCustomer(Customer builder, BuildContext context) {
+  void selectCustomer(Customer? builder) {
     selectedCustomer(builder);
-    editDialog(context);
   }
 
-  void editDialog(BuildContext context) {
-    if (selectedCustomer.value != null) {
-      nameController.text = selectedCustomer.value!.fullName!;
-      phoneNumberController.text = selectedCustomer.value!.phoneNumber!;
-      phoneNumber2Controller.text = selectedCustomer.value!.phoneNumber2!;
-      addressController.text = selectedCustomer.value!.address!;
-    } else {
-      resetBuilder();
-    }
-    Get.dialog(CustomerEditDialog(customerCtl: this)).then(
-      (value) => resetBuilder(),
-    );
-  }
-
-  @override
   void addItem(item) async {
     try {
       await builderService.addClient(clientData: item);
@@ -106,8 +75,7 @@ class CustomerCtl extends MainController<Customer> {
     }
   }
 
-  @override
-  void removeItem(id) async {
+  void removeItem(int id) async {
     try {
       await builderService.deleteClient(id);
       UserNotifier.showSnackBar(
@@ -127,35 +95,33 @@ class CustomerCtl extends MainController<Customer> {
       fetchItems();
       return;
     }
-    searchItem(text, (customer, searchText) {
-      return customer.fullName!
-          .toLowerCase()
-          .contains(searchText.toLowerCase());
-    });
+    // searchItem(text, (customer, searchText) {
+    //   return customer.fullName!
+    //       .toLowerCase()
+    //       .contains(searchText.toLowerCase());
+    // });
   }
 
   void sortByCreatedAt() {
-    List<Customer> builders = List.from(list);
+    List<Customer> builders = List.from(customers);
     builders.sort((a, b) {
       return b.createdAt!.compareTo(a.createdAt!);
     });
-    list(builders);
+    customers(builders);
   }
 
   void sortByName() {
-    List<Customer> builders = List.from(list);
+    List<Customer> builders = List.from(customers);
     builders.sort((a, b) {
       return a.fullName!.toLowerCase().compareTo(b.fullName!.toLowerCase());
     });
-    list(builders);
+    customers(builders);
   }
 
-  @override
   void handleError(String e) {
     UserNotifier.showSnackBar(label: e.toString(), type: TypeOfSnackBar.error);
   }
 
-  @override
   void updateItem(Customer item) async {
     try {
       await builderService.updateClient(client: item);
@@ -165,7 +131,6 @@ class CustomerCtl extends MainController<Customer> {
       );
 
       fetchItems();
-      resetBuilder();
     } catch (e) {
       UserNotifier.showSnackBar(
         text: e.toString(),

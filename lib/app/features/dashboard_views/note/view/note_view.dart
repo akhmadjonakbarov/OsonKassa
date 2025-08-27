@@ -17,11 +17,11 @@ class NoteView extends StatefulWidget {
 }
 
 class _NoteViewState extends State<NoteView> {
-  NoteCtl providerCtl = Get.find<NoteCtl>();
+  NoteCtl noteCtl = Get.find<NoteCtl>();
 
   @override
   void initState() {
-    providerCtl.fetchItems();
+    noteCtl.fetchItems();
     super.initState();
   }
 
@@ -47,17 +47,20 @@ class _NoteViewState extends State<NoteView> {
                     width: screenSize.width * 0.15,
                     child: SearchTextField(
                       hintText: ButtonTexts.search,
-                      onChanged: (value) => providerCtl.searchProvider(value),
+                      onChanged: (value) => noteCtl.searchProvider(value),
                     ),
                   ),
                 ],
               ),
+              const SizedBox(
+                height: 10,
+              ),
               Obx(
                 () => DataList(
-                  isLoading: providerCtl.isLoading.value,
-                  isNotEmpty: providerCtl.list.isNotEmpty,
+                  isLoading: noteCtl.isLoading.value,
+                  isNotEmpty: noteCtl.list.isNotEmpty,
                   child: NoteTable(
-                    providerController: providerCtl,
+                    providerController: noteCtl,
                   ),
                 ),
               ),

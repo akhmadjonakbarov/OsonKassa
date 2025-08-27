@@ -315,6 +315,7 @@ class AppTranslations extends Translations {
 
           // Statistics
           TranslatedTexts.statistics.statistics: 'Statistika',
+          TranslatedTexts.statistics.salesStatistics: 'Savdo Statistikasi',
           TranslatedTexts.statistics.weeklySalesStatistics:
               'Haftalik savdo statistikasi',
           TranslatedTexts.statistics.monthlySalesStatistics:

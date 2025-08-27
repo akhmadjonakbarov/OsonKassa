@@ -11,9 +11,6 @@ class StatisticsRepository {
 
   StatisticsRepository(this.dio);
 
-  static const String _baseUrl = "/document";
-  final String _statistic = "/statistics/all";
-
   Future<List<StatisticItemModel>> getStatistics() async {
     return [];
     // List<StatisticItemModel> itemList = [];

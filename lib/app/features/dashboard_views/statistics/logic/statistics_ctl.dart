@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
-import '../../../../styles/chart_colors.dart';
+
 import '../models/daily_sales_rate.dart';
 import '../models/daily_total_selling_price.dart';
 import '../models/product_count_report.dart';
@@ -48,11 +48,7 @@ class StatisticsCtl extends GetxController {
     profitRepository = ProfitRepository(dio: dio);
     salesRateRepository = SalesRateRepository(dio: dio);
     statisticsService = StatisticsService(StatisticsRepository(dio));
-    barGroups.add(makeGroupData(
-      0,
-      0.0,
-      0.0,
-    ));
+
     loadAllStatistics();
   }
 
@@ -86,8 +82,8 @@ class StatisticsCtl extends GetxController {
   Future<void> prepareChart() async {
     isChartReady(false);
     await getDailySalesRates();
-    Future.delayed(Duration(milliseconds: 2000));
     await createBarGroups();
+    await Future.delayed(Durations.medium3);
     isChartReady(true);
   }
 
@@ -102,37 +98,8 @@ class StatisticsCtl extends GetxController {
 
   Future<void> createBarGroups() async {
     barGroups.clear();
-    for (int i = 0; i < dailySalesRates.length; i++) {
-      barGroups.add(
-        makeGroupData(
-          i,
-          dailySalesRates[i].sales!,
-          dailySalesRates[i].profit!,
-        ),
-      );
-    }
-  }
-
-  BarChartGroupData makeGroupData(int x, double price, double profit) {
-    Color leftBarColor = ChartColors.contentColorYellow;
-
-    Color rightBarColor = ChartColors.contentColorGreen;
-    return BarChartGroupData(
-      barsSpace: 10,
-      x: x,
-      barRods: [
-        BarChartRodData(
-          toY: price / 1000,
-          color: leftBarColor, // For price
-          width: 10,
-        ),
-        BarChartRodData(
-          toY: profit / 1000,
-          color: rightBarColor, // For profit
-          width: 10,
-        ),
-      ],
-    );
+    final groups = await compute(generateBarGroups, dailySalesRates.toList());
+    barGroups.addAll(groups);
   }
 
   Future<void> getProductsQty() async {
@@ -146,29 +113,23 @@ class StatisticsCtl extends GetxController {
       isProductSummaryLoading(false);
     }
   }
+}
 
-  // Future<void> getWeeklyPriceStatistics() async {
-  //   isLoading(true);
-  //   try {
-  //     final priceList = await statisticsService.getWeeklyPriceStatistics();
-  //     weeklyPrices(priceList);
-
-  //     // Aggregate with compute
-  //     final totals = await compute(_aggregateWeeklyTotals, priceList);
-  //     weeklyTotalProfit(totals['profit']!);
-  //     weeklySellingRate(totals['selling']!);
-  //   } catch (e) {
-  //     UserNotifier.showSnackBar(text: e.toString(), type: TypeOfSnackBar.error);
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
-
-  // Isolated function for compute
-  static Map<String, double> _aggregateWeeklyTotals(
-      List<DailyTotalSellingPrice> items) {
-    final profit = items.fold<double>(0, (sum, e) => sum + e.profit);
-    final selling = items.fold<double>(0, (sum, e) => sum + e.price);
-    return {'profit': profit, 'selling': selling};
-  }
+// Put this outside of your class
+Future<List<BarChartGroupData>> generateBarGroups(
+  List<DailySaleRate> rates,
+) async {
+  return rates.asMap().entries.map((entry) {
+    final i = entry.key;
+    final rate = entry.value;
+    return BarChartGroupData(
+      x: i,
+      barRods: [
+        BarChartRodData(
+            toY: rate.sales!.toDouble() / 1000, color: Colors.yellow),
+        BarChartRodData(
+            toY: rate.profit!.toDouble() / 1000, color: Colors.green),
+      ],
+    );
+  }).toList();
 }

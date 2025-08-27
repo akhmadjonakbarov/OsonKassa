@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/store_item.dart';
 import '../../../../utils/helper/log_helper.dart';
@@ -11,7 +10,6 @@ import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/interfaces/getx_controller/main_controller.dart';
 import '../../../../utils/texts/alert_texts.dart';
 import '../../../shared/models/api_data.dart';
-import '../../document/models/document_item.dart';
 import '../../trade/logic/trade_ctl.dart';
 import 'store_repository.dart';
 import 'store_service.dart';
@@ -234,19 +232,6 @@ class StoreCtl extends MainController<StoreItem> {
     //     onPressed: () => Get.back(),
     //   ),
     // );
-  }
-
-  Widget _buildInputField(String label, TextEditingController controller) {
-    return TextField(
-      controller: controller,
-      keyboardType: TextInputType.numberWithOptions(decimal: true),
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-      ),
-    );
   }
 
   void resetStoreProduct() {

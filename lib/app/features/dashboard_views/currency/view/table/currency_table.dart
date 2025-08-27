@@ -41,16 +41,11 @@ class _CurrencyTableState extends State<CurrencyTable> {
               cells: <DataCell>[
                 DataCell(Text("${index + 1}")),
                 DataCell(Text(formatUZSNumber(currency.value!))),
-                DataCell(Text(formatDateToUzbek(currency.createdAt!.toString()))),
+                DataCell(
+                    Text(formatDateToUzbek(currency.createdAt!.toString()))),
                 DataCell(
                   Row(
                     children: [
-                      EditIconButton(
-                        onEdit: () {
-                          widget.onSelect();
-                          widget.currencyCtl.selectCurrency(currency);
-                        },
-                      ),
                       DeleteIconButton(
                         onDelete: () {
                           return showDialog(

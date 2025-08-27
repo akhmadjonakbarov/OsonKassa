@@ -41,10 +41,9 @@ class DocItemCtl extends MainController<DocumentItem> {
   void fetchItems() async {
     try {
       isLoading(true);
-      List<DocumentItem> product_doc_item_list =
-          await _docItemsService.fetchItems();
+      List<DocumentItem> productDocItems = await _docItemsService.fetchItems();
 
-      list(product_doc_item_list);
+      list(productDocItems);
       isLoading(false);
     } catch (e) {
       handleError(e.toString());
@@ -92,11 +91,11 @@ class DocItemCtl extends MainController<DocumentItem> {
     }).toList();
   }
 
-  void fetchByProductId(int product_id) async {
+  void fetchByProductId(int productId) async {
     try {
       isLoading(true);
       List<DocumentItem> products =
-          await _docItemsService.fetchProductDocItemsByProductDocId(product_id);
+          await _docItemsService.fetchProductDocItemsByProductDocId(productId);
       docItemsByDoc(products);
       isLoading(false);
     } catch (e) {

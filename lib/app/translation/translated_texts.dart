@@ -241,6 +241,7 @@ class _Profit {
 
 class _Statistics {
   final String statistics = "statistics";
+  final String salesStatistics = "sales statistics";
   final weeklySalesStatistics = "weekly_sales_statistics";
   final monthlySalesStatistics = "monthly_sales_statistics";
   final String yearlySalesStatistics = "yearly_sales_statistics";

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/shared/models/api_data.dart';
 
 import '../../../../../config/dio_provider.dart';
 import '../../../../../core/display/user_notifier.dart';
@@ -24,7 +25,7 @@ class DocumentCtl extends MainController<Document> {
     documentService = DocumentService(
       addRepository: documentRepository as Add<Map<String, dynamic>>,
       deleteRepository: documentRepository as Delete<int>,
-      getAllRepository: documentRepository as GetAll<Document>,
+      getAllRepository: documentRepository as GetAllWithPagination<ApiData>,
     );
     super.onInit();
   }
@@ -75,11 +76,11 @@ class DocumentCtl extends MainController<Document> {
   @override
   void fetchItems() async {
     try {
-      setLoading(true);
-
-      final documents = await documentService.getDocuments();
-
-      list(documents);
+      isLoading(true);
+      var apiCurrencies = await documentService.getDocuments(page: page.value);
+      list(apiCurrencies.items.cast<Document>());
+      pagination(apiCurrencies.pagination);
+      isLoading(false);
       sortBySell();
     } catch (e) {
       handleError(e.toString());
@@ -122,7 +123,7 @@ class DocumentCtl extends MainController<Document> {
     List<Document> documents = List.from(list);
     if (isToday.value) {
       documents = documents.where((element) {
-        return DateTime.parse(element!.createdAt!.toString()).day ==
+        return DateTime.parse(element.createdAt!.toString()).day ==
             DateTime.now().day;
       }).toList();
     }

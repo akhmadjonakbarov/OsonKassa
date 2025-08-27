@@ -16,6 +16,7 @@ import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/content_view.dart';
 import '../logic/customer_ctl.dart';
 import 'table/customer_table.dart';
+import 'widgets/customer_edit_dialog.dart';
 
 class CustomerView extends StatefulWidget {
   final CustomerCtl customerCtl;
@@ -39,7 +40,6 @@ class _CustomerViewState extends State<CustomerView> {
   void didChangeDependencies() {
     customerDetailCtl = Get.find<CustomerDetailCtl>();
     customerDetailCtl.calculateTotalDebtsPrice(context);
-    widget.customerCtl.fetchItems();
 
     super.didChangeDependencies();
   }
@@ -113,7 +113,7 @@ class _CustomerViewState extends State<CustomerView> {
             ),
             CheckedAddButton(
               onClick: () {
-                widget.customerCtl.editDialog(context);
+                Get.dialog(CustomerEditDialog());
               },
               permission: "create_customer",
               roles: widget.authCtl.userModel.value.roles,
@@ -158,7 +158,7 @@ class _CustomerViewState extends State<CustomerView> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "${widget.customerCtl.list.length} ta",
+                              "${widget.customerCtl.customers.length} ta",
                               style: textStyleBlack20,
                             ),
                             Text(
@@ -216,9 +216,9 @@ class _CustomerViewState extends State<CustomerView> {
           () {
             return DataList(
               isLoading: widget.customerCtl.isLoading.value,
-              isNotEmpty: widget.customerCtl.list.isNotEmpty,
+              isNotEmpty: widget.customerCtl.customers.isNotEmpty,
               child: CustomerTable(
-                builderController: widget.customerCtl,
+                controller: widget.customerCtl,
               ),
             );
           },

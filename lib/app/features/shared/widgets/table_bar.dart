@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:osonkassa/app/features/shared/widgets/custom_textfields.dart';
 
 import '../../../core/permission_checker/permission_checker.dart';
 import '../../../utils/texts/button_texts.dart';
-import '../export_commons.dart';
+import 'app_container.dart';
 
 class TableBar extends StatelessWidget {
   const TableBar({

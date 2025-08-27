@@ -15,9 +15,9 @@ class DocItemService {
         _deleteRepository = deleteRepository;
 
   Future<List<DocumentItem>> fetchProductDocItemsByProductDocId(
-      int product_doc_id) async {
+      int productDocId) async {
     try {
-      return await _fetchItemsById.fetchItemsById(product_doc_id);
+      return await _fetchItemsById.fetchItemsById(productDocId);
     } catch (e) {
       rethrow;
     }

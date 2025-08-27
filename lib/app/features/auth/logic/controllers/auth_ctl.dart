@@ -1,16 +1,17 @@
 import 'package:get/get.dart';
+import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../config/app_paths.dart';
 import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../utils/helper/secure_storage.dart';
-import '../../models/user_model.dart';
+import '../../models/user.dart';
 import '../repository/auth_repo.dart';
 import '../services/auth_service.dart';
 
 class AuthCtl extends GetxController {
   var error = ''.obs;
-  var userModel = UserModel.empty().obs;
+  var userModel = User.empty().obs;
 
   final AuthService _authService = AuthService(authRepo: AuthRepo());
   final SecureStorage _secureStorage = SecureStorage();
@@ -19,7 +20,7 @@ class AuthCtl extends GetxController {
     try {
       String? userModelData = await _secureStorage.read("userModel");
       if (userModelData != null) {
-        UserModel user = UserModel.fromJson(userModelData);
+        User user = User.fromJson(userModelData);
         Get.toNamed(AppPaths.dashboard);
 
         userModel(user);
@@ -33,14 +34,13 @@ class AuthCtl extends GetxController {
   void login({required String email, required String password}) async {
     try {
       String? userModelData;
-      UserModel? user =
-          await _authService.login(login: email, password: password);
+      User? user = await _authService.login(login: email, password: password);
       if (user != null) {
         userModelData = user.toJson();
         await _secureStorage.write("userModel", userModelData);
         Get.toNamed(AppPaths.dashboard);
         userModel(user);
-        print(user.toString());
+        LogHelper.logInfo(user.toString());
       } else {
         Get.snackbar("Error", "Wrong login or password");
       }
@@ -59,7 +59,7 @@ class AuthCtl extends GetxController {
     try {
       String? userModelData;
       if (password == password2) {
-        UserModel? user = await _authService.register(
+        User? user = await _authService.register(
           email: email,
           password: password,
           first_name: first_name,
@@ -101,7 +101,7 @@ class AuthCtl extends GetxController {
 
   void logout() {
     _secureStorage.delete("userModel");
-    userModel(UserModel.empty());
+    userModel(User.empty());
     Get.offNamed(AppPaths.auth);
   }
 }

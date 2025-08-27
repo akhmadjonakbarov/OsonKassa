@@ -77,7 +77,6 @@ class _DebtTableState extends State<DocumentTable> {
         ],
         rows: widget.documentCtl.list.asMap().entries.map(
           (entry) {
-            int index = entry.key;
             Document document = entry.value;
 
             bool isSold = document.docType == DocumentType.sell.name;

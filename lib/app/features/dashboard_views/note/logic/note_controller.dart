@@ -25,9 +25,7 @@ class NoteCtl extends MainController<Note> {
 
   void searchProvider(String text) {
     searchItem(text, (provider, searchText) {
-      return provider.item!.name!
-          .toLowerCase()
-          .contains(searchText.toLowerCase());
+      return provider.name!.toLowerCase().contains(searchText.toLowerCase());
     });
   }
 

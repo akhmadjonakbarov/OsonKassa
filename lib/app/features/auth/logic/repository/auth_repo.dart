@@ -3,19 +3,18 @@ import 'package:dio/dio.dart';
 import '../../../../config/dio_config.dart';
 import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/network/status_codes.dart';
-import '../../models/user_model.dart';
+import '../../models/user.dart';
 
 class AuthRepo {
-  Future<UserModel?> login(
-      {required String email, required String password}) async {
+  Future<User?> login({required String email, required String password}) async {
     try {
-      UserModel? userModel;
+      User? userModel;
       Response response = await dio
           .post('/auth/login', data: {"email": email, "password": password});
       if (response.statusCode == StatusCodes.OK_200) {
-        Map<String, dynamic> userData = response.data['data']['item'];
+        Map<String, dynamic> userData = response.data['user'];
 
-        userModel = UserModel.fromMap(userData);
+        userModel = User.fromMap(userData);
       }
 
       return userModel;
@@ -35,7 +34,7 @@ class AuthRepo {
     }
   }
 
-  Future<UserModel?> register({
+  Future<User?> register({
     required String email,
     required String password,
     required String password2,
@@ -43,7 +42,7 @@ class AuthRepo {
     required String first_name,
   }) async {
     try {
-      UserModel? userModel;
+      User? userModel;
       Response response = await dio.post('/auth/register', data: {
         "email": email,
         "password": password,
@@ -53,7 +52,7 @@ class AuthRepo {
       });
       if (response.statusCode == StatusCodes.CREATED_201) {
         Map<String, dynamic> userData = response.data['data']['item'];
-        userModel = UserModel.fromMap(userData);
+        userModel = User.fromMap(userData);
       }
 
       return userModel;

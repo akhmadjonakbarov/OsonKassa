@@ -34,7 +34,8 @@ class CurrencyCtl extends MainController<Currency> {
   }
 
   void resetCurrency() {
-    selectedCurrency.value =  Currency(createdAt: DateTime.now(), id: -1, value: 0.0);
+    selectedCurrency.value =
+        Currency(createdAt: DateTime.now(), id: -1, value: 0.0);
   }
 
   @override
@@ -93,10 +94,11 @@ class CurrencyCtl extends MainController<Currency> {
           label: "${item['value']} ${AlertTexts.created}",
           type: TypeOfSnackBar.success,
         );
-        fetchItems();
       }
     } catch (e) {
       handleError(e.toString());
+    } finally {
+      fetchItems();
     }
   }
 

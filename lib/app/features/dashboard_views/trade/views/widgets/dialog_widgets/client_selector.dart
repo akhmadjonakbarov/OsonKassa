@@ -59,7 +59,7 @@ class _ClientSelectorState extends State<ClientSelector> {
                 child: MultiSelectDropDown<int>(
                   onOptionSelected: (List<ValueItem> selectedOptions) {
                     setState(() {
-                      selectedClient = widget.builderCtl.list.firstWhere(
+                      selectedClient = widget.builderCtl.customers.firstWhere(
                         (e) => e.id == selectedOptions[0].value,
                       );
                       text = selectedClient!.fullName!;
@@ -67,7 +67,7 @@ class _ClientSelectorState extends State<ClientSelector> {
                       widget.selectBuilder(selectedClient!);
                     });
                   },
-                  options: widget.builderCtl.list.asMap().entries.map(
+                  options: widget.builderCtl.customers.asMap().entries.map(
                     (e) {
                       return ValueItem(
                         label: e.value.fullName!,

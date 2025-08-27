@@ -1,4 +1,4 @@
-import '../../models/user_model.dart';
+import '../../models/user.dart';
 import '../repository/auth_repo.dart';
 
 class AuthService {
@@ -6,8 +6,7 @@ class AuthService {
 
   AuthService({required this.authRepo});
 
-  Future<UserModel?> login(
-      {required String login, required String password}) async {
+  Future<User?> login({required String login, required String password}) async {
     try {
       return await authRepo.login(email: login, password: password);
     } catch (e) {
@@ -15,7 +14,7 @@ class AuthService {
     }
   }
 
-  Future<UserModel?> register({
+  Future<User?> register({
     required String email,
     required String password,
     required String password2,

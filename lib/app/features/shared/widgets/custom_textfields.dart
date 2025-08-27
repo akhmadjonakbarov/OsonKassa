@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../styles/text_input_styles.dart';
 import '../../../styles/text_styles.dart';
@@ -32,45 +33,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
       },
       style: textStyleBlack18,
       decoration: customInputDecoration(widget.labelText),
-    );
-  }
-}
-
-class CustomDialogTextField extends StatelessWidget {
-  final String label;
-  final bool canBeNull;
-  final TextEditingController controller;
-
-  const CustomDialogTextField(
-      {super.key,
-      required this.label,
-      required this.controller,
-      this.canBeNull = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextFormField(
-          validator: (value) {
-            if (!canBeNull && value!.isEmpty) {
-              return AlertTexts.fill_field;
-            }
-            return null;
-          },
-          controller: controller,
-          style: textStyleBlack18,
-          decoration: InputDecoration(
-            errorStyle: textStyleBlack18.copyWith(color: Colors.red),
-            labelStyle: textStyleBlack18,
-            labelText: label,
-            border: const OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        )
-      ],
     );
   }
 }

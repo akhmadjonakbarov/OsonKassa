@@ -33,7 +33,10 @@ class _CurrencyViewState extends State<CurrencyView> {
       height: height,
       width: width,
     )).then(
-      (value) => currencyCtl.resetCurrency(),
+      (value) async {
+        currencyCtl.resetCurrency();
+        await currencyCtl.fetchItems();
+      },
     );
   }
 

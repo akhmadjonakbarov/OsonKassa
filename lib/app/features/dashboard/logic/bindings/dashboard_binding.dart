@@ -26,7 +26,7 @@ class DashboardBinding extends Bindings {
     Get.lazyPut(() => TokenCtl());
     Get.lazyPut(() => DashboardCtl());
     Get.lazyPut(() => CategoryCtl());
-    Get.lazyPut(() => CustomerCtl());
+    Get.lazyPut(() => CustomerCtl(), fenix: true);
     Get.lazyPut(() => NoteCtl());
     Get.lazyPut(() => CurrencyCtl());
     Get.lazyPut(() => UnitCtl());

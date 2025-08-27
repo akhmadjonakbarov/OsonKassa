@@ -3,7 +3,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:osonkassa/app/features/auth/models/user_model.dart';
 import 'package:osonkassa/app/styles/app_colors.dart';
 import 'package:osonkassa/app/styles/colors.dart';
 import 'package:osonkassa/app/styles/icons.dart';
@@ -14,6 +13,7 @@ import 'package:osonkassa/app/utils/texts/button_texts.dart';
 
 import '../../../core/permission/permission_checker.dart';
 import '../../../styles/text_styles.dart';
+import '../../auth/models/role.dart';
 
 class CustomButton extends StatefulWidget {
   final String icon;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/translation/translated_texts.dart';
 
 import '../../../../../utils/texts/table_texts.dart';
 import '../../../../dashboard/logic/controllers/dashboard_controller.dart';
@@ -25,10 +26,10 @@ class _NoteTableState extends State<NoteTable> {
       decoration: const BoxDecoration(),
       padding: EdgeInsets.zero,
       child: CustomDataTable(
-        columns: const [
+        columns: [
           TableTexts.index,
-          TableTexts.name,
-          TableTexts.category,
+          TranslatedTexts.table.product.tr,
+          TranslatedTexts.table.category.tr,
         ],
         rows: widget.providerController.list.asMap().entries.map(
           (entry) {
@@ -37,8 +38,8 @@ class _NoteTableState extends State<NoteTable> {
             return DataRow(
               cells: <DataCell>[
                 DataCell(Text("${index + 1}")),
-                DataCell(Text(note.item!.name!)),
-                DataCell(Text(note.item!.category!.name!)),
+                DataCell(Text(note.name!)),
+                DataCell(Text(note.category!)),
               ],
             );
           },
