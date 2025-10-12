@@ -6,7 +6,6 @@ import '../../../../../translation/translated_texts.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../../utils/texts/display_texts.dart';
 import '../../../../shared/export_commons.dart';
-import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/store_ctl.dart';
 import '../../models/store_item.dart';
 
@@ -36,7 +35,6 @@ class _DebtTableState extends State<StoreTable> {
           TranslatedTexts.table.incomePrice.tr,
           TranslatedTexts.table.salePrice.tr,
           TranslatedTexts.table.qty.tr,
-          TranslatedTexts.table.buttons.tr
         ],
         rows: widget.storeCtl.list.asMap().entries.map(
           (entry) {
@@ -76,27 +74,6 @@ class _DebtTableState extends State<StoreTable> {
                   CenterText(
                     text: "${product.qty.toString()} ${DisplayTexts.stay}",
                     style: textStyleBlack18Bold,
-                  ),
-                ),
-                DataCell(
-                  Row(
-                    children: [
-                      EditIconButton(
-                        iconColor: Colors.green,
-                        onEdit: () =>
-                            widget.storeCtl.selectStoreProduct(product),
-                      ),
-                      DeleteIconButton(
-                        iconColor: Colors.red,
-                        onDelete: () => Get.dialog(
-                          DeleteDialog(
-                            title: product.item!.name!,
-                            onConfirmDelete: () =>
-                                widget.storeCtl.removeItem(product.id!),
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ],

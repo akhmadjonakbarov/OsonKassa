@@ -1,5 +1,5 @@
 import '../../../../core/interfaces/api/get_all.dart';
-import '../models/note_model.dart';
+import '../models/note.dart';
 
 class SpiskaService {
   final GetAll<Note> _getAllRepository;

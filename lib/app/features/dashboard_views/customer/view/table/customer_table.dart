@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/styles/text_styles.dart';
+import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
 
 import '../../../../../config/app_paths.dart';
 import '../../../../../translation/translated_texts.dart';
@@ -37,6 +39,7 @@ class _CustomerTableState extends State<CustomerTable> {
             TranslatedTexts.table.phoneNumber.tr,
             TranslatedTexts.table.phoneNumber2.tr,
             TranslatedTexts.table.address.tr,
+            TranslatedTexts.table.debt.tr,
             TranslatedTexts.table.buttons.tr
           ],
           rows: widget.controller.customers.asMap().entries.map((entry) {
@@ -55,10 +58,15 @@ class _CustomerTableState extends State<CustomerTable> {
                 DataCell(
                     CenterText(text: formatPhoneNumber(customer.phoneNumber!))),
                 DataCell(CenterText(
-                    text: customer.phoneNumber2 != ""
+                    text: customer.phoneNumber2 != null &&
+                            customer.phoneNumber2!.isNotEmpty
                         ? formatPhoneNumber(customer.phoneNumber2!)
                         : DisplayTexts.no_extra_number)),
-                DataCell(CenterText(text: customer.address!)),
+                DataCell(CenterText(text: customer.address ?? "-")),
+                DataCell(CenterText(
+                  text: PriceFomatter.formatPrice(customer.debtCost!),
+                  style: textStyleBlack18Bold,
+                )),
                 DataCell(
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

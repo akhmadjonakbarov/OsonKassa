@@ -381,7 +381,9 @@ class BasicButton extends StatelessWidget {
           child: InkWell(
             borderRadius: BorderRadius.circular(BorderRadiuses.borderRadius8),
             onTap: () {
-              onClick!();
+              if (onClick != null) {
+                onClick!();
+              }
             },
             child: Center(
               child: Text(

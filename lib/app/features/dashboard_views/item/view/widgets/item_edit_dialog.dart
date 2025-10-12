@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:osonkassa/app/features/shared/export_commons.dart';
 
 import '../../../category/logic/category_controller.dart';
 import '../../../company/logic/company_ctl.dart';
@@ -130,14 +131,14 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final double dialogHeight = MediaQuery.of(context).size.height * 0.7;
+    // final double dialogHeight = MediaQuery.of(context).size.height * 0.7;
 
     return AlertDialog(
       backgroundColor: primary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.35,
-        height: dialogHeight,
+        // height: dialogHeight,
         child: SingleChildScrollView(
           child: Form(
             key: formKey,
@@ -146,9 +147,9 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                 Obx(() {
                   return Text(
                     itemCtl.selectedItem.value != null
-                        ? "Edit Item"
-                        : "Add Item",
-                    style: textStyleWhite20,
+                        ? "edit_product".tr
+                        : "add_product".tr,
+                    style: textStyleBlack20,
                   );
                 }),
                 const Divider(),
@@ -159,6 +160,8 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                   children: [
                     Expanded(
                       child: Obx(() => MultiSelectDropDown<int>(
+                            singleSelectItemStyle: textStyleBlack18,
+                            optionTextStyle: textStyleBlack18,
                             selectedOptions: companyData['id'] != null
                                 ? [
                                     ValueItem(
@@ -180,7 +183,7 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                                 .toList(),
                             selectionType: SelectionType.single,
                             searchEnabled: true,
-                            hint: "Company",
+                            hint: "company".tr,
                             hintStyle:
                                 textStyleBlack18.copyWith(color: Colors.grey),
                           )),
@@ -188,6 +191,8 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                     const SizedBox(width: 5),
                     Expanded(
                       child: Obx(() => MultiSelectDropDown<int>(
+                            singleSelectItemStyle: textStyleBlack18,
+                            optionTextStyle: textStyleBlack18,
                             selectedOptions: categoryData['id'] != null
                                 ? [
                                     ValueItem(
@@ -210,7 +215,7 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                                 .toList(),
                             selectionType: SelectionType.single,
                             searchEnabled: true,
-                            hint: "Category",
+                            hint: "category".tr,
                             hintStyle:
                                 textStyleBlack18.copyWith(color: Colors.grey),
                           )),
@@ -228,9 +233,9 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                         controller: nameController,
                         validator: (value) =>
                             value!.isEmpty ? "Enter name" : null,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: "Name",
+                          labelText: "name".tr,
                         ),
                       ),
                     ),
@@ -260,9 +265,9 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                         keyboardType: TextInputType.number,
                         validator: (value) =>
                             value!.isEmpty ? "Enter sale price" : null,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: "Sale Price",
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: "sale_price".tr,
                         ),
                       ),
                     ),
@@ -273,9 +278,9 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                         keyboardType: TextInputType.number,
                         validator: (value) =>
                             value!.isEmpty ? "Enter income price" : null,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: OutlineInputBorder(),
-                          labelText: "Income Price",
+                          labelText: "income_price".tr,
                         ),
                       ),
                     ),
@@ -286,15 +291,17 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                         items: ['uzs', 'usd', 'eur']
                             .map((value) => DropdownMenuItem(
                                   value: value,
-                                  child: Text(value.toUpperCase()),
+                                  child: Text(
+                                    value.toUpperCase(),
+                                  ),
                                 ))
                             .toList(),
                         onChanged: (value) {
                           setState(() => selectedCurrency = value!);
                         },
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: "Currency",
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: "currency".tr,
                         ),
                       ),
                     ),
@@ -306,6 +313,8 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                 // Unit
                 Obx(() {
                   return MultiSelectDropDown<int>(
+                    singleSelectItemStyle: textStyleBlack18,
+                    optionTextStyle: textStyleBlack18,
                     selectedOptions: unitData['id'] != null
                         ? [
                             ValueItem(
@@ -326,7 +335,7 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                         .toList(),
                     selectionType: SelectionType.single,
                     searchEnabled: true,
-                    hint: "Unit",
+                    hint: "unit".tr,
                     hintStyle: textStyleBlack18.copyWith(color: Colors.grey),
                   );
                 }),
@@ -335,20 +344,23 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
 
                 // Actions
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text("Cancel"),
+                    SmallButtonText(
+                      bgColor: Colors.red,
+                      textStyle: textStyleBlack15.copyWith(
+                          fontWeight: FontWeight.w400),
+                      buttonSize: const Size(150, 40),
+                      onClick: () => Navigator.of(context).pop(),
+                      text: "cancel".tr,
                     ),
-                    ElevatedButton(
-                      onPressed: _save,
-                      child: Obx(
-                        () => Text(
-                          itemCtl.selectedItem.value != null ? "Update" : "Add",
-                          style: textStyleWhite18,
-                        ),
-                      ),
+                    SmallButtonText(
+                      bgColor: Colors.green,
+                      textStyle: textStyleBlack15.copyWith(
+                          fontWeight: FontWeight.w400),
+                      buttonSize: const Size(150, 40),
+                      onClick: _save,
+                      text: "add".tr,
                     ),
                   ],
                 ),

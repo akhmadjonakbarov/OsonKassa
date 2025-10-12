@@ -46,7 +46,7 @@ class ClientRepository
   Future<bool> delete(int id) async {
     try {
       Response response = await dio.delete(
-        '$_baseUrl/delete/$id/',
+        '$_baseUrl/delete/$id',
       );
       if (response.statusCode == StatusCodes.NOT_FOUND_404) {
         throw DataNotFoundException(message: "Builder not found");

@@ -68,7 +68,7 @@ class DailySaleChart extends StatelessWidget {
                           borderData: FlBorderData(
                             show: true,
                           ),
-                          maxY: 35000,
+                          maxY: 20000,
                           backgroundColor: Colors.black,
                           titlesData: FlTitlesData(
                               bottomTitles: AxisTitles(

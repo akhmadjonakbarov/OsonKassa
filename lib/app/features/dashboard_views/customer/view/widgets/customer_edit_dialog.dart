@@ -22,12 +22,13 @@ class CustomerEditDialog extends StatefulWidget {
 
 class _CustomerEditDialogState extends State<CustomerEditDialog> {
   void save() {
-    // Handle save action
     String name = nameController.text.trim();
     String phoneNumber = phoneNumberController.text.trim().replaceAll(' ', '');
-    String phoneNumber2 =
-        phoneNumber2Controller.text.trim().replaceAll(' ', '');
-    String address = addressController.text.trim();
+    String? phoneNumber2 = phoneNumber2Controller.text.isEmpty
+        ? null
+        : phoneNumber2Controller.text.trim().replaceAll(' ', '');
+    String? address =
+        addressController.text.isEmpty ? null : addressController.text.trim();
     Map<String, dynamic> clientData = {
       'full_name': name,
       'phone_number': phoneNumber,
@@ -78,6 +79,8 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
       phoneNumberController.text = selected.phoneNumber ?? '';
       phoneNumber2Controller.text = selected.phoneNumber2 ?? '';
       addressController.text = selected.address ?? '';
+    } else {
+      clearFields();
     }
   }
 
@@ -87,6 +90,7 @@ class _CustomerEditDialogState extends State<CustomerEditDialog> {
     phoneNumberController.dispose();
     phoneNumber2Controller.dispose();
     addressController.dispose();
+    customerCtl.selectCustomer(null);
     super.dispose();
   }
 

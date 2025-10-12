@@ -6,7 +6,6 @@ import '../../../../../core/enums/type_of_snackbar.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../translation/translated_texts.dart';
 import '../../../../../utils/helper/log_helper.dart';
-import '../../../../../utils/texts/alert_texts.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../currency/models/currency.dart';
@@ -14,22 +13,16 @@ import '../../../item/models/item.dart';
 import '../../models/draf_product.dart';
 
 class ManageProductDocItemCtl extends GetxController {
-  // Keys
   final formKey = GlobalKey<FormState>();
-
   final quantityController = TextEditingController();
-
-  // Rx variables
   var productDocItems = <DraftProduct>[].obs;
-  var unitValue = "".obs;
+
   var incomePrice = 0.0.obs;
   var exchangePrice = 0.0.obs;
-  var sellPrice = 0.0.obs;
   var qty = 0.0.obs;
-  var profitPercentage = 0.0.obs;
-  var sellingPercentage = 0.0.obs;
+
   Rx<Currency> currency = Currency().obs;
-  Rx<Item> item = Item().obs;
+  RxList selectedItems = RxList([]);
 
   @override
   void onClose() {
@@ -37,35 +30,22 @@ class ManageProductDocItemCtl extends GetxController {
     super.onClose();
   }
 
-  void setItem(Item itm) {
-    LogHelper.logInfo("Item was selected ${itm.toString()}");
-    item.value = itm;
-  }
-
-  void removeItem() {
-    LogHelper.logInfo("Item was removed");
-    item.value = Item();
-  }
-
   // Add a product to the list
   void storeProductDocItem(BuildContext context) {
-    DraftProduct draftProduct = DraftProduct(
-      itemId: item.value.id!,
-      itemName: item.value.name!,
-      incomePrice: item.value.incomePrice ?? 0,
-      sellingPrice: item.value.salePrice ?? 0,
-      id: productDocItems.length + 1,
-      qty: double.parse(quantityController.text),
-      sellingPercentage:
-          double.parse(profitPercentage.value.toStringAsFixed(5)),
-      unit: item.value.unit!,
-    );
-    productDocItems.add(draftProduct);
-    UserNotifier.showFlutterSnackBar(
-      context: context,
-      type: TypeOfSnackBar.success,
-      label: AlertTexts.addAlert(draftProduct.itemName),
-    );
+    for (Item item in selectedItems) {
+      DraftProduct draftProduct = DraftProduct(
+        itemId: item.id!,
+        itemName: item.name!,
+        incomePrice: item.incomePrice ?? 0,
+        sellingPrice: item.salePrice ?? 0,
+        id: productDocItems.length + 1,
+        qty: double.parse(quantityController.text),
+        sellingPercentage: 0.0,
+        unit: item.unit!,
+      );
+      productDocItems.add(draftProduct);
+    }
+
     reset();
   }
 
@@ -129,9 +109,20 @@ class ManageProductDocItemCtl extends GetxController {
     );
   }
 
-  // Clear the list of products
+  void addOrRemoveSelectItem(Item item) {
+    if (isExistInSelectedItems(item)) {
+      selectedItems.removeWhere((e) => e.id == item.id);
+    } else {
+      selectedItems.add(item);
+    }
+  }
+
+  bool isExistInSelectedItems(Item item) {
+    return selectedItems.any((e) => e.id == item.id);
+  }
+
   void clearStoreProductDocItemList() {
-    productDocItems.clear(); // Correct way to clear the list
+    productDocItems.clear();
   }
 
   void removeItemFromStoreList(int drafProductId) {
@@ -145,25 +136,11 @@ class ManageProductDocItemCtl extends GetxController {
     currency.value = cry;
   }
 
-  void calculateSellingProfitPercentage() {
-    // if (currency.value.id != -1 &&
-    //     incomeCurrency.value.toString().toLowerCase().contains('usd')) {
-    //   LogHelper.logInfo("ExchangeRate: ${exchangePrice.value}");
-    //   profitPercentage.value =
-    //       ((sellPrice.value * 100) / exchangePrice.value) - 100;
-    // } else {
-    //   profitPercentage.value = 0.0;
-    // }
-  }
-
   void reset() {
     quantityController.clear();
+    selectedItems.clear();
     qty.value = 0.0;
-    sellPrice.value = 0.0;
     incomePrice.value = 0.0;
-    unitValue.value = "";
-    sellingPercentage.value = 0.0;
-    removeItem();
   }
 
   void setQty(BuildContext context) {

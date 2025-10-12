@@ -5,7 +5,6 @@ import '../../../../../config/app_views.dart';
 import '../../../../../core/enums/product_doc_type.dart';
 import '../../../../../core/permission/permissions.dart';
 import '../../../../../styles/text_styles.dart';
-import '../../../../../utils/media/get_screen_size.dart';
 import '../../../../../utils/texts/button_texts.dart';
 import '../../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../../dashboard/logic/controllers/dashboard_controller.dart';
@@ -74,7 +73,6 @@ class _DocumentViewState extends State<DocumentView> {
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = getScreenSize(context);
     return ContentView(
       pagination: documentCtl.pagination,
       onChangePage: (p0) {
@@ -97,23 +95,23 @@ class _DocumentViewState extends State<DocumentView> {
                 const SizedBox(
                   width: 5,
                 ),
-                SizedBox(
-                  width: screenSize.width * 0.2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Obx(
-                        () => DialogTextButton(
-                          text: documentCtl.isToday.value
-                              ? "Hammasi"
-                              : "Bugunilik",
-                          textStyle: textStyleWhite18,
-                          onClick: () => documentCtl.setToday(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // SizedBox(
+                //   width: screenSize.width * 0.2,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Obx(
+                //         () => DialogTextButton(
+                //           text: documentCtl.isToday.value
+                //               ? "Hammasi"
+                //               : "Bugunilik",
+                //           textStyle: textStyleWhite18,
+                //           onClick: () => documentCtl.setToday(),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
             CheckedAddButton(

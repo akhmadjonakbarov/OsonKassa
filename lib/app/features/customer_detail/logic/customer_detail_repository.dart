@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:osonkassa/app/features/customer_detail/models/payment_history.dart';
 
 import '../../../core/network/status_codes.dart';
 import '../models/purchase.dart';
@@ -48,6 +49,29 @@ class PurchaseRepository {
           '$_baseUrl/pay?customer_id=$customerId&purchase_id=$purchaseId');
 
       return response.statusCode == StatusCodes.OK_200;
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
+
+class PaymentHistoryRepository {
+  final Dio dio;
+  PaymentHistoryRepository({required this.dio});
+
+  Future<List<PaymentHistory>> getPaymentHistories(int customerId) async {
+    List<PaymentHistory> paymentHistories = [];
+    try {
+      Response response =
+          await dio.get('/customers/$customerId/payment-histories');
+      final histories = response.data['data']['list'];
+      if (histories.isEmpty) {
+        return paymentHistories;
+      }
+      for (var history in histories) {
+        paymentHistories.add(PaymentHistory.fromJson(history));
+      }
+      return paymentHistories;
     } catch (e) {
       rethrow;
     }

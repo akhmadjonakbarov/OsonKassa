@@ -6,7 +6,7 @@ import '../../../../../utils/texts/table_texts.dart';
 import '../../../../dashboard/logic/controllers/dashboard_controller.dart';
 import '../../../../shared/export_commons.dart';
 import '../../logic/note_controller.dart';
-import '../../models/note_model.dart';
+import '../../models/note.dart';
 
 class NoteTable extends StatefulWidget {
   final NoteCtl providerController;

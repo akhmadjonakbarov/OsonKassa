@@ -16,26 +16,27 @@ class CustomerCtl extends PaginationController {
   Rxn<Customer> selectedCustomer = Rxn(null);
   var isLoading = false.obs;
 
-  late final ClientRepository builderRepository;
-  late final ClientService builderService;
+  late final ClientRepository repository;
+  late final ClientService service;
 
   @override
   void onInit() {
     final Dio dio = DioProvider().createDio();
-    builderRepository = ClientRepository(dio: dio);
-    builderService = ClientService(
-      addRepository: builderRepository as Add<Map<String, dynamic>>,
-      updateRepository: builderRepository as Update<Customer>,
-      deleteRepository: builderRepository as Delete<int>,
-      getAllRepository: builderRepository as GetAll<Customer>,
+    repository = ClientRepository(dio: dio);
+    service = ClientService(
+      addRepository: repository as Add<Map<String, dynamic>>,
+      updateRepository: repository as Update<Customer>,
+      deleteRepository: repository as Delete<int>,
+      getAllRepository: repository as GetAll<Customer>,
     );
     super.onInit();
+    fetchItems();
   }
 
-  void fetchItems() async {
+  fetchItems() async {
     try {
       isLoading(true);
-      var apiBuilders = await builderService.getAllClient();
+      var apiBuilders = await service.getAllClient();
 
       customers(apiBuilders);
     } catch (e) {
@@ -48,12 +49,12 @@ class CustomerCtl extends PaginationController {
   }
 
   void selectCustomer(Customer? builder) {
-    selectedCustomer(builder);
+    selectedCustomer.value = builder;
   }
 
   void addItem(item) async {
     try {
-      await builderService.addClient(clientData: item);
+      await service.addClient(clientData: item);
       UserNotifier.showSnackBar(
         text: "${item['full_name']} qo'shildi",
         type: TypeOfSnackBar.success,
@@ -77,7 +78,7 @@ class CustomerCtl extends PaginationController {
 
   void removeItem(int id) async {
     try {
-      await builderService.deleteClient(id);
+      await service.deleteClient(id);
       UserNotifier.showSnackBar(
         label: "Quruvchi o'chirildi",
         type: TypeOfSnackBar.delete,
@@ -95,11 +96,6 @@ class CustomerCtl extends PaginationController {
       fetchItems();
       return;
     }
-    // searchItem(text, (customer, searchText) {
-    //   return customer.fullName!
-    //       .toLowerCase()
-    //       .contains(searchText.toLowerCase());
-    // });
   }
 
   void sortByCreatedAt() {
@@ -124,7 +120,7 @@ class CustomerCtl extends PaginationController {
 
   void updateItem(Customer item) async {
     try {
-      await builderService.updateClient(client: item);
+      await service.updateClient(client: item);
       UserNotifier.showSnackBar(
         label: "${item.fullName} yangilandi!",
         type: TypeOfSnackBar.update,

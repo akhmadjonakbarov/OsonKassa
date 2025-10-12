@@ -77,7 +77,11 @@ class _ItemTableState extends State<ItemTable> {
                       widget.itemCtl.selectItem(
                         item,
                       );
-                      Get.dialog(ItemEditDialog());
+                      Get.dialog(const ItemEditDialog()).then(
+                        (value) {
+                          widget.itemCtl.selectItem(null);
+                        },
+                      );
                     }),
                     DeleteIconButton(
                       onDelete: () => showDialog(

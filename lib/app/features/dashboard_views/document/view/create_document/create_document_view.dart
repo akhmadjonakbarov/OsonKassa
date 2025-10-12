@@ -3,12 +3,9 @@ import 'package:get/get.dart';
 
 import '../../../../../core/enums/product_doc_type.dart';
 import '../../../../../core/validator/number_validator.dart';
-import '../../../../../styles/container_decoration.dart';
 import '../../../../../styles/text_input_styles.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../styles/themes.dart';
-import '../../../../../translation/translated_texts.dart';
-import '../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../../utils/helper/log_helper.dart';
 import '../../../../../utils/texts/button_texts.dart';
 import '../../../../../utils/texts/display_texts.dart';
@@ -36,7 +33,7 @@ class CreateDocumentView extends StatefulWidget {
 class _CreateDocumentViewState extends State<CreateDocumentView> {
   final CurrencyCtl currencyCtl = Get.find<CurrencyCtl>();
   final ItemCtl itemCtl = Get.find<ItemCtl>();
-  final DocumentCtl storeCtl = Get.find<DocumentCtl>();
+  final DocumentCtl documentCtl = Get.find<DocumentCtl>();
   final CategoryCtl categoryCtl = Get.find<CategoryCtl>();
   final ManageProductDocItemCtl manageProductDocItemCtl =
       Get.find<ManageProductDocItemCtl>();
@@ -52,7 +49,7 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
 
   reloadFetchItems() {
     currencyCtl.fetchItems();
-    storeCtl.fetchItems();
+    documentCtl.fetchItems();
     categoryCtl.fetchItems();
     itemCtl.removeSelectedCategory();
     itemCtl.resetItem();
@@ -83,7 +80,7 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
 
     LogHelper.logInfo("Document: ${drafDocument.toMap()}");
 
-    storeCtl.addItem(drafDocument.toMap());
+    documentCtl.addItem(drafDocument.toMap());
     manageProductDocItemCtl.clearStoreProductDocItemList();
     reloadFetchItems();
   }
@@ -130,243 +127,104 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
   }
 
   Widget _buildLeftSide(BoxConstraints constraints) {
-    return Obx(
-      () {
-        return BasicContainer(
-          width: constraints.maxWidth * 0.72,
-          child: Column(
-            children: [
-              BasicContainer(
-                padding: const EdgeInsets.all(10),
-                decoration: Decorations.decoration(
-                  border: Border.all(),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Obx(() {
-                      if (itemCtl.selectedItem.value == null) {
-                        return const SizedBox.shrink();
-                      }
-                      final item = itemCtl.selectedItem.value;
-
-                      return Card(
-                        margin: const EdgeInsets.only(bottom: 25),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)),
-                        elevation: 0,
-                        color: Colors.white,
-                        shadowColor: Colors.black12,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 24),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "🧾 Mahsulot Tafsilotlari",
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey.shade800,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              _InfoRow(
-                                label: TranslatedTexts.table.incomePrice.tr,
-                                value: item!.incomePrice != null
-                                    ? PriceFomatter.formatPrice(
-                                        item.incomePrice!)
-                                    : "0",
-                                valueColor: Colors.teal.shade700,
-                              ),
-                              const SizedBox(height: 12),
-                              _InfoRow(
-                                label: TranslatedTexts.table.salePrice.tr,
-                                value: item.salePrice != null
-                                    ? PriceFomatter.formatPrice(item.salePrice!)
-                                    : "0",
-                                valueColor: Colors.blue.shade700,
-                              ),
-                              const SizedBox(height: 12),
-                              _InfoRow(
-                                label: TranslatedTexts.table.currency.tr,
-                                valueWidget: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      item.currencyType?.toUpperCase() ?? '-',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.165,
-                              child: TextFormField(
-                                controller:
-                                    manageProductDocItemCtl.quantityController,
-                                style: textStyleBlack18,
-                                onChanged: (p0) {
-                                  manageProductDocItemCtl.setQty(context);
-                                },
-                                decoration: customInputDecoration(
-                                    PlaceholderTexts.qty_of_product),
-                                validator: (p0) => NumberValidator.validPrice(
-                                    p0!,
-                                    isDouble: false),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                right: constraints.maxWidth * 0.028,
-                                top: 2,
-                              ),
-                              child: Column(
-                                children: [
-                                  // if (manageProductDocItemCtl
-                                  //         .sellingCurrency.value.name
-                                  //         .toLowerCase() ==
-                                  //     'uzs')
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        "Ustma foiz: ${manageProductDocItemCtl.profitPercentage.value.toStringAsFixed(3)} %",
-                                        style: textStyleBlack18,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              CachedProductsTable(
-                manageProductDocItemCtl: manageProductDocItemCtl,
-              )
-            ],
-          ),
-        );
-      },
+    return BasicContainer(
+      width: constraints.maxWidth * 0.72,
+      child: CachedProductsTable(
+        manageProductDocItemCtl: manageProductDocItemCtl,
+      ),
     );
   }
 
   Widget _buildRightSide(BoxConstraints constraints) {
     return BasicContainer(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(16)),
       width: constraints.maxWidth * 0.27,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: containerDecoration,
-            child: Column(
-              children: [
-                Text(
-                  DisplayTexts.info_of_product,
-                  style: textStyleBlack18.copyWith(fontSize: 22),
-                ),
-                const SizedBox(height: 15),
-                Obx(
-                  () => Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(16)),
-                    height: constraints.maxHeight * 0.5,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: SearchTextField(
-                            onChanged: (value) {
-                              itemCtl.searchProduct(value);
-                            },
-                          ),
+          Column(
+            children: [
+              Text(
+                DisplayTexts.info_of_product,
+                style: textStyleBlack18.copyWith(fontSize: 22),
+              ),
+              const SizedBox(height: 15),
+              Obx(
+                () => SizedBox(
+                  height: constraints.maxHeight * 0.5,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: SearchTextField(
+                          onChanged: (value) {
+                            itemCtl.searchProduct(value);
+                          },
                         ),
-                        Expanded(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: ListView.builder(
-                              padding: const EdgeInsets.all(5),
-                              itemBuilder: (context, index) {
-                                Item item = itemCtl.list[index];
+                      ),
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: ListView.builder(
+                            padding: const EdgeInsets.all(10),
+                            itemBuilder: (context, index) {
+                              Item item = itemCtl.list[index];
+
+                              return Obx(() {
+                                final exists = manageProductDocItemCtl
+                                    .isExistInSelectedItems(item);
                                 return Container(
                                   margin: EdgeInsets.symmetric(
                                     vertical: constraints.minWidth * 0.002,
                                   ),
                                   decoration: BoxDecoration(
-                                      color: itemCtl.selectedItem.value == item
-                                          ? Colors.blue
-                                          : Colors.white,
-                                      border: Border.all(),
-                                      borderRadius: BorderRadius.circular(5)),
+                                    color: exists ? Colors.blue : Colors.white,
+                                    border: Border.all(),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
                                   child: ListTile(
                                     title: Text(
                                       "${index + 1}. (${item.category}) ${item.name}",
                                       style: textStyleBlack18.copyWith(
-                                        color:
-                                            itemCtl.selectedItem.value == item
-                                                ? Colors.white
-                                                : Colors.black,
+                                        color: exists
+                                            ? Colors.white
+                                            : Colors.black,
                                       ),
                                     ),
                                     onTap: () {
-                                      setState(() {
-                                        if (itemCtl.selectedItem.value ==
-                                            item) {
-                                          itemCtl.resetItem();
-                                          manageProductDocItemCtl.removeItem();
-                                        } else {
-                                          itemCtl.selectItem(item);
-                                          manageProductDocItemCtl.setItem(item);
-                                        }
-                                      });
+                                      manageProductDocItemCtl
+                                          .addOrRemoveSelectItem(item);
                                     },
                                   ),
                                 );
-                              },
-                              itemCount: itemCtl.list.length,
-                            ),
+                              });
+                            },
+                            itemCount: itemCtl.list.length,
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: TextFormField(
+                  controller: manageProductDocItemCtl.quantityController,
+                  style: textStyleBlack18,
+                  onChanged: (p0) {
+                    manageProductDocItemCtl.setQty(context);
+                  },
+                  decoration:
+                      customInputDecoration(PlaceholderTexts.qty_of_product),
+                  validator: (p0) =>
+                      NumberValidator.validPrice(p0!, isDouble: false),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             height: constraints.maxHeight * 0.02,
@@ -400,49 +258,6 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
           )
         ],
       ),
-    );
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  final String label;
-  final String? value;
-  final Widget? valueWidget;
-  final Color? valueColor;
-
-  const _InfoRow({
-    required this.label,
-    this.value,
-    this.valueWidget,
-    this.valueColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Flexible(
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        valueWidget ??
-            Text(
-              value ?? "-",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: valueColor ?? Colors.black87,
-              ),
-            ),
-      ],
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/trade/logic/order_controller.dart';
+import 'package:osonkassa/app/features/dashboard_views/trade/logic/pay_controller.dart';
 
 import '../../../action/logic/action_ctl.dart';
 import '../../../dashboard_views/category/logic/category_controller.dart';
@@ -42,5 +44,7 @@ class DashboardBinding extends Bindings {
     Get.lazyPut(() => ActionCtl());
     Get.lazyPut(() => ComputerCtl());
     Get.lazyPut(() => DisplayController());
+    Get.lazyPut(() => OrderController());
+    Get.lazyPut(() => PayController());
   }
 }

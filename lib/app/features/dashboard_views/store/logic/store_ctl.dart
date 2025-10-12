@@ -79,21 +79,33 @@ class StoreCtl extends MainController<StoreItem> {
 
   clearList() async {}
 
-  Future<void> searchProduct(String text) async {
-    isLoading(true);
+  Future<void> searchProduct(String text, {bool inStore = false}) async {
+    if (inStore) {
+      if (text.isEmpty) {
+        await fetchProductInStore();
+        isLoading(false);
+        return;
+      }
+      List<StoreItem> products = productsInStore;
+      List<String> searchKeywords = text.toLowerCase().split(' ');
+      var filteredProducts = filterProductByKeywords(products, searchKeywords);
+      productsInStore.value = filteredProducts;
+    } else {
+      isLoading(true);
 
-    if (text.isEmpty) {
-      await fetchItems();
+      if (text.isEmpty) {
+        await fetchItems();
+        isLoading(false);
+        return;
+      }
+
+      List<StoreItem> products = list;
+      List<String> searchKeywords = text.toLowerCase().split(' ');
+      var filteredProducts = filterProductByKeywords(products, searchKeywords);
+
+      list(filteredProducts.cast<StoreItem>());
       isLoading(false);
-      return;
     }
-
-    List<StoreItem> products = list;
-    List<String> searchKeywords = text.toLowerCase().split(' ');
-    var filteredProducts = filterProductByKeywords(products, searchKeywords);
-
-    list(filteredProducts.cast<StoreItem>());
-    isLoading(false);
   }
 
   List<StoreItem> filterProductByKeywords(
@@ -279,7 +291,6 @@ class StoreCtl extends MainController<StoreItem> {
     try {
       List<StoreItem> storeItemList = productsInStore;
 
-      // Find the product with the matching barcode
       for (StoreItem storeItem in storeItemList) {
         if (storeItem.item!.barcode!.contains(text)) {
           tradeCtl.setSellStoreItem(storeItem);

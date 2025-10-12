@@ -21,13 +21,13 @@ class DioProvider {
         onRequest: (options, handler) {
           options.headers['Authorization'] =
               'Bearer ${tokenController.token.value}';
-          return handler.next(options); // continue with the request
+          return handler.next(options);
         },
         onResponse: (response, handler) {
-          return handler.next(response); // continue with the response
+          return handler.next(response);
         },
         onError: (DioException e, handler) {
-          return handler.next(e); // continue with the error
+          return handler.next(e);
         },
       ),
     );

@@ -44,6 +44,12 @@ class _ItemtViewState extends State<ItemtView> {
   }
 
   @override
+  void dispose() {
+    itemCtl.selectItem(null);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
     return ContentView(
@@ -97,7 +103,9 @@ class _ItemtViewState extends State<ItemtView> {
                           ),
                           CheckedAddButton(
                             onClick: () {
-                              Get.dialog(ItemEditDialog());
+                              Get.dialog(ItemEditDialog()).then(
+                                (value) => itemCtl.selectItem(null),
+                              );
                             },
                             permission:
                                 Permissions.create_item.name.toLowerCase(),

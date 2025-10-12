@@ -41,10 +41,10 @@ class ReportCtl extends GetxController {
           var elementWithNew =
               element.copyWith(name: "Ko'p sotilgan mahsulotlar");
           reportsData[indexOfElement] = elementWithNew;
-        } else if (element.name == "low_selling") {
+        } else if (element.name == "low_selling_much_price") {
           int indexOfElement = reportsData.indexOf(element);
           var elementWithNew =
-              element.copyWith(name: "Kam sotilgan mahsulotlar");
+              element.copyWith(name: "Kam sotilgan ko'p foyda keltirgan");
           reportsData[indexOfElement] = elementWithNew;
         } else if (element.name == 'profitable') {
           int indexOfElement = reportsData.indexOf(element);

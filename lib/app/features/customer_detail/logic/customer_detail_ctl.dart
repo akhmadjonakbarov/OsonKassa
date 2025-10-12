@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/customer_detail/models/payment_history.dart';
 import '../../../core/display/user_notifier.dart';
 import '../../../core/enums/type_of_snackbar.dart';
 import '../../../utils/helper/log_helper.dart';
@@ -17,13 +18,16 @@ class CustomerDetailCtl extends GetxController {
   // Observables for purchases and debts
   var purchases = <Purchase>[].obs;
   var debts = <Purchase>[].obs;
+  var paymentHistories = <PaymentHistory>[].obs;
   var totalDebtsPrice = 0.0.obs;
 
   // Separate loading flags
   var isLoadingPurchases = false.obs;
   var isLoadingDebts = false.obs;
+  var isPaymentHistoriesLoading = false.obs;
 
   late PurchaseRepository purchaseRepository;
+  late PaymentHistoryRepository paymentHistoryRepository;
   late CustomerDetailService customerDetailService;
 
   @override
@@ -33,6 +37,7 @@ class CustomerDetailCtl extends GetxController {
     customerDetailService = CustomerDetailService(
       purchaseRepository: purchaseRepository,
     );
+    paymentHistoryRepository = PaymentHistoryRepository(dio: dio);
 
     super.onInit();
   }
@@ -121,6 +126,17 @@ class CustomerDetailCtl extends GetxController {
         label: "Xatolik!",
         text: e.toString(),
       );
+    }
+  }
+
+  getPaymentHistories(int customerId) async {
+    try {
+      paymentHistories.value =
+          await paymentHistoryRepository.getPaymentHistories(customerId);
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      isPaymentHistoriesLoading.value = false;
     }
   }
 }

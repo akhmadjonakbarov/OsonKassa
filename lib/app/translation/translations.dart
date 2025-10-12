@@ -325,6 +325,13 @@ class AppTranslations extends Translations {
           TranslatedTexts.statistics.salesByCategory:
               'Kategoriya bo‘yicha savdo',
           TranslatedTexts.statistics.salesByProduct: 'Mahsulot bo‘yicha savdo',
+          'discount': 'Chegirma',
+          'enter discount': 'Chegirmani kiriting',
+          'discount_price': 'Chegirmadagi narx',
+          'payment_info': "To'lov ma'lumotlari",
+          "for_debt": "Qarzga",
+          "select_customer_required": "Mijozni tanlashingiz shart",
+          "select_customer_optional": "Mijozni tanlash ixtiyoriy"
         },
         'ru_RU': {
           // General

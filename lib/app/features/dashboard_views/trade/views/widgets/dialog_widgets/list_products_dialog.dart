@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/trade/logic/order_controller.dart';
 
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/formatter_functions/formatter_currency.dart';
@@ -89,7 +90,7 @@ class ListProductsDialog extends StatelessWidget {
 }
 
 class ListStoreProduct extends StatelessWidget {
-  const ListStoreProduct({
+  ListStoreProduct({
     super.key,
     required this.storeCtl,
     required this.searchController,
@@ -99,6 +100,7 @@ class ListStoreProduct extends StatelessWidget {
   final StoreCtl storeCtl;
   final TextEditingController searchController;
   final Size screenSize;
+  final OrderController orderController = Get.find<OrderController>();
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +113,7 @@ class ListStoreProduct extends StatelessWidget {
         itemBuilder: (context, index) {
           StoreItem product = storeCtl.productsInStore[index];
           return StoreItemDialog(
-            storeCtl: storeCtl,
+            orderController: orderController,
             index: index + 1,
             product: product,
             searchController: searchController,
@@ -126,14 +128,14 @@ class ListStoreProduct extends StatelessWidget {
 class StoreItemDialog extends StatelessWidget {
   const StoreItemDialog({
     super.key,
-    required this.storeCtl,
+    required this.orderController,
     required this.product,
     required this.searchController,
     required this.screenSize,
     required this.index,
   });
   final int index;
-  final StoreCtl storeCtl;
+  final OrderController orderController;
   final StoreItem product;
   final TextEditingController searchController;
   final Size screenSize;
@@ -144,7 +146,7 @@ class StoreItemDialog extends StatelessWidget {
       splashColor: Colors.lightBlueAccent,
       borderRadius: BorderRadius.circular(10),
       onTap: () {
-        storeCtl.selectProduct(product);
+        orderController.addProduct(product);
         searchController.clear();
       },
       child: Container(

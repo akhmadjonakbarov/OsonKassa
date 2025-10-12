@@ -5,18 +5,18 @@ import '../../../../core/display/user_notifier.dart';
 import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../core/interfaces/api/get_all.dart';
 import '../../../../core/interfaces/getx_controller/main_controller.dart';
-import '../models/note_model.dart';
+import '../models/note.dart';
 import 'note_repository.dart';
 import 'note_services.dart';
 
 class NoteCtl extends MainController<Note> {
-  late final SpiskaRepository spiskaRepository;
+  late final NoteRepository spiskaRepository;
   late final SpiskaService spiskaService;
 
   @override
   void onInit() {
     final Dio dio = DioProvider().createDio();
-    spiskaRepository = SpiskaRepository(dio: dio);
+    spiskaRepository = NoteRepository(dio: dio);
     spiskaService = SpiskaService(
       getAllRepository: spiskaRepository as GetAll<Note>,
     );

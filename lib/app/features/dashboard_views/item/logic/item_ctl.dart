@@ -23,7 +23,6 @@ import 'item_service.dart';
 
 class ItemCtl extends MainController<Item> {
   var categoryName = ''.obs;
-
   Rxn<Item> selectedItem = Rxn(null);
 
   void setLoading(bool value) {
@@ -63,6 +62,7 @@ class ItemCtl extends MainController<Item> {
     try {
       setLoading(true);
       var data = await _productService.getAllItems(page: page.value);
+      print(data.items);
       list(data.items.cast<Item>());
       pagination(data.pagination);
     } catch (e) {
@@ -72,14 +72,14 @@ class ItemCtl extends MainController<Item> {
     }
   }
 
-  void selectItem(Item item) {
-    selectedItem(item);
+  void selectItem(Item? item) {
+    selectedItem.value = item;
   }
 
   @override
   void addItem(Map<String, dynamic> item) async {
     try {
-      bool isCreated = await _productService.addItem(item);
+      bool isCreated = await _productRepo.add(item);
       if (isCreated) {
         UserNotifier.showSnackBar(
           label: AlertTexts.addAlert(item['name']),
@@ -217,6 +217,4 @@ class ItemCtl extends MainController<Item> {
       fetchItems();
     }
   }
-
-  void editItem(BuildContext context, {Item? item}) async {}
 }

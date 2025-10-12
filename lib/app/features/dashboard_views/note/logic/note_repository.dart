@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 
 import '../../../../core/interfaces/api/get_all.dart';
-import '../models/note_model.dart';
+import '../models/note.dart';
 
-class SpiskaRepository implements GetAll<Note> {
+class NoteRepository implements GetAll<Note> {
   final Dio dio;
 
-  SpiskaRepository({required this.dio});
+  NoteRepository({required this.dio});
 
   static const String baseUrl = '/notes'; // Replace with your API base URL
 
@@ -26,7 +26,7 @@ class SpiskaRepository implements GetAll<Note> {
       }
       return spikas;
     } catch (e) {
-      rethrow; // Rethrow the exception to propagate it up the call stack
+      rethrow;
     }
   }
 }

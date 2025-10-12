@@ -25,7 +25,6 @@ import 'category_service.dart';
 
 class CategoryCtl extends MainController<CategoryModel> {
   var filteredCategories = <CategoryModel>[].obs;
-  var selected_category_id = 0.obs;
 
   var selectedCategory = CategoryModel.empty().obs;
 

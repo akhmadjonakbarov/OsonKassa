@@ -81,7 +81,6 @@ class DocumentCtl extends MainController<Document> {
       list(apiCurrencies.items.cast<Document>());
       pagination(apiCurrencies.pagination);
       isLoading(false);
-      sortBySell();
     } catch (e) {
       handleError(e.toString());
     }
@@ -113,11 +112,6 @@ class DocumentCtl extends MainController<Document> {
     }
   }
 
-  @override
-  void updateItem(Document item) {
-    // TODO: implement updateItem
-  }
-
   // Method to sort by doc_type in ascending or descending order// Method to sort by doc_type and createdAt in ascending or descending order
   void sortDocuments({bool ascending = true}) {
     List<Document> documents = List.from(list);
@@ -145,13 +139,14 @@ class DocumentCtl extends MainController<Document> {
     list(documents);
   }
 
-// To sort by buy (ascending order)
   void sortByBuy() {
     sortDocuments(ascending: true);
   }
 
-// To sort by sell (descending order)
   void sortBySell() {
     sortDocuments(ascending: false);
   }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

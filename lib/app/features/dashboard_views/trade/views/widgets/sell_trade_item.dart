@@ -1,20 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:osonkassa/app/features/dashboard_views/trade/models/order_item.dart';
 
-import '../../../../../styles/colors.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
-import '../../../../../utils/media/get_screen_size.dart';
-import '../../../../shared/export_commons.dart';
-import '../../../store/models/store_item.dart';
 
-class SellProductItem extends StatefulWidget {
+class SellProductItem extends StatelessWidget {
   final Function() onEdit;
   final Function() incrementQty;
   final Function() decrementQty;
   final Function() deleteItem;
   final Function() cheapenClick;
-  final StoreItem product;
+  final OrderItem product;
   final double height;
 
   const SellProductItem({
@@ -29,160 +25,155 @@ class SellProductItem extends StatefulWidget {
   });
 
   @override
-  State<SellProductItem> createState() => _SellProductItemState();
-}
-
-class _SellProductItemState extends State<SellProductItem> {
-  @override
   Widget build(BuildContext context) {
-    Size screenSize = getScreenSize(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      height: widget.height,
+      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
-        color: bgButtonColor.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(
-          15,
-        ),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.08),
+            spreadRadius: 1,
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          )
+        ],
       ),
-      alignment: Alignment.center,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "(${widget.product.item!.category}) ${widget.product.item!.name}",
-                style: textStyleBlack18,
-              ),
-              Text(
-                widget.product.item!.barcode!,
-                style: textStyleBlack14.copyWith(
-                  fontWeight: FontWeight.w800,
+          // Product info
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name ?? "",
+                  style: textStyleBlack18.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-              ),
-            ],
+                const SizedBox(height: 4),
+                Text(
+                  product.barcode ?? "",
+                  style: textStyleBlack14.copyWith(
+                    color: Colors.grey[600],
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AddingMinusingButton(
-                onClick: widget.incrementQty,
-                iconSize: 25,
-                icon: CupertinoIcons.add_circled_solid,
-                iconColor: Colors.green,
+
+          // Qty control
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey.shade300),
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(8),
+                onTap: onEdit,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.product.qty!.toStringAsFixed(3),
-                          textAlign: TextAlign.center,
-                          style: textStyleBlack18.copyWith(
-                              fontSize: 20, fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(width: 2),
-                        Text(
-                          widget.product.item!.unit!,
-                          textAlign: TextAlign.center,
-                          style: textStyleBlack14,
-                        )
-                      ],
+                    Text(
+                      product.qty!.toStringAsFixed(2),
+                      style: textStyleBlack18.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      product.unit ?? "",
+                      style: textStyleBlack14.copyWith(
+                        color: Colors.grey[700],
+                      ),
                     ),
                   ],
                 ),
               ),
-              AddingMinusingButton(
-                onClick: widget.decrementQty,
-                iconSize: 25,
-                icon: CupertinoIcons.minus_circle_fill,
-                iconColor: Colors.red,
-              ),
-            ],
+            ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      PriceFomatter.formatPrice(
-                          widget.product.currencyRateValue != null
-                              ? widget.product.salePrice! *
-                                  widget.product.currencyRateValue!
-                              : widget.product.salePrice!),
-                      style: textStyleBlack18.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: screenSize.width * 0.009,
-                  ),
-                  const Icon(
-                    Icons.arrow_upward,
-                    color: Colors.green,
-                  )
-                ],
+
+          const SizedBox(width: 12),
+
+          // Price tag
+          Expanded(
+            flex: 2,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.blueAccent.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    PriceFomatter.formatPrice(
-                        widget.product.currencyRateValue != null
-                            ? widget.product.incomePrice! *
-                                widget.product.currencyRateValue!
-                            : widget.product.incomePrice!),
-                    style: textStyleBlack18.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(
-                    width: screenSize.width * 0.009,
-                  ),
-                  const Icon(
-                    Icons.arrow_downward,
-                    color: Colors.red,
-                  )
-                ],
-              )
-            ],
+              child: Text(
+                PriceFomatter.formatPrice(
+                  product.salePrice! * product.qty!,
+                ),
+                textAlign: TextAlign.center,
+                style: textStyleBlack20.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.blueAccent,
+                ),
+              ),
+            ),
           ),
-          Row(
-            children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.edit,
-                  color: Colors.green,
-                ),
-                onPressed: widget.onEdit,
-              ),
-              IconButton(
-                icon: const Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                ),
-                onPressed: widget.deleteItem,
-              )
-            ],
-          )
+
+          const SizedBox(width: 12),
+
+          // Delete button
+          IconButton(
+            onPressed: deleteItem,
+            icon: const Icon(Icons.delete_forever),
+            color: Colors.redAccent,
+            iconSize: 28,
+            tooltip: "Remove item",
+          ),
         ],
+      ),
+    );
+  }
+}
+
+/// Custom Qty Button for + / -
+class _QtyButton extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _QtyButton({
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color.withOpacity(0.15),
+        ),
+        child: Icon(
+          icon,
+          size: 20,
+          color: color,
+        ),
       ),
     );
   }

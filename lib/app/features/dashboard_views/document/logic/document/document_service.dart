@@ -1,7 +1,6 @@
 import 'package:osonkassa/app/features/shared/models/api_data.dart';
 
 import '../../../../../core/interfaces/api/api_interfaces.dart';
-import '../../models/document_model.dart';
 
 class DocumentService {
   final Add<Map<String, dynamic>> _addRepository;

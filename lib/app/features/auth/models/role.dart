@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import '../../action/models/action_model.dart';
-import 'user.dart';
 
 class Role {
   final int id;

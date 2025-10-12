@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/styles/app_colors.dart';
+import 'package:osonkassa/design_system/buttons/primary_button.dart';
 
 import '../../../../core/enums/filter_field.dart';
-import '../../../../styles/icons.dart';
 import '../../../../styles/text_styles.dart';
-import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';
@@ -17,6 +15,7 @@ import '../../../shared/widgets/content_view.dart';
 import '../logic/customer_ctl.dart';
 import 'table/customer_table.dart';
 import 'widgets/customer_edit_dialog.dart';
+import 'widgets/customer_statistics.dart';
 
 class CustomerView extends StatefulWidget {
   final CustomerCtl customerCtl;
@@ -42,6 +41,12 @@ class _CustomerViewState extends State<CustomerView> {
     customerDetailCtl.calculateTotalDebtsPrice(context);
 
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    widget.customerCtl.fetchItems();
+    super.initState();
   }
 
   void _showPopupMenu(BuildContext context) async {
@@ -109,11 +114,25 @@ class _CustomerViewState extends State<CustomerView> {
                         widget.customerCtl.searchBuilder(value),
                   ),
                 ),
+                SizedBox(
+                  width: screenSize.width * 0.01,
+                ),
+                PrimaryButton(
+                  backgroundColor: ButtonColors.primary,
+                  onClick: () {},
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 25),
+                      child: Text(
+                        "Pay for debt",
+                        style: textStyleWhite18,
+                      )),
+                )
               ],
             ),
             CheckedAddButton(
               onClick: () {
-                Get.dialog(CustomerEditDialog());
+                Get.dialog(const CustomerEditDialog());
               },
               permission: "create_customer",
               roles: widget.authCtl.userModel.value.roles,
@@ -131,97 +150,18 @@ class _CustomerViewState extends State<CustomerView> {
                 "Statistics",
                 style: textStyleBlack20.copyWith(fontSize: 25),
               ),
-              Obx(
-                () => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade100,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: EdgeInsets.all(screenSize.height * 0.1 / 25),
-                          child: SvgPicture.asset(
-                            AppIcons.person,
-                            height: screenSize.height * 0.1 / 2.8,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "${widget.customerCtl.customers.length} ta",
-                              style: textStyleBlack20,
-                            ),
-                            Text(
-                              "Mijozlar",
-                              style: textStyleBlack15,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue.shade100,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          padding: EdgeInsets.all(screenSize.height * 0.1 / 25),
-                          child: Icon(
-                            CupertinoIcons.money_dollar_circle,
-                            size: screenSize.height * 0.1 / 2.8,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "${PriceFomatter.formatPrice(customerDetailCtl.totalDebtsPrice.value)} uzs",
-                              style: textStyleBlack20,
-                            ),
-                            Text(
-                              "Qarzlar",
-                              style: textStyleBlack15,
-                            ),
-                          ],
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
+              CustomerStatistics(
+                  screenSize: screenSize,
+                  widget: widget,
+                  customerDetailCtl: customerDetailCtl),
             ],
           ),
         ),
         SizedBox(
           height: screenSize.height * 0.01 / 2,
         ),
-        Obx(
-          () {
-            return DataList(
-              isLoading: widget.customerCtl.isLoading.value,
-              isNotEmpty: widget.customerCtl.customers.isNotEmpty,
-              child: CustomerTable(
-                controller: widget.customerCtl,
-              ),
-            );
-          },
+        CustomerTable(
+          controller: widget.customerCtl,
         ),
       ],
     );
