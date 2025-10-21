@@ -17,7 +17,8 @@ class StatisticsView extends StatelessWidget {
   Widget build(BuildContext context) {
     statisticsCtl.loadAllStatistics();
 
-    return ListView(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         RefreshIndicator(
             onRefresh: statisticsCtl.loadAllStatistics,

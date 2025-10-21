@@ -230,6 +230,8 @@ class AppTranslations extends Translations {
           'invalid_credentials': 'Noto‘g‘ri elektron pochta yoki parol',
           TranslatedTexts.errors.pleaseEnterNumber: 'Iltimos, raqam kiriting!',
 
+          'documents': 'Hujjatlar',
+
           // Table Fields
           TranslatedTexts.table.index: 'T/r',
           TranslatedTexts.table.name: 'Ism',
@@ -331,7 +333,9 @@ class AppTranslations extends Translations {
           'payment_info': "To'lov ma'lumotlari",
           "for_debt": "Qarzga",
           "select_customer_required": "Mijozni tanlashingiz shart",
-          "select_customer_optional": "Mijozni tanlash ixtiyoriy"
+          "select_customer_optional": "Mijozni tanlash ixtiyoriy",
+          'store': 'Ombor',
+          'note':'Tugagan mahsulotlar'
         },
         'ru_RU': {
           // General

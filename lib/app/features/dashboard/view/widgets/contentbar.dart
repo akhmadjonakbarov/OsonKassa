@@ -25,10 +25,8 @@ import '../../../dashboard_views/trade/views/trade_view.dart';
 import '../../../report_docs/logic/report_ctl.dart';
 import '../../logic/controllers/dashboard_controller.dart';
 import 'header.dart';
-
 class ContentBar extends StatefulWidget {
   final DashboardCtl dashboardCtl;
-
   const ContentBar({
     super.key,
     required this.dashboardCtl,
@@ -74,58 +72,80 @@ class _ContentBarState extends State<ContentBar> {
           ),
           Expanded(
             child: Obx(
-              () {
+                  () {
+                Widget currentView;
                 switch (widget.dashboardCtl.selectedView.value) {
                   case AppViews.dashboard:
-                    return StatisticsView(
+                    currentView = StatisticsView(
                       statisticsCtl: statisticsCtl,
                     );
+                    break;
                   case AppViews.trade:
-                    return const TradeView();
+                    currentView = const TradeView();
+                    break;
                   case AppViews.product:
-                    return ItemtView(
+                    currentView = ItemtView(
                       actionCtl: actionCtl,
                       authCtl: authCtl,
                     );
+                    break;
                   case AppViews.computer:
-                    return ComputerView(
+                    currentView = ComputerView(
                       displayController: displayController,
                       authCtl: authCtl,
                       computerCtl: computerCtl,
                     );
+                    break;
                   case AppViews.document:
-                    return DocumentView(
+                    currentView = DocumentView(
                       authCtl: authCtl,
                       documentCtl: documentCtl,
                     );
+                    break;
                   case AppViews.category:
-                    return CategoryView(
+                    currentView = CategoryView(
                       authCtl: authCtl,
                     );
+                    break;
                   case AppViews.client:
-                    return CustomerView(
+                    currentView = CustomerView(
                       authCtl: authCtl,
                       customerCtl: clientCtl,
                     );
+                    break;
                   case AppViews.spiska:
-                    return const NoteView();
+                    currentView = const NoteView();
+                    break;
                   case AppViews.currency:
-                    return CurrencyView(
+                    currentView = CurrencyView(
                       authCtl: authCtl,
                     );
-
+                    break;
                   case AppViews.addProduct:
-                    return const CreateDocumentView();
+                    currentView = const CreateDocumentView();
+                    break;
                   case AppViews.store:
-                    return StoreView(
+                    currentView = StoreView(
                       storeCtl: storeCtl,
                     );
+                    break;
                   default:
-                    return Container();
+                    currentView = Container();
                 }
+
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (Widget child, Animation<double> animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  child: currentView,
+                );
               },
             ),
-          )
+          ),
         ],
       ),
     );

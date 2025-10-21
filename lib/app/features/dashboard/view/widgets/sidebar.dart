@@ -127,7 +127,7 @@ class _SideBarState extends State<SideBar> {
                 isSelecte:
                     widget.dashboardController.isSelected(AppViews.document),
                 buttonSize: const Size(double.infinity, 55),
-                text: ButtonTexts.docs,
+                text: 'documents'.tr,
                 textStyle: textStyleWhite18W800,
                 icon: AppIcons.store,
                 buttonBgColor: Colors.transparent,
@@ -142,7 +142,7 @@ class _SideBarState extends State<SideBar> {
                 isSelecte:
                     widget.dashboardController.isSelected(AppViews.store),
                 buttonSize: const Size(double.infinity, 55),
-                text: ButtonTexts.store,
+                text: 'store'.tr,
                 textStyle: textStyleWhite18W800,
                 icon: AppIcons.store,
                 buttonBgColor: Colors.transparent,
@@ -157,7 +157,7 @@ class _SideBarState extends State<SideBar> {
                 isSelecte:
                     widget.dashboardController.isSelected(AppViews.spiska),
                 buttonSize: const Size(double.infinity, 50),
-                text: ButtonTexts.spiska,
+                text: 'note'.tr,
                 textStyle: textStyleWhite18W800,
                 icon: AppIcons.spiska,
                 buttonBgColor: Colors.transparent,
@@ -188,7 +188,7 @@ class _SideBarState extends State<SideBar> {
                 isSelecte:
                     widget.dashboardController.isSelected(AppViews.currency),
                 buttonSize: const Size(double.infinity, 50),
-                text: ButtonTexts.currency,
+                text: 'currency'.tr,
                 textStyle: textStyleWhite18W800,
                 icon: AppIcons.currency,
                 buttonBgColor: Colors.transparent,
