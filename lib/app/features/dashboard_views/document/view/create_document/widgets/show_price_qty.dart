@@ -28,7 +28,7 @@ class _ShowPriceQtyOfProductState extends State<ShowPriceQtyOfProduct> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            "${DisplayTexts.price_of_a_product}: ${PriceFomatter.formatPrice(widget.priceValue)} ${widget.incomeCurrency.toUpperCase()}",
+            "${DisplayTexts.price_of_a_product}: ${PriceFormatter.formatPrice(widget.priceValue)} ${widget.incomeCurrency.toUpperCase()}",
             style: textStyleBlack14.copyWith(fontSize: 16),
           ),
           Text(

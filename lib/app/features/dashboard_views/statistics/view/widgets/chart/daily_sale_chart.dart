@@ -139,7 +139,7 @@ class DailySaleChart extends StatelessWidget {
             children: [
               if (rodIndex == 0)
                 TextSpan(
-                  text: 'Savdo: \n ${PriceFomatter.formatPrice(
+                  text: 'Savdo: \n ${PriceFormatter.formatPrice(
                     statisticsCtl.dailySalesRates[groupIndex].sales!,
                   )}',
                   // Display price

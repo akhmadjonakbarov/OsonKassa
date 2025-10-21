@@ -58,7 +58,7 @@ class _DebtTableState extends State<StoreTable> {
                   ),
                 ),
                 DataCell(CenterText(
-                  text: PriceFomatter.formatPrice(
+                  text: PriceFormatter.formatPrice(
                       product.currencyRateValue != null &&
                               product.currencyRateValue! > 0
                           ? product.incomePrice! * product.currencyRateValue!
@@ -67,7 +67,7 @@ class _DebtTableState extends State<StoreTable> {
                 )),
                 DataCell(CenterText(
                   text:
-                      "${PriceFomatter.formatPrice(product.currencyRateValue != null && product.currencyRateValue! > 0 ? product.salePrice! * product.currencyRateValue! : product.salePrice!)} ",
+                      "${PriceFormatter.formatPrice(product.currencyRateValue != null && product.currencyRateValue! > 0 ? product.salePrice! * product.currencyRateValue! : product.salePrice!)} ",
                   style: textStyleBlack18Bold,
                 )),
                 DataCell(

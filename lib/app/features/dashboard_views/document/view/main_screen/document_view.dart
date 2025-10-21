@@ -78,7 +78,7 @@ class _DocumentViewState extends State<DocumentView> {
       onChangePage: (p0) {
         documentCtl.selectPage(p0);
       },
-      title: "Ombor",
+      title: "reports".tr,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,23 +95,6 @@ class _DocumentViewState extends State<DocumentView> {
                 const SizedBox(
                   width: 5,
                 ),
-                // SizedBox(
-                //   width: screenSize.width * 0.2,
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //     children: [
-                //       Obx(
-                //         () => DialogTextButton(
-                //           text: documentCtl.isToday.value
-                //               ? "Hammasi"
-                //               : "Bugunilik",
-                //           textStyle: textStyleWhite18,
-                //           onClick: () => documentCtl.setToday(),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
               ],
             ),
             CheckedAddButton(

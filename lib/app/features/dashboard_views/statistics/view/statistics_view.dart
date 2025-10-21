@@ -15,7 +15,6 @@ class StatisticsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = getScreenSize(context);
     statisticsCtl.loadAllStatistics();
 
     return ListView(
@@ -24,9 +23,6 @@ class StatisticsView extends StatelessWidget {
             onRefresh: statisticsCtl.loadAllStatistics,
             child: Row(
               children: [
-                Expanded(
-                  child: ProfitCardInfo(screenSize: screenSize, isProfit: true),
-                ),
                 Expanded(
                   child: WeeklyProfit(statisticsCtl: statisticsCtl),
                 ),

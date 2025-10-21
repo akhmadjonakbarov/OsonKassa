@@ -64,7 +64,7 @@ class _CustomerTableState extends State<CustomerTable> {
                         : DisplayTexts.no_extra_number)),
                 DataCell(CenterText(text: customer.address ?? "-")),
                 DataCell(CenterText(
-                  text: PriceFomatter.formatPrice(customer.debtCost!),
+                  text: PriceFormatter.formatPrice(customer.debtCost!),
                   style: textStyleBlack18Bold,
                 )),
                 DataCell(

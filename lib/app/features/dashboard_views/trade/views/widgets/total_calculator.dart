@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/logic/order_controller.dart';
-import 'package:osonkassa/app/features/dashboard_views/trade/models/order.dart';
 
 import '../../../../../styles/text_styles.dart';
 import '../../../../../utils/formatter_functions/formatter_currency.dart';
-import '../../logic/trade_ctl.dart';
 
 class TotalCalculate extends StatelessWidget {
   final BoxConstraints constraints;
@@ -38,7 +36,7 @@ class TotalCalculate extends StatelessWidget {
                 children: [
                   Text("${'total_price'.tr}:", style: textStyleBlack18Bold),
                   Text(
-                    PriceFomatter.formatPrice(selectedOrder!.totalPrice!),
+                    PriceFormatter.formatPrice(selectedOrder!.totalPrice!),
                     style: textStyleBlack18Bold.copyWith(fontSize: 20),
                   ),
                 ],
@@ -52,7 +50,7 @@ class TotalCalculate extends StatelessWidget {
                   children: [
                     Text("${'discount'.tr}:", style: textStyleBlack18Bold),
                     Text(
-                      PriceFomatter.formatPrice(selectedOrder.discount!),
+                      PriceFormatter.formatPrice(selectedOrder.discount!),
                       style: textStyleBlack18Bold.copyWith(fontSize: 20),
                     ),
                   ],
@@ -69,7 +67,7 @@ class TotalCalculate extends StatelessWidget {
                       Text("${'discount_price'.tr}:",
                           style: textStyleBlack18Bold),
                       Text(
-                        PriceFomatter.formatPrice(selectedOrder.discountPrice!),
+                        PriceFormatter.formatPrice(selectedOrder.discountPrice!),
                         style: textStyleBlack18Bold.copyWith(fontSize: 20),
                       ),
                     ],

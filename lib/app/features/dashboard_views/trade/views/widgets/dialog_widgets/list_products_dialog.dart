@@ -202,11 +202,11 @@ class StoreItemDialog extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Kelish: ${product.currency != null ? PriceFomatter.formatPrice(product.incomePrice! * product.currency!.value!) : PriceFomatter.formatPrice(product.incomePrice!)} ",
+                      "Kelish: ${product.currency != null ? PriceFormatter.formatPrice(product.incomePrice! * product.currency!.value!) : PriceFormatter.formatPrice(product.incomePrice!)} ",
                       style: textStyleBlack18Bold,
                     ),
                     Text(
-                      "Sotilish: ${product.currency != null ? PriceFomatter.formatPrice(product.salePrice! * product.currency!.value!) : PriceFomatter.formatPrice(product.salePrice!)}",
+                      "Sotilish: ${product.currency != null ? PriceFormatter.formatPrice(product.salePrice! * product.currency!.value!) : PriceFormatter.formatPrice(product.salePrice!)}",
                       style: textStyleBlack18Bold,
                     )
                   ],

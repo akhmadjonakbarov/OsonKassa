@@ -39,3 +39,5 @@ String formatDate(String dateTime, {bool hasHour = false}) {
           DateTime.parse(dateTime),
         );
 }
+
+class DateFormatter {}

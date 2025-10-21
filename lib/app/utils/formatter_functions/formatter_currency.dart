@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 import '../texts/display_texts.dart';
 
-class PriceFomatter {
+class PriceFormatter {
   static final format = NumberFormat('#,###.#####', 'en_US');
 
   static String formatPrice(double price) {
@@ -92,5 +92,5 @@ String formatTotalPrice(double totalPriceOfProducts, {bool isUSD = false}) {
 
 String formatPrice(
     double currencyValue, double priceValue, String sellingCurrency) {
-  return "${PriceFomatter.formatPrice(priceValue)} $sellingCurrency * ${currencyValue < 1000000 ? formatUZSNumber(currencyValue) : formatUZSCurrency(currencyValue)}";
+  return "${PriceFormatter.formatPrice(priceValue)} $sellingCurrency * ${currencyValue < 1000000 ? formatUZSNumber(currencyValue) : formatUZSCurrency(currencyValue)}";
 }

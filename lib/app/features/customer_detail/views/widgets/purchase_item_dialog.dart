@@ -137,13 +137,13 @@ class PurchaseItemDialog extends StatelessWidget {
                         DataCell(Container(
                           alignment: Alignment.center,
                           child: Text(
-                            PriceFomatter.formatPrice(docItem.incomePrice!),
+                            PriceFormatter.formatPrice(docItem.incomePrice!),
                           ),
                         )),
                         DataCell(Container(
                           alignment: Alignment.center,
                           child: Text(
-                            "${PriceFomatter.formatPrice(docItem.salePrice!)} ",
+                            "${PriceFormatter.formatPrice(docItem.salePrice!)} ",
                           ),
                         )),
                         DataCell(
@@ -166,10 +166,10 @@ class PurchaseItemDialog extends StatelessWidget {
                     const DataCell(CenterText(text: "Jami")),
                     const DataCell(SizedBox.shrink()),
                     DataCell(CenterText(
-                      text: PriceFomatter.formatPrice(totalIncomePrice),
+                      text: PriceFormatter.formatPrice(totalIncomePrice),
                     )),
                     DataCell(CenterText(
-                      text: PriceFomatter.formatPrice(totalSellingPrice),
+                      text: PriceFormatter.formatPrice(totalSellingPrice),
                     )),
                     const DataCell(
                       CenterText(

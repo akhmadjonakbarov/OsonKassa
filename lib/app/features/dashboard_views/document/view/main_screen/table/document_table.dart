@@ -1,5 +1,3 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/core/enums/product_doc_type.dart';
@@ -28,8 +26,8 @@ class DocumentTable extends StatefulWidget {
 }
 
 class _DebtTableState extends State<DocumentTable> {
-  final DocItemCtl doc_item_ctl = Get.find<DocItemCtl>();
-  final NoteCtl spiskaCtl = Get.find<NoteCtl>();
+  final DocItemCtl docItemCtl = Get.find<DocItemCtl>();
+  final NoteCtl noteCtl = Get.find<NoteCtl>();
   late final PosPrinterManager _printer;
 
   @override
@@ -51,8 +49,8 @@ class _DebtTableState extends State<DocumentTable> {
       DocItemTableDialog(
         printerManager: _printer,
         size: size,
-        docItemCtl: doc_item_ctl,
-        spiskaCtl: spiskaCtl,
+        docItemCtl: docItemCtl,
+        spiskaCtl: noteCtl,
       ),
     ).then(
       (value) => widget.documentCtl.fetchItems(),
@@ -66,11 +64,11 @@ class _DebtTableState extends State<DocumentTable> {
       padding: EdgeInsets.zero,
       child: CustomDataTable(
         columns: [
-          TranslatedTexts.table.number.tr,
+          'ID',
           TranslatedTexts.table.date.tr,
           TranslatedTexts.table.typeOfProduct.tr,
           TranslatedTexts.table.totalOfProduct.tr,
-          'price'.tr,
+          TranslatedTexts.table.totalAmountPrice.tr,
           'discount'.tr,
           TranslatedTexts.table.documentType.tr,
           TranslatedTexts.table.seeDetail.tr
@@ -130,7 +128,7 @@ class _DebtTableState extends State<DocumentTable> {
                 ),
                 DataCell(
                   CenterText(
-                    text: PriceFomatter.formatPrice(document.price ?? 0.0),
+                    text: PriceFormatter.formatPrice(document.price ?? 0.0),
                     style: textStyleBlack18.copyWith(
                       fontWeight: FontWeight.w800,
                       color: isSold ? Colors.white : Colors.black,
@@ -139,7 +137,7 @@ class _DebtTableState extends State<DocumentTable> {
                 ),
                 DataCell(
                   CenterText(
-                    text: PriceFomatter.formatPrice(document.discount ?? 0.0),
+                    text: PriceFormatter.formatPrice(document.discount ?? 0.0),
                     style: textStyleBlack18.copyWith(
                       fontWeight: FontWeight.w800,
                       color: isSold ? Colors.white : Colors.black,
@@ -176,7 +174,7 @@ class _DebtTableState extends State<DocumentTable> {
                         color: isSold ? Colors.white : Colors.black,
                       ),
                       onPressed: () {
-                        doc_item_ctl.fetchByProductId(document.id!);
+                        docItemCtl.fetchByProductId(document.id!);
                         showDialogWindow();
                       },
                     ),

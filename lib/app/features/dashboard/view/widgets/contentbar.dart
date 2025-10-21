@@ -61,7 +61,7 @@ class _ContentBarState extends State<ContentBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: widget.sizeScreen.width * 0.805,
+      width: widget.sizeScreen.width * 0.82,
       alignment: Alignment.center,
       child: Column(
         children: [

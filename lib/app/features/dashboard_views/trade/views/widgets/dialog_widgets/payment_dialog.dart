@@ -128,7 +128,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
       children: [
         Text(title, style: textStyleBlack18Bold),
         Text(
-          PriceFomatter.formatPrice(value.toDouble()),
+          PriceFormatter.formatPrice(value.toDouble()),
           style: textStyleBlack18Bold.copyWith(fontSize: 20),
         ),
       ],

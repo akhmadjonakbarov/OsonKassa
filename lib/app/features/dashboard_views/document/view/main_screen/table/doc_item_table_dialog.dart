@@ -127,13 +127,13 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                       DataCell(Container(
                         alignment: Alignment.center,
                         child: Text(
-                          "${PriceFomatter.formatPrice(income)} ",
+                          "${PriceFormatter.formatPrice(income)} ",
                         ),
                       )),
                       DataCell(Container(
                         alignment: Alignment.center,
                         child: Text(
-                          "${PriceFomatter.formatPrice(sale)} ",
+                          "${PriceFormatter.formatPrice(sale)} ",
                         ),
                       )),
                       DataCell(
@@ -184,10 +184,10 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                   const DataCell(CenterText(text: "Jami")),
                   const DataCell(SizedBox.shrink()),
                   DataCell(CenterText(
-                    text: "${PriceFomatter.formatPrice(totalIncomePrice)} uzs",
+                    text: "${PriceFormatter.formatPrice(totalIncomePrice)} uzs",
                   )),
                   DataCell(CenterText(
-                    text: "${PriceFomatter.formatPrice(totalSalePrice)} uzs",
+                    text: "${PriceFormatter.formatPrice(totalSalePrice)} uzs",
                   )),
                   DataCell(CenterText(
                     text: '',

@@ -84,7 +84,7 @@ class CustomerStatistics extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "${PriceFomatter.formatPrice(customerDetailCtl.totalDebtsPrice.value)} uzs",
+                    "${PriceFormatter.formatPrice(customerDetailCtl.totalDebtsPrice.value)} uzs",
                     style: textStyleBlack20,
                   ),
                   Text(

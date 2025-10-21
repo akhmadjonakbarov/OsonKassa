@@ -51,14 +51,14 @@ class _ItemTableState extends State<ItemTable> {
               DataCell(CenterText(text: item.barcode!)),
               DataCell(
                 CenterText(
-                  text: PriceFomatter.formatPrice(
+                  text: PriceFormatter.formatPrice(
                     item.salePrice!,
                   ),
                 ),
               ),
               DataCell(
                 CenterText(
-                  text: PriceFomatter.formatPrice(
+                  text: PriceFormatter.formatPrice(
                     item.incomePrice!,
                   ),
                 ),

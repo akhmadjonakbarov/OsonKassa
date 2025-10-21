@@ -405,7 +405,7 @@ class TotalPriceOfProduct extends StatelessWidget {
                 title: "",
                 height: 80,
                 width: MediaQuery.of(context).size.width * 0.1,
-                budgetAmount: "${PriceFomatter.formatPrice(
+                budgetAmount: "${PriceFormatter.formatPrice(
                   widget.statisticsCtl.productSummary.value.price!['usd']!
                       .toDouble(),
                 )} \$",

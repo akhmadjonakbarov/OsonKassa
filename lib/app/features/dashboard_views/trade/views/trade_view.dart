@@ -450,7 +450,7 @@ class _TradeViewState extends State<TradeView> {
                         context: context,
                         builder: (_) => PaymentDialog(
                           order: orderController.selectedOrder.value!,
-                          customers: customerCtl.customers.value,
+                          customers: customerCtl.customers,
                         ),
                       );
                     },

@@ -12,6 +12,7 @@ import '../../../logic/statistics_ctl.dart';
 
 class WeeklyProfit extends StatefulWidget {
   const WeeklyProfit({super.key, required this.statisticsCtl});
+
   final StatisticsCtl statisticsCtl;
 
   @override
@@ -42,7 +43,7 @@ class _WeeklyProfitState extends State<WeeklyProfit> {
         ),
       ),
       width: screenSize.width * 0.4,
-      height: screenSize.height / 5,
+      height: screenSize.height / 5.5,
       padding: EdgeInsets.all(
         Paddings.customPadding(
           percentage: screenSize.height / 400,
@@ -64,7 +65,7 @@ class _WeeklyProfitState extends State<WeeklyProfit> {
                 ),
                 Obx(
                   () => Text(
-                    "${PriceFomatter.formatPriceWithWord(widget.statisticsCtl.totalWeeklyProfit.value)} uzs",
+                    "${PriceFormatter.formatPrice(widget.statisticsCtl.totalWeeklyProfit.value)} uzs",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyles.black(
                       fontSize: screenSize.height / 38,
@@ -151,7 +152,7 @@ class _WeeklyProfitState extends State<WeeklyProfit> {
                         tooltipMargin: -40,
                         getTooltipItem: (group, groupIndex, rod, rodIndex) {
                           return BarTooltipItem(
-                            '${PriceFomatter.formatPrice(widget.statisticsCtl.weeklyProfits[groupIndex].profit!)} uzs ',
+                            '${PriceFormatter.formatPrice(widget.statisticsCtl.weeklyProfits[groupIndex].profit!)} uzs ',
                             const TextStyle(color: Colors.white),
                             children: [
                               TextSpan(

@@ -117,7 +117,7 @@ class SellProductItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                PriceFomatter.formatPrice(
+                PriceFormatter.formatPrice(
                   product.salePrice! * product.qty!,
                 ),
                 textAlign: TextAlign.center,
@@ -141,39 +141,6 @@ class SellProductItem extends StatelessWidget {
             tooltip: "Remove item",
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// Custom Qty Button for + / -
-class _QtyButton extends StatelessWidget {
-  final IconData icon;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _QtyButton({
-    required this.icon,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: color.withOpacity(0.15),
-        ),
-        child: Icon(
-          icon,
-          size: 20,
-          color: color,
-        ),
       ),
     );
   }
