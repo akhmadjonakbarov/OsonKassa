@@ -23,6 +23,23 @@ import '../../models/draft_document.dart';
 import 'widgets/cached_products_table.dart';
 import 'widgets/header_currency.dart';
 
+// class CreateDocumentView extends StatelessWidget {
+//   const CreateDocumentView({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return BasicContainer(
+//       height: double.infinity,
+//       decoration: Decorations.decoration(
+//         boxShadow: BoxShadows.custom,
+//       ),
+//       child: Center(
+//         child: Text("Hello"),
+//       ),
+//     );
+//   }
+// }
+
 class CreateDocumentView extends StatefulWidget {
   const CreateDocumentView({super.key});
 
@@ -92,6 +109,7 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
       decoration: Decorations.decoration(
         boxShadow: BoxShadows.custom,
       ),
+      height: double.infinity,
       child: LayoutBuilder(
         builder: (context, constraints) {
           return ListView(
@@ -148,7 +166,7 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
           Column(
             children: [
               Text(
-                DisplayTexts.info_of_product,
+                'products'.tr,
                 style: textStyleBlack18.copyWith(fontSize: 22),
               ),
               const SizedBox(height: 15),

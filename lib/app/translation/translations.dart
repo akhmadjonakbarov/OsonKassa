@@ -335,7 +335,8 @@ class AppTranslations extends Translations {
           "select_customer_required": "Mijozni tanlashingiz shart",
           "select_customer_optional": "Mijozni tanlash ixtiyoriy",
           'store': 'Ombor',
-          'note':'Tugagan mahsulotlar'
+          'note': 'Spiska',
+          'add new document': 'Yangi hujjat qo‘shish',
         },
         'ru_RU': {
           // General

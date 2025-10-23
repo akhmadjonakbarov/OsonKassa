@@ -32,10 +32,7 @@ class UserNotifier {
         snackBarColor = Colors.deepOrange;
         break;
     }
-    // Close the currently open snackbar, if any
-    if (Get.isSnackbarOpen) {
-      Get.closeCurrentSnackbar();
-    }
+
     Get.snackbar(
       '', // Leave empty if you're using a styled Text widget for the label
       '', // Leave empty if you're using a styled Text widget for the message

@@ -45,6 +45,7 @@ class _ItemTableState extends State<ItemTable> {
           final Item item = widget.itemCtl.list[index];
 
           return DataRow(
+
             cells: <DataCell>[
               DataCell(Text('${index + 1}')),
               DataCell(CenterText(text: item.name!)),

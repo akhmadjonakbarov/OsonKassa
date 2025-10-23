@@ -41,15 +41,16 @@ class _TradeViewState extends State<TradeView> {
 
   FocusNode addressFocusNode = FocusNode();
   late final PosPrinterManager _printer;
+
   @override
   void initState() {
-    fetchCtls();
+    fetch();
     _initPrinter();
 
     super.initState();
   }
 
-  fetchCtls() {
+  fetch() {
     clientCtl.fetchItems();
     storeCtl.fetchProductInStore();
     noteCtl.fetchItems();
@@ -92,7 +93,7 @@ class _TradeViewState extends State<TradeView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _leftSide(constraints),
+            _leftSide(constraints, context),
             _rightSide(constraints),
           ],
         );
@@ -100,7 +101,8 @@ class _TradeViewState extends State<TradeView> {
     );
   }
 
-  Widget _leftSide(BoxConstraints constraints) {
+  Widget _leftSide(BoxConstraints constraints, BuildContext context) {
+    final screenSize = getScreenSize(context);
     return CustomContainer(
       width: constraints.maxWidth * 0.65,
       child: Column(
@@ -172,7 +174,7 @@ class _TradeViewState extends State<TradeView> {
                     elevation: 3,
                   ),
                   icon: const Icon(CupertinoIcons.search, size: 20),
-                  label: const Text("Search"),
+                  label: Text("search".tr),
                 )
               ],
             ),
@@ -186,18 +188,18 @@ class _TradeViewState extends State<TradeView> {
               if (storeCtl.productsInStore.isEmpty) {
                 return Center(
                   child: Text(
-                    "No products found",
+                    "no products found".tr,
                     style: textStyleBlack18.copyWith(color: Colors.grey),
                   ),
                 );
               }
 
               return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 5,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 2.2,
+                  childAspectRatio: screenSize.width <= 1370 ? 1.5 : 2.2,
                 ),
                 itemCount: storeCtl.productsInStore.length,
                 itemBuilder: (context, index) {
@@ -239,7 +241,6 @@ class _TradeViewState extends State<TradeView> {
                             "📦 ${product.item!.barcode!}",
                             style: textStyleBlack18.copyWith(
                               color: Colors.grey.shade700,
-                              fontSize: 14,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -273,8 +274,6 @@ class _TradeViewState extends State<TradeView> {
 
                     return ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
                       separatorBuilder: (_, __) => const SizedBox(width: 10),
                       itemCount: orders.length,
                       itemBuilder: (context, index) {

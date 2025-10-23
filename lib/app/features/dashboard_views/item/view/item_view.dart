@@ -106,6 +106,7 @@ class _ItemtViewState extends State<ItemtView> {
                               Get.dialog(ItemEditDialog()).then(
                                 (value) => itemCtl.selectItem(null),
                               );
+
                             },
                             permission:
                                 Permissions.create_item.name.toLowerCase(),

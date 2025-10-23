@@ -28,9 +28,7 @@ class _DataListState extends State<DataList> {
       );
     } else {
       if (widget.isNotEmpty) {
-        return SingleChildScrollView(
-          child: widget.child,
-        );
+        return widget.child;
       } else {
         return const NoData();
       }

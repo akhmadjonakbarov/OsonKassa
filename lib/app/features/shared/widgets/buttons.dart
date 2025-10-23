@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:osonkassa/app/styles/app_colors.dart';
 import 'package:osonkassa/app/styles/colors.dart';
 import 'package:osonkassa/app/styles/icons.dart';
@@ -493,7 +494,7 @@ class AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BasicIconButton(
-      text: ButtonTexts.add,
+      text: 'add'.tr,
       textStyle: textStyle,
       height: height,
       width: width,
@@ -522,6 +523,9 @@ class CheckedAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     if (PermissionChecker.hasPermission(roles, permission)) {
       return AddButton(
+        height: ButtonSizeManager.height(context,
+            height: 0.1 / 2.5),
+        width: ButtonSizeManager.width(context, width: 0.11),
         onClick: onClick,
         textStyle: TextStyles.buttonTextStyle(),
       );

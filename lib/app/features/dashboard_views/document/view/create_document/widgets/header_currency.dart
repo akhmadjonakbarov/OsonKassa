@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/formatter_functions/formatter_currency.dart';
@@ -25,7 +26,7 @@ class HeaderCurrency extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const HeaderTitle(title: DisplayTexts.add_new_product),
+              HeaderTitle(title: "add new document".tr),
               if (currencyValue > 0)
                 Container(
                   padding: const EdgeInsets.all(10),

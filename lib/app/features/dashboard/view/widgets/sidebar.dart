@@ -42,7 +42,7 @@ class _SideBarState extends State<SideBar> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: Text(
-                    "Boshqaruv Paneli",
+                    "Boshqaruv Paneli ${MediaQuery.sizeOf(context).width}",
                     style: textStyleBlack18.copyWith(
                         fontSize: 25, fontWeight: FontWeight.w500),
                   ),

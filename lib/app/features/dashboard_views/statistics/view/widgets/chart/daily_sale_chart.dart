@@ -42,7 +42,7 @@ class DailySaleChart extends StatelessWidget {
                               TranslatedTexts.statistics.salesStatistics.tr,
                               style: const TextStyle(fontSize: 22),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 20,
                             ),
                             TextButton(
@@ -68,7 +68,7 @@ class DailySaleChart extends StatelessWidget {
                           borderData: FlBorderData(
                             show: true,
                           ),
-                          maxY: 20000,
+                          maxY: 15000,
                           backgroundColor: Colors.black,
                           titlesData: FlTitlesData(
                               bottomTitles: AxisTitles(
@@ -142,12 +142,9 @@ class DailySaleChart extends StatelessWidget {
                   text: 'Savdo: \n ${PriceFormatter.formatPrice(
                     statisticsCtl.dailySalesRates[groupIndex].sales!,
                   )}',
-                  // Display price
                   style: const TextStyle(
                     color: Colors.yellow,
-                    // Custom color for the price
                     fontSize: 20,
-                    // Adjust font size for price
                     fontWeight: FontWeight.w500,
                   ),
                 )

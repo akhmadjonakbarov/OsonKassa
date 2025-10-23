@@ -26,7 +26,6 @@ class _ProviderTableState extends State<CachedProductsTable> {
                 sortColumnIndex: 0,
                 border:
                     TableBorder.all(borderRadius: BorderRadius.circular(16)),
-                headingTextStyle: textStyleBlack18.copyWith(fontSize: 16),
                 dataTextStyle: textStyleBlack14.copyWith(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
