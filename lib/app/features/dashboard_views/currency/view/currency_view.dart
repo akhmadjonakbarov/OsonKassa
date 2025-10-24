@@ -13,6 +13,7 @@ import 'widgets/edit_currency.dart';
 
 class CurrencyView extends StatefulWidget {
   final AuthCtl authCtl;
+
   const CurrencyView({super.key, required this.authCtl});
 
   @override
@@ -84,9 +85,7 @@ class _CurrencyViewState extends State<CurrencyView> {
               isNotEmpty: currencyCtl.list.isNotEmpty,
               child: CurrencyTable(
                 onSelect: () => showCurrencyEditDialog(
-                  width: screenSize.width * 0.4,
-                  height: screenSize.height * 0.38,
-                ),
+                    width: screenSize.width, height: screenSize.height),
                 currencyCtl: currencyCtl,
               ),
             ),

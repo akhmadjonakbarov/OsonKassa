@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/logic/order_controller.dart';
+import 'package:osonkassa/app/styles/app_colors.dart';
+import 'package:osonkassa/design_system/buttons/primary_button.dart';
 
 import '../../../../core/printer/pos_printer_manager.dart';
 import '../../../../styles/text_styles.dart';
@@ -263,78 +265,63 @@ class _TradeViewState extends State<TradeView> {
       width: constraints.maxWidth * 0.33,
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 65,
-                  child: Obx(() {
-                    final orders = orderController.orders;
-                    final selected = orderController.selectedOrder.value;
+          SizedBox(
+            height: 65,
+            child: Obx(() {
+              final orders = orderController.orders;
+              final selected = orderController.selectedOrder.value;
 
-                    return ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      separatorBuilder: (_, __) => const SizedBox(width: 10),
-                      itemCount: orders.length,
-                      itemBuilder: (context, index) {
-                        final order = orders[index];
-                        final isSelected = order.id == selected?.id;
+              return ListView.separated(
+                scrollDirection: Axis.horizontal,
+                separatorBuilder: (_, __) => const SizedBox(width: 10),
+                itemCount: orders.length,
+                itemBuilder: (context, index) {
+                  final order = orders[index];
+                  final isSelected = order.id == selected?.id;
 
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          decoration: BoxDecoration(
-                            color: isSelected ? Colors.blue : Colors.grey[200],
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              if (isSelected)
-                                const BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 6,
-                                  offset: Offset(0, 3),
-                                ),
-                            ],
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                      color: isSelected ? Colors.blue : Colors.grey[200],
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        if (isSelected)
+                          const BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 6,
+                            offset: Offset(0, 3),
                           ),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(20),
-                            onTap: () => orderController.selectOrder(order),
-                            child: Center(
-                              child: Text(
-                                "№${order.id}",
-                                style: textStyleBlack20.copyWith(
-                                  fontSize: 20,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : Colors.black87,
-                                  fontWeight: isSelected
-                                      ? FontWeight.bold
-                                      : FontWeight.w500,
-                                ),
-                              ),
-                            ),
+                      ],
+                    ),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () => orderController.selectOrder(order),
+                      child: Center(
+                        child: Text(
+                          "№${order.id}",
+                          style: textStyleBlack20.copyWith(
+                            fontSize: 20,
+                            color: isSelected ? Colors.white : Colors.black87,
+                            fontWeight:
+                                isSelected ? FontWeight.bold : FontWeight.w500,
                           ),
-                        );
-                      },
-                    );
-                  }),
-                ),
-              ),
-              const SizedBox(width: 12),
-              ElevatedButton(
-                onPressed: orderController.createOrder,
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  backgroundColor: Colors.greenAccent,
-                  fixedSize: const Size(50, 50),
-                  elevation: 2,
-                ),
-                child: const Icon(Icons.add, size: 28, color: Colors.black87),
-              )
-            ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }),
           ),
-
+          const SizedBox(height: 12),
+          PrimaryButton(
+            width: double.infinity,
+            height: 35,
+            backgroundColor: Colors.green,
+            onClick: orderController.createOrder,
+            child: const Icon(Icons.add, size: 28, color: Colors.white),
+          ),
           const SizedBox(height: 20),
 
           /// Header Row

@@ -28,105 +28,157 @@ class CurrencyEditDialog extends StatefulWidget {
 }
 
 class _CurrencyEditDialogState extends State<CurrencyEditDialog> {
+  late final TextEditingController currencyController;
+
+  @override
+  void initState() {
+    super.initState();
+    final ctl = Get.find<CurrencyCtl>();
+    currencyController = TextEditingController(
+      text: ctl.selectedCurrency.value.value != 0
+          ? ctl.selectedCurrency.value.value.toString()
+          : "",
+    );
+  }
+
+  @override
+  void dispose() {
+    currencyController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<CurrencyCtl>(
       builder: (ctl) {
-        final TextEditingController currencyNameController =
-            TextEditingController(
-          text: ctl.selectedCurrency.value.value != 0
-              ? ctl.selectedCurrency.value.value.toString()
-              : "",
-        );
-
-        void reset() {
-          Get.back();
-          currencyNameController.clear();
-        }
+        final bool isEdit = ctl.selectedCurrency.value.id != -1;
+        final String actionText = isEdit ? 'edit'.tr : 'add'.tr;
 
         void submit() {
-          final String currencyValue = currencyNameController.text.trim();
-          if (currencyValue.isEmpty) {
+          final String input = currencyController.text.trim();
+          if (input.isEmpty) {
             UserNotifier.showSnackBar(
               type: TypeOfSnackBar.alert,
-              label: "Iltimos kursni kiriting",
+              label: "Iltimos, kursni kiriting",
             );
             return;
           }
 
-          if (NumberValidator.isNumber(currencyValue)) {
-            if (ctl.selectedCurrency.value.id == -1) {
-              ctl.addItem(
-                {'value': double.parse(currencyValue)},
-              );
-            } else {
-              final Currency currency = ctl.selectedCurrency.value
-                  .copyWith(value: double.parse(currencyValue));
+          if (!NumberValidator.isNumber(input)) {
+            UserNotifier.showSnackBar(
+              type: TypeOfSnackBar.alert,
+              label: "Faqat raqam kiriting",
+            );
+            return;
+          }
 
-              ctl.updateItem(currency);
-            }
-            reset();
+          final double value = double.parse(input);
+          if (isEdit) {
+            final Currency updated =
+                ctl.selectedCurrency.value.copyWith(value: value);
+            ctl.updateItem(updated);
           } else {
-            UserNotifier.showSnackBar(
-              type: TypeOfSnackBar.alert,
-              label: "Iltimos, raqam kiriting",
-            );
-            return;
+            ctl.addItem({'value': value});
           }
+
           ctl.fetchItems();
+          Get.back();
         }
 
-        final String actionText = ctl.selectedCurrency.value.id == -1
-            ? ButtonTexts.add
-            : ButtonTexts.edit;
-
-        return Container(
-          margin: EdgeInsets.symmetric(
-              vertical: widget.height, horizontal: widget.width),
-          decoration: containerDecoration,
-          child: Material(
-            borderRadius: BorderRadius.circular(15),
-            color: primary,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    actionText,
-                    style: textStyleBlack20,
-                  ),
-                  const Divider(),
-                  const SizedBox(height: 15),
-                  TextField(
-                    controller: currencyNameController,
-                    style: textStyleBlack18,
-                    decoration: const InputDecoration(
-                      labelText: PlaceholderTexts.usd_value,
-                      border: OutlineInputBorder(),
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          insetPadding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.sizeOf(context).width * 0.35,
+            vertical: widget.height * 0.05,
+          ),
+          backgroundColor: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // --- Header ---
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      isEdit
+                          ? "Valyutani tahrirlash"
+                          : "Yangi valyuta qo‘shish",
+                      style: textStyleBlack20.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                    IconButton(
+                      icon: const Icon(Icons.close_rounded),
+                      onPressed: () => Get.back(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                const Divider(),
+                const SizedBox(height: 20),
+
+                // --- Input field ---
+                TextField(
+                  controller: currencyController,
+                  style: textStyleBlack18,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: PlaceholderTexts.usd_value,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    prefixIcon: const Icon(Icons.monetization_on_outlined),
+                    filled: true,
+                    fillColor: Colors.grey[100],
                   ),
-                  const SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SmallButtonText(
-                        text: actionText,
-                        onClick: submit,
-                        buttonSize: const Size(125, 45),
-                        textStyle: textStyleBlack14,
+                ),
+
+                const SizedBox(height: 24),
+
+                // --- Buttons ---
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 14),
+                        foregroundColor: Colors.black87,
                       ),
-                      SmallButtonText(
-                        text: ButtonTexts.cancel,
-                        onClick: reset,
-                        buttonSize: const Size(140, 45),
-                        textStyle: textStyleBlack14,
-                        isNegative: true,
+                      onPressed: () => Get.back(),
+                      child: Text(
+                        'cancel'.tr,
+                        style: textStyleBlack18.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    const SizedBox(width: 12),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.greenAccent,
+                        foregroundColor: Colors.black,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 28, vertical: 14),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: submit,
+                      child: Text(
+                        actionText,
+                        style: textStyleBlack18.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         );
