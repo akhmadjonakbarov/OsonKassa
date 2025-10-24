@@ -22,10 +22,18 @@ class OrderController extends GetxController {
   }
 
   createOrder() {
+    int orderId;
+    bool exists;
+
+    do {
+      orderId = Random().nextInt(90) + 10;
+      exists = orders.any((order) => order.id == orderId);
+    } while (exists);
+
     if (orders.length < 5) {
       Order order = Order(
           createdAt: DateTime.now().toString(),
-          id: Random().nextInt(90) + 10,
+          id: orderId,
           items: [],
           discount: 0.0,
           totalPrice: 0.0,
