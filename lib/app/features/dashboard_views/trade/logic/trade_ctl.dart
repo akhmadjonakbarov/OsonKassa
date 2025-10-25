@@ -13,6 +13,7 @@ import 'trade_service.dart';
 class TradeCtl extends GetxController {
   var sellProducts = <StoreItem>[].obs;
 
+
   late TradeRepository tradeRepository;
   late TradeService tradeService;
 
@@ -64,4 +65,6 @@ class TradeCtl extends GetxController {
       );
     }
   }
+
+
 }

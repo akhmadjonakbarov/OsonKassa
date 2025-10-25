@@ -219,10 +219,10 @@ class _HeaderState extends State<Header> {
                               onClick: () {},
                               backgroundColor: Colors.green,
                               icon: AppIcons.stock,
-                              text: "${formatUZSNumber(
+                              text: "${PriceFormatter.formatPrice(
                                 widget.statisticsCtl.totalWeeklyProfit
                                     .toDouble(),
-                              )} USD",
+                              )} uzs",
                               subText: TranslatedTexts.profit.monthlyProfit.tr,
                             )
                           ],
@@ -416,7 +416,7 @@ class TotalPriceOfProduct extends StatelessWidget {
                 height: 80,
                 width: MediaQuery.of(context).size.width * 0.16,
                 budgetAmount:
-                    "${formatUZSCurrency(widget.statisticsCtl.productSummary.value.price!['uzs']!.toDouble())} uzs",
+                    "${PriceFormatter.formatPrice(widget.statisticsCtl.productSummary.value.price!['uzs']!.toDouble())} uzs",
                 bgColor: Colors.blue,
               ),
             ],

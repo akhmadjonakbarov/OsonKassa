@@ -67,7 +67,7 @@ class _SideBarState extends State<SideBar> {
                 isSelecte:
                     widget.dashboardController.isSelected(AppViews.trade),
                 buttonSize: const Size(double.infinity, 55),
-                text: ButtonTexts.trade,
+                text: 'trade'.tr,
                 textStyle: textStyleWhite18W800,
                 icon: AppIcons.house,
                 buttonBgColor: Colors.transparent,
@@ -82,7 +82,7 @@ class _SideBarState extends State<SideBar> {
                 isSelecte:
                     widget.dashboardController.isSelected(AppViews.category),
                 buttonSize: const Size(double.infinity, 55),
-                text: ButtonTexts.categories,
+                text: 'category'.tr,
                 textStyle: textStyleWhite18W800,
                 icon: AppIcons.category,
                 buttonBgColor: Colors.transparent,
@@ -97,7 +97,7 @@ class _SideBarState extends State<SideBar> {
                 isSelecte:
                     widget.dashboardController.isSelected(AppViews.product),
                 buttonSize: const Size(double.infinity, 55),
-                text: ButtonTexts.products,
+                text: 'products'.tr,
                 textStyle: textStyleWhite18W800,
                 icon: AppIcons.shop,
                 buttonBgColor: Colors.transparent,

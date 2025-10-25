@@ -29,7 +29,7 @@ class PrimaryButton extends StatelessWidget {
         child: InkWell(
           onTap: onClick,
           borderRadius: borderRadius,
-          child: child,
+          child: Center(child: child),
         ),
       ),
     );

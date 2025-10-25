@@ -7,8 +7,6 @@ import '../../../../../styles/text_input_styles.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../styles/themes.dart';
 import '../../../../../utils/helper/log_helper.dart';
-import '../../../../../utils/texts/button_texts.dart';
-import '../../../../../utils/texts/display_texts.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../category/logic/category_controller.dart';
@@ -22,23 +20,6 @@ import '../../logic/view_controller/manage_product_doc_item_ctl.dart';
 import '../../models/draft_document.dart';
 import 'widgets/cached_products_table.dart';
 import 'widgets/header_currency.dart';
-
-// class CreateDocumentView extends StatelessWidget {
-//   const CreateDocumentView({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return BasicContainer(
-//       height: double.infinity,
-//       decoration: Decorations.decoration(
-//         boxShadow: BoxShadows.custom,
-//       ),
-//       child: Center(
-//         child: Text("Hello"),
-//       ),
-//     );
-//   }
-// }
 
 class CreateDocumentView extends StatefulWidget {
   const CreateDocumentView({super.key});
@@ -251,7 +232,7 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
             children: [
               Expanded(
                 child: CustomButton2(
-                  text: ButtonTexts.add_to_badge,
+                  text: 'add'.tr,
                   iconColor: Colors.white,
                   buttonBgColor: Colors.pinkAccent,
                   onClick: addProductBadge,
@@ -264,7 +245,7 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
               ),
               Expanded(
                 child: CustomButton2(
-                  text: ButtonTexts.save,
+                  text: 'save'.tr,
                   iconColor: Colors.white,
                   buttonBgColor: Colors.blue,
                   onClick: _submitForm,

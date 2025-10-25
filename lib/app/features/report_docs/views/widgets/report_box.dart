@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
 import '../../../../translation/translated_texts.dart';
 
 import '../../../../utils/texts/table_texts.dart';
@@ -50,7 +51,7 @@ class ReportBox extends StatelessWidget {
         headingRowAlignment: MainAxisAlignment.center,
       ),
       DataColumn(
-        label: Text(TableTexts.name),
+        label: Text('product'.tr),
         headingRowAlignment: MainAxisAlignment.center,
       ),
       DataColumn(
@@ -82,22 +83,24 @@ class ReportBox extends StatelessWidget {
           DataCell(CenterText(text: reportItem.name!)),
           DataCell(
             CenterText(
-              text: reportItem.totalQty.toString(),
+              text: "${reportItem.totalQty} ${reportItem.unit}",
             ),
           ),
           DataCell(
             CenterText(
-              text: "${reportItem.totalSale} ",
+              text: "${PriceFormatter.formatPrice(reportItem.totalSale ?? 0)} ",
             ),
           ),
           DataCell(
             CenterText(
-              text: "${reportItem.totalIncome} ",
+              text:
+                  "${PriceFormatter.formatPrice(reportItem.totalIncome ?? 0)} ",
             ),
           ),
           DataCell(
             CenterText(
-              text: "${reportItem.totalProfit} ",
+              text:
+                  "${PriceFormatter.formatPrice(reportItem.totalProfit ?? 0)} ",
             ),
           ),
         ],

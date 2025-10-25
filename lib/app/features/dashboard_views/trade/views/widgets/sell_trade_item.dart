@@ -10,6 +10,7 @@ class SellProductItem extends StatelessWidget {
   final Function() decrementQty;
   final Function() deleteItem;
   final Function() cheapenClick;
+  final Function() calculateAmountByPrice;
   final OrderItem product;
   final double height;
 
@@ -22,123 +23,91 @@ class SellProductItem extends StatelessWidget {
     required this.decrementQty,
     required this.deleteItem,
     required this.cheapenClick,
+    required this.calculateAmountByPrice
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.08),
-            spreadRadius: 1,
-            blurRadius: 6,
-            offset: const Offset(0, 2),
-          )
-        ],
+        border: Border(
+          bottom: BorderSide(color: Colors.grey.shade200, width: 1),
+        ),
       ),
       child: Row(
         children: [
-          // Product info
+          // Product name
           Expanded(
             flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product.name ?? "",
+            child: Text(
+              product.name ?? "",
+              style: textStyleBlack18.copyWith(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+
+          // Quantity (editable)
+          Expanded(
+            flex: 2,
+            child: GestureDetector(
+              onTap: onEdit,
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Text(
+                  "${product.qty?.toStringAsFixed(2)} ${product.unit ?? ''}",
                   style: textStyleBlack18.copyWith(
-                    fontSize: 18,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black87,
                   ),
-                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  product.barcode ?? "",
-                  style: textStyleBlack14.copyWith(
-                    color: Colors.grey[600],
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+              ),
             ),
           ),
 
-          // Qty control
+          // Price
           Expanded(
             flex: 2,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(8),
-                onTap: onEdit,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      product.qty!.toStringAsFixed(2),
-                      style: textStyleBlack18.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      product.unit ?? "",
-                      style: textStyleBlack14.copyWith(
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ],
+            child: GestureDetector(
+              onTap: calculateAmountByPrice,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  PriceFormatter.formatPrice(
+                    product.salePrice! * product.qty!,
+                  ),
+                  style: textStyleBlack18.copyWith(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.blueAccent,
+                  ),
+                  textAlign: TextAlign.right,
                 ),
               ),
             ),
           ),
 
-          const SizedBox(width: 12),
+          const SizedBox(width: 6),
 
-          // Price tag
-          Expanded(
-            flex: 2,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.blueAccent.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Text(
-                PriceFormatter.formatPrice(
-                  product.salePrice! * product.qty!,
-                ),
-                textAlign: TextAlign.center,
-                style: textStyleBlack20.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.blueAccent,
-                ),
-              ),
-            ),
-          ),
-
-          const SizedBox(width: 12),
-
-          // Delete button
+          // Delete icon
           IconButton(
             onPressed: deleteItem,
-            icon: const Icon(Icons.delete_forever),
+            icon: const Icon(Icons.close_rounded, size: 20),
             color: Colors.redAccent,
-            iconSize: 28,
-            tooltip: "Remove item",
+            tooltip: "O‘chirish",
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
           ),
         ],
       ),

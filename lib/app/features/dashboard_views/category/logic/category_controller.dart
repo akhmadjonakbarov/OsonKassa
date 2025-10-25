@@ -144,117 +144,228 @@ class CategoryCtl extends MainController<CategoryModel> {
     }
 
     final String actionText = isNull ? ButtonTexts.add : ButtonTexts.edit;
+    Get.dialog(
+      Dialog(
+        backgroundColor: primary,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.3,
+            maxHeight: MediaQuery.of(context).size.height * 0.4,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                /// Title
+                Text(
+                  isNull
+                      ? '${DisplayTexts.categories} ${ButtonTexts.add}'
+                      : '${DisplayTexts.categories} ${ButtonTexts.edit}',
+                  style: textStyleBlack18.copyWith(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
 
-    Get.dialog(Dialog(
-      backgroundColor: primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.2,
-        height: MediaQuery.of(context).size.height * 0.25,
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              isNull
-                  ? '${DisplayTexts.categories}  ${ButtonTexts.add}'
-                  : '${DisplayTexts.categories}  ${ButtonTexts.edit}',
-              style: textStyleBlack18.copyWith(fontSize: 22),
-            ),
-            const Divider(),
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: categoryNameController,
-                      validator: (value) {
-                        if (value == "") {
-                          return validField('mahsulot nomini');
-                        }
-                        return null;
-                      },
-                      inputFormatters: [
-                        FilteringTextInputFormatter.singleLineFormatter
-                      ],
-                      style: textStyleBlack18,
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        hintText: "Mahsulot nomi",
-                        hintStyle:
-                            textStyleBlack18.copyWith(color: Colors.grey),
+                const SizedBox(height: 8),
+                const Divider(),
+                const SizedBox(height: 16),
+
+                /// Form
+                Form(
+                  key: formKey,
+                  child: TextFormField(
+                    controller: categoryNameController,
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return validField('mahsulot nomini');
+                      }
+                      return null;
+                    },
+                    inputFormatters: [
+                      FilteringTextInputFormatter.singleLineFormatter,
+                    ],
+                    style: textStyleBlack18,
+                    decoration: InputDecoration(
+                      labelText: "Mahsulot nomi",
+                      labelStyle: textStyleBlack18.copyWith(color: Colors.grey),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(color: Colors.black87, width: 1.2),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                /// Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DialogTextButton(
+                      text: ButtonTexts.cancel,
+                      isNegative: true,
+                      textStyle: textStyleBlack14,
+                      onClick: Get.back,
+                    ),
+                    DialogTextButton(
+                      text: actionText,
+                      textStyle: textStyleBlack14,
+                      onClick: () {
+                        if (formKey.currentState?.validate() ?? false) {
+                          final categoryName = categoryNameController.text.trim();
+
+                          final category = selectedCategory.value.id == -1
+                              ? CategoryModel(
+                            id: -1,
+                            name: categoryName,
+                            items_type_count: 0,
+                            items_count: 0,
+                            created_at: DateTime.now(),
+                            updated_at: DateTime.now(),
+                          )
+                              : selectedCategory.value.copyWith(name: categoryName);
+
+                          if (isNull) {
+                            addItem({'name': categoryName.capitalizeFirst});
+                          } else {
+                            updateItem(category);
+                          }
+
+                          fetchItems();
+                          Get.back();
+                        }
+                      },
                     ),
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                DialogTextButton(
-                  text: ButtonTexts.cancel,
-                  onClick: () {
-                    Get.back();
-                  },
-                  textStyle: textStyleBlack14,
-                  isNegative: true,
-                ),
-                DialogTextButton(
-                  text: actionText,
-                  onClick: () {
-                    bool isValid = formKey.currentState!.validate();
-                    if (isValid) {
-                      final String categoryName =
-                          categoryNameController.text.trim();
-                      final CategoryModel category = selectedCategory
-                                  .value.id ==
-                              -1
-                          ? CategoryModel(
-                              items_type_count: 0,
-                              id: -1,
-                              name: categoryName,
-                              created_at: DateTime.now(),
-                              updated_at: DateTime.now(),
-                              items_count: 0,
-                            )
-                          : selectedCategory.value.copyWith(name: categoryName);
-                      if (isNull) {
-                        addItem(
-                          {
-                            'name': categoryName.capitalizeFirst,
-                          },
-                        );
-                      } else {
-                        updateItem(category);
-                      }
-                      fetchItems();
-                      Get.back();
-                    }
-                  },
-                  textStyle: textStyleBlack14,
-                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
-    )).then((value) => resetCategory());
+    ).then((_) => resetCategory());
+
+    //
+    // Get.dialog(Dialog(
+    //   backgroundColor: primary,
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.circular(12.0),
+    //   ),
+    //   child: Container(
+    //     width: MediaQuery.of(context).size.width * 0.2,
+    //     height: MediaQuery.of(context).size.height * 0.25,
+    //     padding: const EdgeInsets.all(16.0),
+    //     child: Column(
+    //       mainAxisAlignment: MainAxisAlignment.center,
+    //       children: [
+    //         Text(
+    //           isNull
+    //               ? '${DisplayTexts.categories}  ${ButtonTexts.add}'
+    //               : '${DisplayTexts.categories}  ${ButtonTexts.edit}',
+    //           style: textStyleBlack18.copyWith(fontSize: 22),
+    //         ),
+    //         const Divider(),
+    //         const SizedBox(
+    //           height: 10,
+    //         ),
+    //         SizedBox(
+    //           child: Form(
+    //             key: formKey,
+    //             child: Column(
+    //               children: [
+    //                 TextFormField(
+    //                   controller: categoryNameController,
+    //                   validator: (value) {
+    //                     if (value == "") {
+    //                       return validField('mahsulot nomini');
+    //                     }
+    //                     return null;
+    //                   },
+    //                   inputFormatters: [
+    //                     FilteringTextInputFormatter.singleLineFormatter
+    //                   ],
+    //                   style: textStyleBlack18,
+    //                   decoration: InputDecoration(
+    //                     border: const OutlineInputBorder(),
+    //                     hintText: "Mahsulot nomi",
+    //                     hintStyle:
+    //                         textStyleBlack18.copyWith(color: Colors.grey),
+    //                   ),
+    //                 ),
+    //                 const SizedBox(
+    //                   height: 10,
+    //                 ),
+    //               ],
+    //             ),
+    //           ),
+    //         ),
+    //         const SizedBox(
+    //           height: 10,
+    //         ),
+    //         const SizedBox(
+    //           height: 10,
+    //         ),
+    //         Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+    //           children: [
+    //             DialogTextButton(
+    //               text: ButtonTexts.cancel,
+    //               onClick: () {
+    //                 Get.back();
+    //               },
+    //               textStyle: textStyleBlack14,
+    //               isNegative: true,
+    //             ),
+    //             DialogTextButton(
+    //               text: actionText,
+    //               onClick: () {
+    //                 bool isValid = formKey.currentState!.validate();
+    //                 if (isValid) {
+    //                   final String categoryName =
+    //                       categoryNameController.text.trim();
+    //                   final CategoryModel category = selectedCategory
+    //                               .value.id ==
+    //                           -1
+    //                       ? CategoryModel(
+    //                           items_type_count: 0,
+    //                           id: -1,
+    //                           name: categoryName,
+    //                           created_at: DateTime.now(),
+    //                           updated_at: DateTime.now(),
+    //                           items_count: 0,
+    //                         )
+    //                       : selectedCategory.value.copyWith(name: categoryName);
+    //                   if (isNull) {
+    //                     addItem(
+    //                       {
+    //                         'name': categoryName.capitalizeFirst,
+    //                       },
+    //                     );
+    //                   } else {
+    //                     updateItem(category);
+    //                   }
+    //                   fetchItems();
+    //                   Get.back();
+    //                 }
+    //               },
+    //               textStyle: textStyleBlack14,
+    //             ),
+    //           ],
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // )).then((value) => resetCategory());
   }
 
   void resetCategory() {

@@ -12,6 +12,7 @@ import '../../../../../../utils/formatter_functions/formatter_currency.dart';
 class PaymentDialog extends StatefulWidget {
   final Order order;
   final List<Customer> customers;
+
   const PaymentDialog(
       {super.key, required this.customers, required this.order});
 
@@ -91,6 +92,20 @@ class _PaymentDialogState extends State<PaymentDialog> {
               ],
             ),
 
+            const SizedBox(height: 20),
+            TextField(
+              decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.payments_outlined),
+                  border: OutlineInputBorder(),
+                  hint: Text("enter sum".tr)),
+              onChanged: (value) {
+                orderController.calculateReturnedMoney(value);
+              },
+            ),
+            const SizedBox(height: 5),
+            Obx(
+              () => _row('return'.tr, orderController.returnedMoney.value),
+            ),
             const SizedBox(height: 20),
 
             /// Confirm button

@@ -23,7 +23,7 @@ class TotalCalculate extends StatelessWidget {
 
         return Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(5),
           margin: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),

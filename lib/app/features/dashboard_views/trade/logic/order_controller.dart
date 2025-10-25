@@ -7,6 +7,7 @@ import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.d
 import 'package:osonkassa/app/features/dashboard_views/trade/models/order_item.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/services/order_service.dart';
 import 'package:osonkassa/app/features/shared/widgets/buttons.dart';
+import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../styles/text_styles.dart';
 import '../models/order.dart';
@@ -14,6 +15,12 @@ import '../models/order.dart';
 class OrderController extends GetxController {
   RxList<Order> orders = RxList<Order>([]);
   Rxn<Order> selectedOrder = Rxn(null);
+  Rxn<OrderItem> selectedOrderItem = Rxn(null);
+
+  RxDouble amount = RxDouble(0.0);
+  RxDouble returnedMoney = RxDouble(0.0);
+
+  TextEditingController amountByPriceController = TextEditingController();
 
   @override
   onInit() {
@@ -48,6 +55,40 @@ class OrderController extends GetxController {
   selectOrder(Order order) {
     selectedOrder.value = order;
     selectedOrder.refresh;
+    updateTotals();
+  }
+
+  selectOrderItem(OrderItem orderItem) {
+    selectedOrderItem.value = orderItem;
+  }
+
+  calculateAmountByPrice() {
+    if (selectedOrderItem.value != null) {
+      amount.value = double.parse(amountByPriceController.text) /
+          selectedOrderItem.value!.salePrice!;
+    }
+  }
+
+  saveAmount() {
+    if (selectedOrderItem.value != null) {
+      selectedOrderItem.value = selectedOrderItem.value!.copyWith(
+        qty: amount.value,
+      );
+    }
+
+    final orderItem = selectedOrder.value!.items!.firstWhereOrNull(
+      (element) {
+        return element.barcode == selectedOrderItem.value!.barcode;
+      },
+    );
+    if (orderItem != null) {
+      int index = selectedOrder.value!.items!.indexOf(orderItem);
+      selectedOrder.value!.items![index] = selectedOrderItem.value!;
+    }
+    selectedOrder.refresh();
+    amount.value = 0.0;
+    amountByPriceController.clear();
+
     updateTotals();
   }
 
@@ -385,6 +426,15 @@ class OrderController extends GetxController {
       int indexOfOrder = orders.indexOf(order);
 
       orders[indexOfOrder] = selectedOrder.value!;
+    }
+  }
+
+  calculateReturnedMoney(String value) {
+    try {
+      returnedMoney.value =
+          double.parse(value) - selectedOrder.value!.totalPrice!;
+    } catch (e) {
+      // LogHelper.logError("");
     }
   }
 }

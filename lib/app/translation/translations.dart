@@ -337,6 +337,7 @@ class AppTranslations extends Translations {
           'store': 'Ombor',
           'note': 'Spiska',
           'add new document': 'Yangi hujjat qo‘shish',
+          'trade': 'Savdo',
         },
         'ru_RU': {
           // General

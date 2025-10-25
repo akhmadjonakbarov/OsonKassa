@@ -12,6 +12,7 @@ import '../../../../utils/texts/alert_texts.dart';
 
 class PayController extends GetxController {
   late TradeRepository tradeRepository;
+
   @override
   void onInit() {
     Dio dio = DioProvider().createDio();
@@ -19,8 +20,12 @@ class PayController extends GetxController {
     super.onInit();
   }
 
-  Future<bool> pay(Order order,
-      {Customer? customer, bool isDebt = false}) async {
+  Future<bool> pay(
+    Order order, {
+    Customer? customer,
+    double remainMoney = 0,
+    bool isDebt = false,
+  }) async {
     List<Map<String, dynamic>> productList = [];
     for (OrderItem orderItem in order.items!) {
       productList.add(orderItem.toJson());
@@ -28,7 +33,8 @@ class PayController extends GetxController {
     Map<String, dynamic> data = {
       "sold_products": productList,
       "customer_id": customer == null ? -1 : customer.id,
-      "is_debt": isDebt,
+      "is_debt": remainMoney > 0.0 ? true : isDebt,
+      "remain_money": isDebt ? order.totalPrice : 0.0,
       "discount": order.discountPrice
     };
     try {
