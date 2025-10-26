@@ -31,16 +31,19 @@ class StatisticsView extends StatelessWidget {
             )),
         const SizedBox(height: 16),
         Container(
-            decoration: Decorations.decoration(
-              color: AppColors.lightWhite,
-              boxShadow: BoxShadow(
-                color: Colors.black.withOpacity(0.4),
-                offset: const Offset(0, 4),
-                blurRadius: 3,
-                spreadRadius: 1,
-              ),
+          decoration: Decorations.decoration(
+            color: AppColors.lightWhite,
+            boxShadow: BoxShadow(
+              color: Colors.black.withOpacity(0.4),
+              offset: const Offset(0, 4),
+              blurRadius: 3,
+              spreadRadius: 1,
             ),
-            child: DailySaleChart(statisticsCtl: statisticsCtl)),
+          ),
+          child: DailySaleChart(
+            statisticsCtl: statisticsCtl,
+          ),
+        ),
       ],
     );
   }

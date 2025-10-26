@@ -281,12 +281,7 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     final Size screenSize = getScreenSize(context);
-    double spaceBtwButtons = 0;
-    if (screenSize.width <= 1366) {
-      spaceBtwButtons = screenSize.width * 0.19;
-    } else {
-      spaceBtwButtons = screenSize.width * 0.15;
-    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       margin: const EdgeInsets.only(bottom: Paddings.padding12),
@@ -299,7 +294,6 @@ class _HeaderState extends State<Header> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: spaceBtwButtons,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -314,6 +308,9 @@ class _HeaderState extends State<Header> {
                           fontSize: screenSize.height / 54),
                       height: screenSize.height * 0.1 / 2.5,
                       width: screenSize.width * 0.08),
+                ),
+                const SizedBox(
+                  width: 15,
                 ),
                 BasicButton(
                   text: TranslatedTexts.report.reports.tr,
