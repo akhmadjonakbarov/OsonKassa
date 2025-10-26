@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../../../../core/enums/filter_field.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
-import '../../../../utils/texts/display_texts.dart';
 import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/content_view.dart';
 import '../logic/store_ctl.dart';
@@ -92,8 +91,7 @@ class _StoreViewState extends State<StoreView> {
             SizedBox(
               width: screenSize.width * 0.15,
               child: SearchTextField(
-                hintText:
-                    "${ButtonTexts.search} | ${DisplayTexts.name_of_product}",
+                hintText: "search".tr,
                 onChanged: (p0) => widget.storeCtl.searchProduct(p0),
               ),
             ),
@@ -102,15 +100,12 @@ class _StoreViewState extends State<StoreView> {
         SizedBox(
           height: screenSize.height * 0.01 / 2,
         ),
-        SizedBox(
-          height: MediaQuery.sizeOf(context).height * 0.63,
-          child: Obx(
-            () => DataList(
-              isLoading: widget.storeCtl.isLoading.value,
-              isNotEmpty: widget.storeCtl.list.isNotEmpty,
-              child: StoreTable(
-                storeCtl: widget.storeCtl,
-              ),
+        Obx(
+          () => DataList(
+            isLoading: widget.storeCtl.isLoading.value,
+            isNotEmpty: widget.storeCtl.list.isNotEmpty,
+            child: StoreTable(
+              storeCtl: widget.storeCtl,
             ),
           ),
         ),

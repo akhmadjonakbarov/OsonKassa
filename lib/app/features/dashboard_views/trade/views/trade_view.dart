@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/logic/order_controller.dart';
+import 'package:osonkassa/app/features/dashboard_views/trade/views/widgets/order_item_list.dart';
 import 'package:osonkassa/app/styles/app_colors.dart';
 import 'package:osonkassa/design_system/buttons/primary_button.dart';
+import 'package:osonkassa/design_system/themes/responsive_font_size.dart';
 import 'package:osonkassa/design_system/themes/text_styles.dart';
 
 import '../../../../core/printer/pos_printer_manager.dart';
@@ -203,7 +205,7 @@ class _TradeViewState extends State<TradeView> {
                   crossAxisCount: 5,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: screenSize.width <= 1370 ? 1.5 : 2.2,
+                  childAspectRatio: screenSize.width <= 1370 ? 1.8 : 2.2,
                 ),
                 itemCount: storeCtl.productsInStore.length,
                 itemBuilder: (context, index) {
@@ -218,16 +220,8 @@ class _TradeViewState extends State<TradeView> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: Colors.blueAccent.shade100),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.15),
-                            blurRadius: 8,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10),
+                      padding: const EdgeInsets.all(5),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -241,13 +235,14 @@ class _TradeViewState extends State<TradeView> {
                             maxLines: 1,
                           ),
                           const SizedBox(height: 6),
-                          Text(
-                            "📦 ${product.item!.barcode!}",
-                            style: textStyleBlack18.copyWith(
-                              color: Colors.grey.shade700,
+                          Expanded(
+                            child: Text(
+                              "📦 ${product.item!.barcode!}",
+                              style: context.labelSmall.copyWith(
+                                  fontSize: context.rfs(13, min: 11, max: 15)),
+                              textAlign: TextAlign.center,
                             ),
-                            textAlign: TextAlign.center,
-                          ),
+                          )
                         ],
                       ),
                     ),
@@ -267,8 +262,8 @@ class _TradeViewState extends State<TradeView> {
       width: constraints.maxWidth * 0.33,
       child: Column(
         children: [
-          SizedBox(
-            height: 65,
+          Container(
+            height: 45,
             child: Obx(() {
               final orders = orderController.orders;
               final selected = orderController.selectedOrder.value;
@@ -281,29 +276,29 @@ class _TradeViewState extends State<TradeView> {
                   final order = orders[index];
                   final isSelected = order.id == selected?.id;
 
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 250),
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    decoration: BoxDecoration(
-                      color: isSelected ? Colors.blue : Colors.grey[200],
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        if (isSelected)
-                          const BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 6,
-                            offset: Offset(0, 3),
-                          ),
-                      ],
-                    ),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(20),
-                      onTap: () => orderController.selectOrder(order),
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () => orderController.selectOrder(order),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: isSelected ? Colors.blue : Colors.grey[200],
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          if (isSelected)
+                            const BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
+                            ),
+                        ],
+                      ),
                       child: Center(
                         child: Text(
-                          "№${order.id}",
-                          style: textStyleBlack20.copyWith(
-                            fontSize: 20,
+                          "N${order.id}",
+                          style: context.labelSmall.copyWith(
+                            fontSize: context.rfs(15, min: 13, max: 18),
                             color: isSelected ? Colors.white : Colors.black87,
                             fontWeight:
                                 isSelected ? FontWeight.bold : FontWeight.w500,
@@ -353,297 +348,7 @@ class _TradeViewState extends State<TradeView> {
 
           const SizedBox(height: 6),
 
-          Obx(() {
-            final selectedOrder = orderController.selectedOrder.value;
-
-            if (selectedOrder == null) {
-              return Expanded(
-                child: Center(
-                  child: Text("Buyurtma tanlanmagan", style: textStyleBlack20),
-                ),
-              );
-            }
-
-            if (selectedOrder.items?.isEmpty ?? true) {
-              return Expanded(
-                child: Center(
-                  child:
-                      Text("Buyurtmalar mavjud emas", style: textStyleBlack18),
-                ),
-              );
-            }
-
-            return Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: ListView.separated(
-                  padding: EdgeInsets.zero,
-                  itemCount: selectedOrder.items!.length,
-                  separatorBuilder: (_, __) =>
-                      Divider(color: Colors.grey.shade200, height: 1),
-                  itemBuilder: (context, index) {
-                    final orderItem = selectedOrder.items![index];
-                    return SellProductItem(
-                      onEdit: () =>
-                          orderController.editProduct(context, orderItem),
-                      cheapenClick: () {},
-                      decrementQty: () {},
-                      incrementQty: () {},
-                      calculateAmountByPrice: () {
-                        orderController.selectOrderItem(orderItem);
-                        if (orderController.selectedOrderItem.value == null) {
-                          return;
-                        }
-                        Get.dialog(Dialog(
-                          insetPadding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 24),
-                          child: StatefulBuilder(
-                            builder: (context, setState) {
-                              return ConstrainedBox(
-                                constraints: const BoxConstraints(
-                                    maxWidth: 420, minHeight: 280),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      // Title + Close
-                                      Row(
-                                        children: [
-                                          const Icon(Icons.calculate_outlined,
-                                              color: Colors.blue),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              'Miqdorini hisoblash',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge,
-                                            ),
-                                          ),
-                                          IconButton(
-                                            tooltip: 'cancel'.tr,
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            icon: const Icon(Icons.close),
-                                          ),
-                                        ],
-                                      ),
-
-                                      const SizedBox(height: 12),
-                                      // >>> ADD THIS BLOCK — Product name pill
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.orange.shade50,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          border: Border.all(
-                                              color: Colors.orange.shade200),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                                Icons.inventory_2_outlined,
-                                                color: Colors.orange),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'Mahsulot',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .labelMedium
-                                                        ?.copyWith(
-                                                          color: Colors
-                                                              .orange.shade800,
-                                                        ),
-                                                  ),
-                                                  const SizedBox(height: 2),
-                                                  // Use whatever field you already have on the controller:
-                                                  // e.g., orderController.selectedProductName / product?.name / productName
-                                                  Tooltip(
-                                                    message: orderController
-                                                            .selectedOrderItem
-                                                            .value!
-                                                            .name ??
-                                                        '—',
-                                                    child: Text(
-                                                      orderController
-                                                              .selectedOrderItem
-                                                              .value!
-                                                              .name ??
-                                                          '—',
-                                                      maxLines: 1,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleMedium
-                                                          ?.copyWith(
-                                                            color:
-                                                                Colors.black87,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 14),
-
-                                      // Price input (no Form)
-                                      TextField(
-                                        controller: orderController
-                                            .amountByPriceController,
-                                        autofocus: true,
-                                        keyboardType: const TextInputType
-                                            .numberWithOptions(decimal: true),
-                                        textInputAction: TextInputAction.done,
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.allow(
-                                              RegExp(r'[0-9,.]')),
-                                        ],
-                                        onChanged: (v) {
-                                          orderController
-                                              .calculateAmountByPrice();
-                                        },
-                                        onSubmitted: (_) {},
-                                        decoration: InputDecoration(
-                                          labelText: 'price'.tr,
-                                          hintText: '12000',
-                                          border: const OutlineInputBorder(),
-                                          prefixIcon: const Icon(
-                                              Icons.payments_outlined),
-                                          suffix: const Text("UZS"),
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 12),
-
-                                      // Total preview
-                                      Container(
-                                        width: double.infinity,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 12),
-                                        decoration: BoxDecoration(
-                                          color: Colors.green.shade50,
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          border: Border.all(
-                                              color: Colors.green.shade200),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            const Icon(Icons.summarize_outlined,
-                                                color: Colors.green),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Text(
-                                                'Jami (narx × miqdor)',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall
-                                                    ?.copyWith(
-                                                      color:
-                                                          Colors.green.shade800,
-                                                    ),
-                                              ),
-                                            ),
-                                            Obx(
-                                              () => Text(
-                                                "${orderController.amount.value.toStringAsFixed(2)} ${orderController.selectedOrderItem.value!.unit}",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium
-                                                    ?.copyWith(
-                                                      color:
-                                                          Colors.green.shade800,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 16),
-                                      const Divider(height: 1),
-                                      const SizedBox(height: 12),
-
-                                      // Actions (Colors only)
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.red,
-                                                foregroundColor: Colors.white,
-                                                minimumSize:
-                                                    const Size.fromHeight(45),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text('cancel'.tr),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Expanded(
-                                            child: ElevatedButton.icon(
-                                              icon: const Icon(Icons.check),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.blue,
-                                                foregroundColor: Colors.white,
-                                                minimumSize:
-                                                    const Size.fromHeight(45),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                ),
-                                              ),
-                                              onPressed: () {
-                                                orderController.saveAmount();
-                                                Navigator.of(context).pop();
-                                              },
-                                              label: Text('save'.tr),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ));
-                      },
-                      deleteItem: () =>
-                          orderController.removeOrderItem(orderItem),
-                      product: orderItem,
-                      height: constraints.maxHeight * 0.1,
-                    );
-                  },
-                ),
-              ),
-            );
-          }),
+          OrderItemList(constraints: constraints),
 
           const SizedBox(height: 16),
 
@@ -672,8 +377,8 @@ class _TradeViewState extends State<TradeView> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      elevation: 4,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      elevation: 0,
                     ),
                     onPressed: () async {
                       await showDialog<Customer>(
@@ -685,12 +390,15 @@ class _TradeViewState extends State<TradeView> {
                       );
                     },
                     child: Text(
-                      TranslatedTexts.buttons.pay.tr,
-                      style: textStyleBlack28.copyWith(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      'pay'.tr,
+                      style: context.bodyMedium.copyWith(
+                          fontSize: context.rfs(
+                            14,
+                            min: 12,
+                            max: 18,
+                          ),
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
                   ),
                 ),

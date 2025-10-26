@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:osonkassa/design_system/themes/text_styles.dart';
 
 import '../../../styles/text_input_styles.dart';
 import '../../../styles/text_styles.dart';
@@ -54,7 +55,8 @@ class SearchTextField extends StatelessWidget {
       onChanged: (value) => onChanged(value),
       style: textStyleBlack14,
       decoration: InputDecoration(
-        hintStyle: textStyleBlack14,
+        hintStyle:
+            context.titleSmall.copyWith(color: Colors.black.withOpacity(0.7)),
         hintText: hintText,
         border: const OutlineInputBorder(),
       ),

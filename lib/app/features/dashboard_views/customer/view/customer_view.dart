@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/styles/app_colors.dart';
 import 'package:osonkassa/design_system/buttons/primary_button.dart';
+import 'package:osonkassa/design_system/themes/text_styles.dart';
 
 import '../../../../core/enums/filter_field.dart';
 import '../../../../styles/text_styles.dart';
+import '../../../../utils/helper/button_size_manager.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
 import '../../../../utils/texts/display_texts.dart';
@@ -110,6 +112,7 @@ class _CustomerViewState extends State<CustomerView> {
                 SizedBox(
                   width: screenSize.width * 0.15,
                   child: SearchTextField(
+                    hintText: "search".tr,
                     onChanged: (value) =>
                         widget.customerCtl.searchBuilder(value),
                   ),
@@ -117,25 +120,31 @@ class _CustomerViewState extends State<CustomerView> {
                 SizedBox(
                   width: screenSize.width * 0.01,
                 ),
-                PrimaryButton(
-                  backgroundColor: ButtonColors.primary,
-                  onClick: () {},
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 25),
-                      child: Text(
-                        "Pay for debt",
-                        style: textStyleWhite18,
-                      )),
-                )
               ],
             ),
-            CheckedAddButton(
-              onClick: () {
-                Get.dialog(const CustomerEditDialog());
-              },
-              permission: "create_customer",
-              roles: widget.authCtl.userModel.value.roles,
+            Row(
+              children: [
+                PrimaryButton(
+                  height: ButtonSizeManager.height(context, height: 0.1 / 2.5),
+                  width: ButtonSizeManager.width(context, width: 0.1 / 1.1),
+                  backgroundColor: ButtonColors.primary,
+                  onClick: () {},
+                  child: Text(
+                    "payment".tr,
+                    style: context.titleMedium.copyWith(color: Colors.white),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                CheckedAddButton(
+                  onClick: () {
+                    Get.dialog(const CustomerEditDialog());
+                  },
+                  permission: "create_customer",
+                  roles: widget.authCtl.userModel.value.roles,
+                )
+              ],
             )
           ],
         ),

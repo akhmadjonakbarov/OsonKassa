@@ -30,10 +30,11 @@ class ReportBox extends StatelessWidget {
             title: Text(report.name),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             child: SizedBox(
               width: double.infinity,
               child: DataTable(
+                columnSpacing: 10,
                 columns: columns(),
                 rows: rows(),
               ),
@@ -46,7 +47,7 @@ class ReportBox extends StatelessWidget {
 
   List<DataColumn> columns() {
     return [
-      DataColumn(
+      const DataColumn(
         label: Text(TableTexts.index),
         headingRowAlignment: MainAxisAlignment.center,
       ),

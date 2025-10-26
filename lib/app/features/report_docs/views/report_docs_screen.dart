@@ -30,7 +30,7 @@ class _ReportDocsScreenState extends State<ReportDocsScreen> {
         padding: paddingSH16.copyWith(top: 10),
         child: Column(
           children: [
-            const TopBar(text: DisplayTexts.report),
+            TopBar(text: 'reports'.tr),
             const SizedBox(
               height: 10,
             ),

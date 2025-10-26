@@ -338,6 +338,7 @@ class AppTranslations extends Translations {
           'note': 'Spiska',
           'add new document': 'Yangi hujjat qo‘shish',
           'trade': 'Savdo',
+          'payment': "To'lov",
         },
         'ru_RU': {
           // General

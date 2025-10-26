@@ -26,7 +26,7 @@ class CustomDataTable extends StatelessWidget {
         dataTextStyle: textStyleBlack14.copyWith(
           fontWeight: FontWeight.w600,
         ),
-        columnSpacing: 15,
+        columnSpacing: 20,
         columns: columns
             .map(
               (e) => DataColumn(
