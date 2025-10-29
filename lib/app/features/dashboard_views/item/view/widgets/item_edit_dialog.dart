@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:osonkassa/app/features/dashboard_views/type/presentation/controller/type_controller.dart';
 import 'package:osonkassa/app/features/shared/export_commons.dart';
 
 import '../../../category/logic/category_controller.dart';
@@ -14,9 +15,7 @@ import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 class ItemEditDialog extends StatefulWidget {
-  const ItemEditDialog({
-    super.key,
-  });
+  const ItemEditDialog({super.key});
 
   @override
   State<ItemEditDialog> createState() => _ItemEditDialogState();
@@ -24,8 +23,13 @@ class ItemEditDialog extends StatefulWidget {
 
 class _ItemEditDialogState extends State<ItemEditDialog> {
   final ItemCtl itemCtl = Get.find<ItemCtl>();
+  final CategoryCtl categoryCtl = Get.find<CategoryCtl>();
+  final UnitCtl unitCtl = Get.find<UnitCtl>();
+  final CompanyCtl companyCtl = Get.find<CompanyCtl>();
+  final TypeController typeCtl = Get.find<TypeController>();
 
   final formKey = GlobalKey<FormState>();
+
   late TextEditingController nameController;
   late TextEditingController barcodeController;
   late TextEditingController salePriceController;
@@ -36,19 +40,18 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
   Map<String, dynamic> categoryData = {};
   Map<String, dynamic> companyData = {};
   Map<String, dynamic> unitData = {};
-
-  final CategoryCtl categoryCtl = Get.find<CategoryCtl>();
-  final UnitCtl unitCtl = Get.find<UnitCtl>();
-  final CompanyCtl companyCtl = Get.find<CompanyCtl>();
+  List<Map<String, dynamic>> typeData =
+      []; // Changed to List for multiple types
 
   @override
   void initState() {
     super.initState();
 
-    // Fetch lists for dropdowns
+    // Fetch dropdown data
     companyCtl.fetchItems();
     categoryCtl.fetchItems();
     unitCtl.fetchItems();
+    typeCtl.getTypes();
 
     if (itemCtl.selectedItem.value != null) {
       final item = itemCtl.selectedItem.value!;
@@ -58,28 +61,33 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
           TextEditingController(text: item.salePrice?.toString() ?? "");
       incomePriceController =
           TextEditingController(text: item.incomePrice?.toString() ?? "");
+
       selectedCurrency = item.currencyType ?? "uzs";
 
-      // if (itemCtl.selectedItem.value.company != null) {
-      //   final comp = companyCtl.list.firstWhereOrNull((e) =>
-      //       e.name.toLowerCase() ==
-      //       widget.item.company.toString().toLowerCase());
-      //   if (comp != null) {
-      //     companyData = {'id': comp.id, 'name': comp.name};
-      //   }
-      // }
-      final cat = categoryCtl.list.firstWhereOrNull((e) =>
-          e.name.toLowerCase() ==
-          itemCtl.selectedItem.value!.category!.toLowerCase());
-      if (cat != null) {
-        categoryData = {'id': cat.id, 'name': cat.name};
+      itemCtl.calculateSellPercentage(
+        incomePrice: item.incomePrice?.toString() ?? "",
+        salePrice: item.salePrice?.toString() ?? "",
+      );
+
+      // Preselect existing relations
+      final t = typeCtl.types
+          .where((e) => item.type != null && item.type!.contains(e.name!))
+          .toList();
+      if (t.isNotEmpty) {
+        typeData = t
+            .map((e) => {'id': e.id, 'name': e.name})
+            .toList(); // Populate selected types
       }
-      final un = unitCtl.list.firstWhereOrNull((e) =>
-          e.value.toLowerCase() ==
-          itemCtl.selectedItem.value!.unit!.toLowerCase());
-      if (un != null) {
-        unitData = {'id': un.id, 'value': un.value};
-      }
+
+      final cat = categoryCtl.list.firstWhereOrNull(
+        (e) => e.name.toLowerCase() == item.category?.toLowerCase(),
+      );
+      if (cat != null) categoryData = {'id': cat.id, 'name': cat.name};
+
+      final un = unitCtl.list.firstWhereOrNull(
+        (e) => e.value.toLowerCase() == item.unit?.toLowerCase(),
+      );
+      if (un != null) unitData = {'id': un.id, 'value': un.value};
     } else {
       nameController = TextEditingController();
       barcodeController = TextEditingController();
@@ -91,19 +99,46 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
   void _save() {
     if (!formKey.currentState!.validate()) return;
 
-    if (itemCtl.selectedItem.value != null) {
-      final updatedItem = itemCtl.selectedItem.value!.copyWith(
+    final selectedItem = itemCtl.selectedItem.value;
+    if (selectedItem != null) {
+      // final updatedItem = itemCtl.selectedItem.value!.copyWith(
+      //   name: nameController.text.trim(),
+      //   barcode: barcodeController.text.trim(),
+      //   salePrice: double.tryParse(salePriceController.text) ?? 0.0,
+      //   incomePrice: double.tryParse(incomePriceController.text) ?? 0.0,
+      //   currencyType: selectedCurrency,
+      //   category: categoryData['name'],
+      //   unit: unitData['value'],
+      //   company: companyData['name'],
+      //   type: typeData.map((e) => e['name']).join(','),
+      //   // Join names for multiple types
+      //   updatedAt: DateTime.now(),
+      // );
+      // itemCtl.updateItem(updatedItem);
+      final Item newProduct = Item(
         name: nameController.text.trim(),
         barcode: barcodeController.text.trim(),
         salePrice: double.tryParse(salePriceController.text) ?? 0.0,
         incomePrice: double.tryParse(incomePriceController.text) ?? 0.0,
         currencyType: selectedCurrency,
         category: categoryData['name'],
-        unit: unitData['value'],
+        unit: unitData['name'],
         company: companyData['name'],
-        updatedAt: DateTime.now(),
+        type: typeData
+            .map((e) => e['name'])
+            .join(','), // Join names for multiple types
       );
-      itemCtl.updateItem(updatedItem);
+      itemCtl.updateProduct(newProduct.toMapForCreate(
+        itemId: selectedItem.id!,
+        categoryId: categoryData['id'],
+        unitId: unitData['id'],
+        typeIds: typeData.map((e) => int.parse(e['id'].toString())).toList(),
+        name: nameController.text.trim(),
+        barcode: barcodeController.text.trim(),
+        salePrice: double.tryParse(salePriceController.text) ?? 0.0,
+        incomePrice: double.tryParse(incomePriceController.text) ?? 0.0,
+        currencyType: selectedCurrency,
+      ));
     } else {
       final Item newItem = Item(
         name: nameController.text.trim(),
@@ -112,12 +147,16 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
         incomePrice: double.tryParse(incomePriceController.text) ?? 0.0,
         currencyType: selectedCurrency,
         category: categoryData['name'],
-        unit: unitData['value'],
+        unit: unitData['name'],
         company: companyData['name'],
+        type: typeData
+            .map((e) => e['name'])
+            .join(','), // Join names for multiple types
       );
       itemCtl.addItem(newItem.toMapForCreate(
-        categoryid: categoryData['id'],
+        categoryId: categoryData['id'],
         unitId: unitData['id'],
+        typeIds: typeData.map((e) => int.parse(e['id'].toString())).toList(),
         name: nameController.text.trim(),
         barcode: barcodeController.text.trim(),
         salePrice: double.tryParse(salePriceController.text) ?? 0.0,
@@ -125,37 +164,33 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
         currencyType: selectedCurrency,
       ));
     }
+
     itemCtl.resetItem();
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final double dialogHeight = MediaQuery.of(context).size.height * 0.7;
-
     return AlertDialog(
       backgroundColor: primary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.35,
-        // height: dialogHeight,
         child: SingleChildScrollView(
           child: Form(
             key: formKey,
             child: Column(
               children: [
-                Obx(() {
-                  return Text(
-                    itemCtl.selectedItem.value != null
-                        ? "edit_product".tr
-                        : "add_product".tr,
-                    style: textStyleBlack20,
-                  );
-                }),
+                Obx(() => Text(
+                      itemCtl.selectedItem.value != null
+                          ? "edit_product".tr
+                          : "add_product".tr,
+                      style: textStyleBlack20,
+                    )),
                 const Divider(),
                 const SizedBox(height: 12),
 
-                // Company & Category
+                // Company, Category & Type Row
                 Row(
                   children: [
                     Expanded(
@@ -220,6 +255,41 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                                 textStyleBlack18.copyWith(color: Colors.grey),
                           )),
                     ),
+                    const SizedBox(width: 5),
+                    Expanded(
+                      child: Obx(() => MultiSelectDropDown(
+                            singleSelectItemStyle: textStyleBlack18,
+                            optionTextStyle: textStyleBlack18,
+                            selectedOptions: typeData.isNotEmpty
+                                ? typeData
+                                    .map((type) => ValueItem(
+                                          label: type['name'],
+                                          value: type['id'],
+                                        ))
+                                    .toList()
+                                : [],
+                            onOptionSelected: (selectedOptions) {
+                              setState(() {
+                                typeData = selectedOptions
+                                    .map((option) => {
+                                          'id': option.value,
+                                          'name': option.label,
+                                        })
+                                    .toList();
+                              });
+                            },
+                            options: typeCtl.types
+                                .map((e) =>
+                                    ValueItem(label: e.name!, value: e.id))
+                                .toList(),
+                            selectionType: SelectionType.multi,
+                            // Allow multiple selection
+                            searchEnabled: true,
+                            hint: "type".tr,
+                            hintStyle:
+                                textStyleBlack18.copyWith(color: Colors.grey),
+                          )),
+                    ),
                   ],
                 ),
 
@@ -234,7 +304,7 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                         validator: (value) =>
                             value!.isEmpty ? "Enter name" : null,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                           labelText: "name".tr,
                         ),
                       ),
@@ -261,10 +331,31 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                   children: [
                     Expanded(
                       child: TextFormField(
+                        controller: incomePriceController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) =>
+                            value!.isEmpty ? "Enter income price" : null,
+                        onChanged: (value) {
+                          itemCtl.calculateSellPercentage(incomePrice: value);
+                          print(itemCtl.sellPercentage.value); // ✅ correct
+                        },
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: "income_price".tr,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Expanded(
+                      child: TextFormField(
                         controller: salePriceController,
                         keyboardType: TextInputType.number,
                         validator: (value) =>
                             value!.isEmpty ? "Enter sale price" : null,
+                        onChanged: (value) {
+                          itemCtl.calculateSellPercentage(salePrice: value);
+                          print(itemCtl.sellPercentage.value); // ✅ correct
+                        },
                         decoration: InputDecoration(
                           border: const OutlineInputBorder(),
                           labelText: "sale_price".tr,
@@ -272,16 +363,10 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                       ),
                     ),
                     const SizedBox(width: 5),
-                    Expanded(
-                      child: TextFormField(
-                        controller: incomePriceController,
-                        keyboardType: TextInputType.number,
-                        validator: (value) =>
-                            value!.isEmpty ? "Enter income price" : null,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: "income_price".tr,
-                        ),
+                    Obx(
+                      () => Text(
+                        '${itemCtl.sellPercentage.value.toStringAsFixed(2)}%',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(width: 5),
@@ -291,9 +376,7 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                         items: ['uzs', 'usd', 'eur']
                             .map((value) => DropdownMenuItem(
                                   value: value,
-                                  child: Text(
-                                    value.toUpperCase(),
-                                  ),
+                                  child: Text(value.toUpperCase()),
                                 ))
                             .toList(),
                         onChanged: (value) {
@@ -342,14 +425,15 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
 
                 const SizedBox(height: 20),
 
-                // Actions
+                // Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SmallButtonText(
                       bgColor: Colors.red,
                       textStyle: textStyleBlack15.copyWith(
-                          fontWeight: FontWeight.w400),
+                        fontWeight: FontWeight.w400,
+                      ),
                       buttonSize: const Size(150, 40),
                       onClick: () => Navigator.of(context).pop(),
                       text: "cancel".tr,
@@ -357,7 +441,8 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
                     SmallButtonText(
                       bgColor: Colors.green,
                       textStyle: textStyleBlack15.copyWith(
-                          fontWeight: FontWeight.w400),
+                        fontWeight: FontWeight.w400,
+                      ),
                       buttonSize: const Size(150, 40),
                       onClick: _save,
                       text: "add".tr,

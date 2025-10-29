@@ -30,13 +30,14 @@ class _ProviderTableState extends State<CachedProductsTable> {
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),
-                columns: const <DataColumn>[
+                columns: <DataColumn>[
                   DataColumn(label: Text(TableTexts.index)),
-                  DataColumn(label: Text(TableTexts.product)),
-                  DataColumn(label: Text(TableTexts.qty)),
-                  DataColumn(label: Text(TableTexts.income_price)),
-                  DataColumn(label: Text(TableTexts.selling_price)),
-                  DataColumn(label: Text(TableTexts.buttons)),
+                  DataColumn(label: Text('product'.tr)),
+                  DataColumn(label: Text('qty'.tr)),
+                  DataColumn(label: Text('income_price'.tr)),
+                  DataColumn(label: Text('sale_price'.tr)),
+                  DataColumn(label: Text('type'.tr)),
+                  DataColumn(label: Text('buttons'.tr)),
                 ],
                 rows: List.generate(
                   widget.manageProductDocItemCtl.productDocItems.length,
@@ -54,6 +55,7 @@ class _ProviderTableState extends State<CachedProductsTable> {
                             CenterText(text: product.incomePrice.toString())),
                         DataCell(
                             CenterText(text: product.sellingPrice.toString())),
+                        DataCell(CenterText(text: product.type ?? "--")),
                         DataCell(
                           Row(
                             children: [

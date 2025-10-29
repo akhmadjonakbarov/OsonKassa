@@ -5,6 +5,7 @@ class DocumentItem {
   DateTime? createdAt;
   DateTime? updatedAt;
   Item? item;
+  String? itemType;
   Currency? currency;
   double? salePrice;
   double? incomePrice;
@@ -19,6 +20,7 @@ class DocumentItem {
     this.salePrice,
     this.incomePrice,
     this.qty,
+    this.itemType,
   });
 
   DocumentItem copyWith({
@@ -30,6 +32,7 @@ class DocumentItem {
     double? salePrice,
     double? incomePrice,
     double? qty,
+    String? itemType,
   }) =>
       DocumentItem(
         id: id ?? this.id,
@@ -40,6 +43,7 @@ class DocumentItem {
         salePrice: salePrice ?? this.salePrice,
         incomePrice: incomePrice ?? this.incomePrice,
         qty: qty ?? this.qty,
+        itemType: itemType ?? this.itemType,
       );
 
   factory DocumentItem.fromRawJson(String str) =>
@@ -62,6 +66,7 @@ class DocumentItem {
         salePrice: json["sale_price"]?.toDouble(),
         incomePrice: json["income_price"]?.toDouble(),
         qty: json["qty"]?.toDouble(),
+        itemType: json["item_type"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -73,6 +78,7 @@ class DocumentItem {
         "sale_price": salePrice,
         "income_price": incomePrice,
         "qty": qty,
+        "item_type": itemType,
       };
 }
 
@@ -134,8 +140,10 @@ class Item {
   double? incomePrice;
   String? currencyType;
   String? category;
+  String? type;
   String? unit;
   dynamic company;
+  double? currencyRate;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -147,8 +155,10 @@ class Item {
     this.incomePrice,
     this.currencyType,
     this.category,
+    this.type,
     this.unit,
     this.company,
+    this.currencyRate,
     this.createdAt,
     this.updatedAt,
   });
@@ -161,8 +171,10 @@ class Item {
     double? incomePrice,
     String? currencyType,
     String? category,
+    String? type,
     String? unit,
     dynamic company,
+    double? currencyRate,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) =>
@@ -174,8 +186,10 @@ class Item {
         incomePrice: incomePrice ?? this.incomePrice,
         currencyType: currencyType ?? this.currencyType,
         category: category ?? this.category,
+        type: type ?? this.type,
         unit: unit ?? this.unit,
         company: company ?? this.company,
+        currencyRate: currencyRate ?? this.currencyRate,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
       );
@@ -192,8 +206,10 @@ class Item {
         incomePrice: json["income_price"]?.toDouble(),
         currencyType: json["currency_type"],
         category: json["category"],
+        type: json["type"],
         unit: json["unit"],
         company: json["company"],
+        currencyRate: json["currency_rate"]?.toDouble(),
         createdAt: json["created_at"] == null
             ? null
             : DateTime.parse(json["created_at"]),
@@ -210,28 +226,34 @@ class Item {
         "income_price": incomePrice,
         "currency_type": currencyType,
         "category": category,
+        "type": type,
         "unit": unit,
         "company": company,
+        "currency_rate": currencyRate,
         "created_at": createdAt?.toIso8601String(),
         "updated_at": updatedAt?.toIso8601String(),
       };
 
   Map<String, dynamic> toMapForCreate({
+    int itemId = 0,
     required String name,
     required String barcode,
     required double salePrice,
     required double incomePrice,
     required String currencyType,
-    required int categoryid,
+    required int categoryId,
     required int unitId,
+    List<int>? typeIds,
   }) {
     return {
+      'id': itemId,
       'name': name,
       'barcode': barcode,
       'sale_price': salePrice,
       'income_price': incomePrice,
       'currency_type': currencyType,
-      'category_id': categoryid,
+      'category_id': categoryId,
+      'type_ids': typeIds,
       'unit_id': unitId,
     };
   }

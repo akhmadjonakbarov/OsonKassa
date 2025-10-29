@@ -4,12 +4,8 @@ import 'package:get/get.dart';
 import '../../../../../core/display/user_notifier.dart';
 import '../../../../../core/enums/type_of_snackbar.dart';
 import '../../../../../core/validator/number_validator.dart';
-import '../../../../../styles/colors.dart';
-import '../../../../../styles/container_decoration.dart';
 import '../../../../../styles/text_styles.dart';
-import '../../../../../utils/texts/button_texts.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
-import '../../../../shared/widgets/buttons.dart';
 import '../../logic/currency_controller.dart';
 import '../../models/currency.dart';
 

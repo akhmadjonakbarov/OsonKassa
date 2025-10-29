@@ -8,7 +8,7 @@ import '../../../../shared/widgets/center_text.dart';
 import '../../../../shared/widgets/custom_data_table.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/item_ctl.dart';
-import '../../models/item.dart';
+import '../../domain/models/item.dart';
 import '../widgets/item_edit_dialog.dart';
 
 class ItemTable extends StatefulWidget {
@@ -35,7 +35,7 @@ class _ItemTableState extends State<ItemTable> {
         TranslatedTexts.table.incomePrice.tr,
         TranslatedTexts.table.currency.tr,
         TranslatedTexts.table.category.tr,
-        TranslatedTexts.table.company.tr,
+        'type'.tr,
         TranslatedTexts.table.unit.tr,
         TranslatedTexts.table.buttons.tr
       ],
@@ -45,7 +45,6 @@ class _ItemTableState extends State<ItemTable> {
           final Item item = widget.itemCtl.list[index];
 
           return DataRow(
-
             cells: <DataCell>[
               DataCell(Text('${index + 1}')),
               DataCell(CenterText(text: item.name!)),
@@ -66,9 +65,7 @@ class _ItemTableState extends State<ItemTable> {
               ),
               DataCell(CenterText(text: item.currencyType!)),
               DataCell(CenterText(text: item.category!)),
-              DataCell(CenterText(
-                  text:
-                      item.company != null ? item.company! : "Belgilanmagan")),
+              DataCell(CenterText(text: item.type ?? "Belgilanmagan")),
               DataCell(CenterText(text: item.unit!)),
               DataCell(
                 Row(
@@ -90,7 +87,7 @@ class _ItemTableState extends State<ItemTable> {
                         builder: (context) => DeleteDialog(
                           title: item.name!,
                           onConfirmDelete: () =>
-                              widget.itemCtl.removeItem(item.id!),
+                              widget.itemCtl.deleteProduct(item.id!, item.type),
                         ),
                       ),
                     ),

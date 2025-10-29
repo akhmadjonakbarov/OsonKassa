@@ -30,7 +30,6 @@ class CustomerCtl extends PaginationController {
       getAllRepository: repository as GetAll<Customer>,
     );
     super.onInit();
-    fetchItems();
   }
 
   fetchItems() async {

@@ -18,12 +18,9 @@ class App extends StatelessWidget {
       translations: AppTranslations(),
       locale: const Locale('uz', 'Uz'),
       fallbackLocale: const Locale('uz', 'Uz'),
-
-      // ⚡ Use helper builders so we can pass BuildContext to the theme
       theme: _buildLightTheme(context),
       darkTheme: _buildDarkTheme(context),
       themeMode: ThemeMode.light,
-
       debugShowCheckedModeBanner: false,
       initialRoute: AppPaths.auth,
       initialBinding: InitialBindings(),

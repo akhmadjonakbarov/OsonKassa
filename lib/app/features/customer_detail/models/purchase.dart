@@ -81,6 +81,7 @@ class Purchase {
 
 class PurchaseItem {
   String? name;
+  String? itemType;
   String? barcode;
   double? incomePrice;
   double? salePrice;
@@ -94,6 +95,7 @@ class PurchaseItem {
     this.salePrice,
     this.qty,
     this.unit,
+    this.itemType,
   });
 
   PurchaseItem copyWith({
@@ -103,6 +105,7 @@ class PurchaseItem {
     double? salePrice,
     double? qty,
     String? unit,
+    String? itemType,
   }) =>
       PurchaseItem(
         name: name ?? this.name,
@@ -111,6 +114,7 @@ class PurchaseItem {
         salePrice: salePrice ?? this.salePrice,
         qty: qty ?? this.qty,
         unit: unit ?? this.unit,
+        itemType: itemType ?? this.itemType,
       );
 
   factory PurchaseItem.fromRawJson(String str) =>
@@ -123,6 +127,7 @@ class PurchaseItem {
         barcode: json["barcode"],
         incomePrice: json["income_price"]?.toDouble(),
         salePrice: json["sale_price"]?.toDouble(),
+        itemType: json["item_type"],
         qty: json["qty"]?.toDouble(),
         unit: json["unit"],
       );
@@ -132,6 +137,7 @@ class PurchaseItem {
         "barcode": barcode,
         "income_price": incomePrice,
         "sale_price": salePrice,
+        "item_type": itemType,
         "qty": qty,
         "unit": unit,
       };

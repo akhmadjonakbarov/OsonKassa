@@ -9,7 +9,7 @@ import '../../../../../utils/helper/log_helper.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../currency/models/currency.dart';
-import '../../../item/models/item.dart';
+import '../../../item/domain/models/item.dart';
 import '../../models/draf_product.dart';
 
 class ManageProductDocItemCtl extends GetxController {
@@ -22,7 +22,7 @@ class ManageProductDocItemCtl extends GetxController {
   var qty = 0.0.obs;
 
   Rx<Currency> currency = Currency().obs;
-  RxList selectedItems = RxList([]);
+  RxList<Item> selectedItems = RxList([]);
 
   @override
   void onClose() {
@@ -34,15 +34,15 @@ class ManageProductDocItemCtl extends GetxController {
   void storeProductDocItem(BuildContext context) {
     for (Item item in selectedItems) {
       DraftProduct draftProduct = DraftProduct(
-        itemId: item.id!,
-        itemName: item.name!,
-        incomePrice: item.incomePrice ?? 0,
-        sellingPrice: item.salePrice ?? 0,
-        id: productDocItems.length + 1,
-        qty: double.parse(quantityController.text),
-        sellingPercentage: 0.0,
-        unit: item.unit!,
-      );
+          itemId: item.id!,
+          itemName: item.name!,
+          incomePrice: item.incomePrice ?? 0,
+          sellingPrice: item.salePrice ?? 0,
+          id: productDocItems.length + 1,
+          qty: double.parse(quantityController.text),
+          sellingPercentage: 0.0,
+          unit: item.unit!,
+          type: item.type);
       productDocItems.add(draftProduct);
     }
 
@@ -111,14 +111,14 @@ class ManageProductDocItemCtl extends GetxController {
 
   void addOrRemoveSelectItem(Item item) {
     if (isExistInSelectedItems(item)) {
-      selectedItems.removeWhere((e) => e.id == item.id);
+      selectedItems.removeWhere((e) => e.id == item.id && e.type == item.type);
     } else {
       selectedItems.add(item);
     }
   }
 
   bool isExistInSelectedItems(Item item) {
-    return selectedItems.any((e) => e.id == item.id);
+    return selectedItems.any((e) => e.id == item.id && e.type == item.type);
   }
 
   void clearStoreProductDocItemList() {

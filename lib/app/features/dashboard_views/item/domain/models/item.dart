@@ -8,6 +8,7 @@ class Item {
   double? incomePrice;
   String? currencyType;
   String? category;
+  String? type;
   String? unit;
   dynamic company;
   double? currencyRate;
@@ -22,6 +23,7 @@ class Item {
     this.incomePrice,
     this.currencyType,
     this.category,
+    this.type,
     this.unit,
     this.company,
     this.currencyRate,
@@ -37,6 +39,7 @@ class Item {
     double? incomePrice,
     String? currencyType,
     String? category,
+    String? type,
     String? unit,
     dynamic company,
     double? currencyRate,
@@ -51,6 +54,7 @@ class Item {
         incomePrice: incomePrice ?? this.incomePrice,
         currencyType: currencyType ?? this.currencyType,
         category: category ?? this.category,
+        type: type ?? this.type,
         unit: unit ?? this.unit,
         company: company ?? this.company,
         currencyRate: currencyRate ?? this.currencyRate,
@@ -70,6 +74,7 @@ class Item {
         incomePrice: json["income_price"]?.toDouble(),
         currencyType: json["currency_type"],
         category: json["category"],
+        type: json["type"],
         unit: json["unit"],
         company: json["company"],
         currencyRate: json["currency_rate"]?.toDouble(),
@@ -89,6 +94,7 @@ class Item {
         "income_price": incomePrice,
         "currency_type": currencyType,
         "category": category,
+        "type": type,
         "unit": unit,
         "company": company,
         "currency_rate": currencyRate,

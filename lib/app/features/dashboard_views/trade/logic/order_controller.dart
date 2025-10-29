@@ -95,7 +95,9 @@ class OrderController extends GetxController {
   addProduct(StoreItem item) {
     List<OrderItem> orderItems = selectedOrder.value!.items!;
     int existOrderItemIndex = orderItems.indexWhere(
-      (element) => element.barcode!.contains(item.item!.barcode!),
+      (element) =>
+          element.barcode!.contains(item.item!.barcode!) &&
+          element.itemType == item.itemType,
     );
 
     if (existOrderItemIndex > -1) {
@@ -105,6 +107,7 @@ class OrderController extends GetxController {
       orderItems[existOrderItemIndex] = existedOrderItem;
     } else {
       OrderItem orderItem = OrderItem(
+          itemType: item.itemType,
           id: DateTime.now().millisecondsSinceEpoch % 100,
           name: item.item!.name,
           barcode: item.item!.barcode,
@@ -126,7 +129,11 @@ class OrderController extends GetxController {
 
   removeOrderItem(OrderItem orderItem) {
     final updatedItems = selectedOrder.value!.items!
-      ..removeWhere((element) => element.barcode == orderItem.barcode);
+      ..removeWhere(
+        (element) =>
+            element.barcode == orderItem.barcode &&
+            element.itemType == orderItem.itemType,
+      );
 
     if (updatedItems.isEmpty) {
       reOrder();

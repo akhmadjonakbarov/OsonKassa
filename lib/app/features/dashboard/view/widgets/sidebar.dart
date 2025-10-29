@@ -95,6 +95,21 @@ class _SideBarState extends State<SideBar> {
               ),
               CustomButton(
                 isSelecte:
+                    widget.dashboardController.isSelected(AppViews.types),
+                buttonSize: const Size(double.infinity, 55),
+                text: 'types'.tr,
+                textStyle: textStyleWhite18W800,
+                icon: AppIcons.category,
+                buttonBgColor: Colors.transparent,
+                onClick: () {
+                  widget.dashboardController.changeView(AppViews.types);
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomButton(
+                isSelecte:
                     widget.dashboardController.isSelected(AppViews.product),
                 buttonSize: const Size(double.infinity, 55),
                 text: 'products'.tr,

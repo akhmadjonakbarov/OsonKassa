@@ -14,17 +14,16 @@ class SellProductItem extends StatelessWidget {
   final OrderItem product;
   final double height;
 
-  const SellProductItem({
-    super.key,
-    required this.height,
-    required this.onEdit,
-    required this.product,
-    required this.incrementQty,
-    required this.decrementQty,
-    required this.deleteItem,
-    required this.cheapenClick,
-    required this.calculateAmountByPrice
-  });
+  const SellProductItem(
+      {super.key,
+      required this.height,
+      required this.onEdit,
+      required this.product,
+      required this.incrementQty,
+      required this.decrementQty,
+      required this.deleteItem,
+      required this.cheapenClick,
+      required this.calculateAmountByPrice});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class SellProductItem extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Text(
-              product.name ?? "",
+              "${product.name!}${product.itemType != null ? ' (${product.itemType})' : ''}",
               style: textStyleBlack18.copyWith(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,

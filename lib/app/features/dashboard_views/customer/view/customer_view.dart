@@ -9,7 +9,7 @@ import '../../../../styles/text_styles.dart';
 import '../../../../utils/helper/button_size_manager.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../../utils/texts/button_texts.dart';
-import '../../../../utils/texts/display_texts.dart';
+
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../customer_detail/logic/customer_detail_ctl.dart';
 import '../../../shared/export_commons.dart';
@@ -90,7 +90,7 @@ class _CustomerViewState extends State<CustomerView> {
       onChangePage: (p0) {
         widget.customerCtl.selectPage(p0);
       },
-      title: DisplayTexts.builders,
+      title: 'customers'.tr,
       pagination: widget.customerCtl.pagination,
       children: [
         Row(
@@ -149,9 +149,8 @@ class _CustomerViewState extends State<CustomerView> {
           ],
         ),
         Container(
-          margin: const EdgeInsets.symmetric(vertical: 5),
           padding: const EdgeInsets.symmetric(horizontal: 256),
-          height: screenSize.height * 0.12,
+          height: screenSize.height * 0.13,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -167,7 +166,7 @@ class _CustomerViewState extends State<CustomerView> {
           ),
         ),
         SizedBox(
-          height: screenSize.height * 0.01 / 2,
+          height: 10,
         ),
         CustomerTable(
           controller: widget.customerCtl,

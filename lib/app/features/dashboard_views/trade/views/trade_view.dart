@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/logic/order_controller.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/views/widgets/order_item_list.dart';
+import 'package:osonkassa/app/features/dashboard_views/trade/views/widgets/product_search_bar.dart';
 import 'package:osonkassa/app/styles/app_colors.dart';
 import 'package:osonkassa/design_system/buttons/primary_button.dart';
 import 'package:osonkassa/design_system/themes/responsive_font_size.dart';
@@ -115,75 +116,35 @@ class _TradeViewState extends State<TradeView> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// Search Bar
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: barCodeController,
-                    focusNode: addressFocusNode,
-                    onChanged: (value) =>
-                        storeCtl.searchProduct(value, inStore: true),
-                    onSubmitted: (value) {
-                      storeCtl.searchProduct(value);
-                      barCodeController.clear();
-                      FocusScope.of(context).requestFocus(addressFocusNode);
-                    },
-                    style: textStyleBlack18,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        CupertinoIcons.barcode,
-                        color: Colors.blueAccent,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: const Icon(CupertinoIcons.clear_thick_circled,
-                            color: Colors.grey),
-                        onPressed: () {
-                          barCodeController.clear();
-                          storeCtl.searchProduct("");
-                        },
-                      ),
-                      hintText: "Scan or Enter Barcode...",
-                      hintStyle: textStyleBlack18.copyWith(
-                          color: Colors.grey.shade500),
-                      filled: true,
-                      fillColor: Colors.grey.shade100,
-                      contentPadding: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 16),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: const BorderSide(color: Colors.blueAccent),
-                      ),
-                    ),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
+                  child: ProductSearchBar(
+                    barCodeController: barCodeController,
+                    addressFocusNode: addressFocusNode,
+                    storeCtl: storeCtl,
+                    searchProductDialog: searchProductDialog,
                   ),
                 ),
-                const SizedBox(width: 12),
-                ElevatedButton.icon(
-                  onPressed: () => searchProductDialog(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 14),
-                    elevation: 3,
+              ),
+              ElevatedButton(
+                onPressed: () => fetch(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  icon: const Icon(CupertinoIcons.search, size: 20),
-                  label: Text("search".tr),
-                )
-              ],
-            ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  elevation: 3,
+                ),
+                child: const Icon(CupertinoIcons.refresh_bold, size: 20),
+              )
+            ],
           ),
 
           const SizedBox(height: 10),
@@ -226,7 +187,7 @@ class _TradeViewState extends State<TradeView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            product.item!.name!,
+                            "${product.item!.name!}${product.itemType != null ? ' (${product.itemType})' : ''}",
                             style: textStyleBlack20.copyWith(
                               fontWeight: FontWeight.w600,
                               overflow: TextOverflow.ellipsis,

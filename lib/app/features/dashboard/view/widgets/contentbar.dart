@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/type/presentation/type_view.dart';
 
 import '../../../../config/app_views.dart';
 import '../../../action/logic/action_ctl.dart';
@@ -25,8 +26,10 @@ import '../../../dashboard_views/trade/views/trade_view.dart';
 import '../../../report_docs/logic/report_ctl.dart';
 import '../../logic/controllers/dashboard_controller.dart';
 import 'header.dart';
+
 class ContentBar extends StatefulWidget {
   final DashboardCtl dashboardCtl;
+
   const ContentBar({
     super.key,
     required this.dashboardCtl,
@@ -72,7 +75,7 @@ class _ContentBarState extends State<ContentBar> {
           ),
           Expanded(
             child: Obx(
-                  () {
+              () {
                 Widget currentView;
                 switch (widget.dashboardCtl.selectedView.value) {
                   case AppViews.dashboard:
@@ -84,7 +87,7 @@ class _ContentBarState extends State<ContentBar> {
                     currentView = const TradeView();
                     break;
                   case AppViews.product:
-                    currentView = ItemtView(
+                    currentView = ItemView(
                       actionCtl: actionCtl,
                       authCtl: authCtl,
                     );
@@ -94,6 +97,11 @@ class _ContentBarState extends State<ContentBar> {
                       displayController: displayController,
                       authCtl: authCtl,
                       computerCtl: computerCtl,
+                    );
+                    break;
+                  case AppViews.types:
+                    currentView = TypeView(
+                      authCtl: authCtl,
                     );
                     break;
                   case AppViews.document:
@@ -135,7 +143,8 @@ class _ContentBarState extends State<ContentBar> {
 
                 return AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
-                  transitionBuilder: (Widget child, Animation<double> animation) {
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
                     return FadeTransition(
                       opacity: animation,
                       child: child,

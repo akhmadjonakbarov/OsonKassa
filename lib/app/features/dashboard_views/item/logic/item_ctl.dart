@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/item/data/repository/product_repository_impl.dart';
+import 'package:osonkassa/app/features/dashboard_views/item/domain/repository/product_repository.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -17,12 +19,13 @@ import '../../../shared/models/api_data.dart';
 import '../../../unit/logic/unit_controller.dart';
 import '../../category/logic/category_controller.dart';
 import '../../company/logic/company_ctl.dart';
-import '../models/item.dart';
+import '../domain/models/item.dart';
 import 'item_repo.dart';
 import 'item_service.dart';
 
 class ItemCtl extends MainController<Item> {
   var categoryName = ''.obs;
+  var sellPercentage = 0.0.obs;
   Rxn<Item> selectedItem = Rxn(null);
 
   void setLoading(bool value) {
@@ -33,6 +36,8 @@ class ItemCtl extends MainController<Item> {
   final TextEditingController barcodeController = TextEditingController();
   final TextEditingController salePriceController = TextEditingController();
   final TextEditingController incomePriceController = TextEditingController();
+  final TextEditingController sellPercentageController =
+      TextEditingController();
 
   // controllers
   final CategoryCtl categoryCtl = Get.find<CategoryCtl>();
@@ -41,10 +46,12 @@ class ItemCtl extends MainController<Item> {
 
   late final ItemRepo _productRepo;
   late final ItemService _productService;
+  late final ProductRepository productRepository;
 
   @override
   void onInit() {
     final Dio dio = DioProvider().createDio();
+    productRepository = ProductRepositoryImpl(dio: dio);
     _productRepo = ItemRepo(dio);
     _productService = ItemService(
       addRepository: _productRepo as Add<Map<String, dynamic>>,
@@ -54,7 +61,6 @@ class ItemCtl extends MainController<Item> {
     );
 
     super.onInit();
-    fetchItems();
   }
 
   @override
@@ -62,7 +68,6 @@ class ItemCtl extends MainController<Item> {
     try {
       setLoading(true);
       var data = await _productService.getAllItems(page: page.value);
-      print(data.items);
       list(data.items.cast<Item>());
       pagination(data.pagination);
     } catch (e) {
@@ -119,6 +124,23 @@ class ItemCtl extends MainController<Item> {
     }
   }
 
+  void updateProduct(Map<String, dynamic> updatedProduct) async {
+    try {
+      bool isSuccess = await productRepository.updateProduct(updatedProduct);
+      if (isSuccess) {
+        UserNotifier.showSnackBar(
+          label: AlertTexts.updateAlert(updatedProduct['name']),
+          type: TypeOfSnackBar.update,
+        );
+        fetchItems();
+      }
+    } on BarcodeAlreadyExistException {
+      handleError(AlertTexts.barcode_unique);
+    } catch (e) {
+      handleError(e.toString());
+    }
+  }
+
   void filterByCategory(String name) async {
     List<Item> filteredProducts = [];
     try {
@@ -127,7 +149,6 @@ class ItemCtl extends MainController<Item> {
 
       var products = list;
 
-      // Filter products by category ID
       if (categoryIsSelected()) {
         filteredProducts = products
             .where((element) =>
@@ -215,6 +236,46 @@ class ItemCtl extends MainController<Item> {
       );
     } finally {
       fetchItems();
+    }
+  }
+
+
+  void deleteProduct(int id, String? name) async {
+    try {
+      bool isDelete = await productRepository.deleteProduct(id, name);
+      if (isDelete) {
+        UserNotifier.showSnackBar(
+          label: AlertTexts.deleted.capitalizeFirst!,
+          type: TypeOfSnackBar.delete,
+        );
+      }
+    } catch (e) {
+      UserNotifier.showSnackBar(
+        text: e.toString(),
+        type: TypeOfSnackBar.error,
+      );
+    } finally {
+      fetchItems();
+    }
+  }
+
+  void calculateSellPercentage({
+    String incomePrice = "",
+    String salePrice = "",
+  }) {
+    try {
+      double income = double.tryParse(incomePrice) ?? 0.0;
+      double sale = double.tryParse(salePrice) ?? 0.0;
+      if (income > 0 && sale > 0) {
+        double percentage = (sale / income) * 100;
+        sellPercentage.value = percentage;
+      } else {
+        sellPercentage.value = 0.0;
+      }
+    } catch (e) {
+      sellPercentage.value = 0.0;
+      handleError(e.toString());
+      LogHelper.logError(e.toString());
     }
   }
 }

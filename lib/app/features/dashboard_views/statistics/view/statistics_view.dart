@@ -17,18 +17,12 @@ class StatisticsView extends StatelessWidget {
   Widget build(BuildContext context) {
     statisticsCtl.loadAllStatistics();
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return ListView(
+      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         RefreshIndicator(
             onRefresh: statisticsCtl.loadAllStatistics,
-            child: Row(
-              children: [
-                Expanded(
-                  child: WeeklyProfit(statisticsCtl: statisticsCtl),
-                ),
-              ],
-            )),
+            child: WeeklyProfit(statisticsCtl: statisticsCtl)),
         const SizedBox(height: 16),
         Container(
           decoration: Decorations.decoration(

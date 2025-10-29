@@ -4,6 +4,7 @@ class AppViews {
   static const String product = "Mahsulotlar";
   static const String computer = "Kompyuterlar";
   static const String category = "Bo'limlar";
+  static const String types = "Turlar";
   static const String dashboard = "Dashboard";
   static const String spiska = "Spiskalar";
   static const String currency = "Valyuta";

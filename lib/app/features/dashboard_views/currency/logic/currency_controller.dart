@@ -30,7 +30,6 @@ class CurrencyCtl extends MainController<Currency> {
       getAllRepository: currencyRepository as GetAllWithPagination<ApiData>,
     );
     super.onInit();
-    fetchItems();
   }
 
   void resetCurrency() {

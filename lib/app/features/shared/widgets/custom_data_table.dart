@@ -27,6 +27,8 @@ class CustomDataTable extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
         columnSpacing: 20,
+        headingRowHeight: 40,
+        dataRowHeight: 35,
         columns: columns
             .map(
               (e) => DataColumn(

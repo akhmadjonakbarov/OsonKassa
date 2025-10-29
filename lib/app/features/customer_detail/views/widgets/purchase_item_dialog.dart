@@ -132,7 +132,8 @@ class PurchaseItemDialog extends StatelessWidget {
                         )),
                         DataCell(Container(
                           alignment: Alignment.center,
-                          child: Text(docItem.name.toString()),
+                          child: Text(
+                              "${docItem.name!}${docItem.itemType != null ? ' (${docItem.itemType})' : ''}"),
                         )),
                         DataCell(Container(
                           alignment: Alignment.center,

@@ -122,7 +122,8 @@ class _DocItemTableDialogState extends State<DocItemTableDialog> {
                       )),
                       DataCell(Container(
                         alignment: Alignment.center,
-                        child: Text(docItem.item!.name.toString()),
+                        child: Text(
+                            "${docItem.item!.name!}${docItem.itemType != null ? ' (${docItem.itemType})' : ''}"),
                       )),
                       DataCell(Container(
                         alignment: Alignment.center,

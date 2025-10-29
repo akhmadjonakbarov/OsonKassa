@@ -33,6 +33,7 @@ class _CustomerTableState extends State<CustomerTable> {
         padding: EdgeInsets.zero,
         decoration: const BoxDecoration(),
         child: CustomDataTable(
+
           columns: [
             TranslatedTexts.table.index.tr,
             TranslatedTexts.table.name.tr,

@@ -3,6 +3,7 @@ import 'dart:convert';
 class OrderItem {
   int? id;
   int? itemId;
+  String? itemType;
   double? qty;
   double? incomePrice;
   double? salePrice;
@@ -10,16 +11,16 @@ class OrderItem {
   String? barcode;
   String? unit;
 
-  OrderItem({
-    this.id,
-    this.itemId,
-    this.qty,
-    this.incomePrice,
-    this.salePrice,
-    this.name,
-    this.barcode,
-    this.unit,
-  });
+  OrderItem(
+      {this.id,
+      this.itemId,
+      this.qty,
+      this.incomePrice,
+      this.salePrice,
+      this.name,
+      this.barcode,
+      this.unit,
+      this.itemType});
 
   OrderItem copyWith({
     int? id,
@@ -30,6 +31,7 @@ class OrderItem {
     String? name,
     String? barcode,
     String? unit,
+    String? itemType,
   }) =>
       OrderItem(
         id: id ?? this.id,
@@ -40,6 +42,7 @@ class OrderItem {
         name: name ?? this.name,
         barcode: barcode ?? this.barcode,
         unit: unit ?? this.unit,
+        itemType: itemType ?? this.itemType,
       );
 
   factory OrderItem.fromRawJson(String str) =>
@@ -55,6 +58,7 @@ class OrderItem {
         salePrice: json["sale_price"]?.toDouble(),
         name: json["name"],
         barcode: json["barcode"],
+        itemType: json["itemType"],
         unit: json["unit"],
       );
 
@@ -67,5 +71,6 @@ class OrderItem {
         "name": name,
         "barcode": barcode,
         "unit": unit,
+        "item_type": itemType,
       };
 }

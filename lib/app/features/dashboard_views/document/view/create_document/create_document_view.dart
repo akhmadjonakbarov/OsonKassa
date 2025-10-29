@@ -13,7 +13,7 @@ import '../../../category/logic/category_controller.dart';
 import '../../../currency/logic/currency_controller.dart';
 import '../../../currency/models/currency.dart';
 import '../../../item/logic/item_ctl.dart';
-import '../../../item/models/item.dart';
+import '../../../item/domain/models/item.dart';
 import '../../../note/logic/note_controller.dart';
 import '../../logic/document/document_ctl.dart';
 import '../../logic/view_controller/manage_product_doc_item_ctl.dart';
@@ -71,14 +71,14 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
   }
 
   void _submitForm() {
-    DraftDocument drafDocument = DraftDocument(
+    DraftDocument draftDocument = DraftDocument(
       docType: DocumentType.buy.name,
       products: manageProductDocItemCtl.productDocItems,
     );
 
-    LogHelper.logInfo("Document: ${drafDocument.toMap()}");
+    LogHelper.logInfo("Document: ${draftDocument.toMap()}");
 
-    documentCtl.addItem(drafDocument.toMap());
+    documentCtl.addItem(draftDocument.toMap());
     manageProductDocItemCtl.clearStoreProductDocItemList();
     reloadFetchItems();
   }

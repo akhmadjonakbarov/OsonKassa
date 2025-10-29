@@ -16,17 +16,17 @@ import 'table/item_table.dart';
 import 'widgets/filter_by_category.dart';
 import 'widgets/item_edit_dialog.dart';
 
-class ItemtView extends StatefulWidget {
+class ItemView extends StatefulWidget {
   final AuthCtl authCtl;
   final ActionCtl actionCtl;
 
-  const ItemtView({super.key, required this.authCtl, required this.actionCtl});
+  const ItemView({super.key, required this.authCtl, required this.actionCtl});
 
   @override
-  State<ItemtView> createState() => _ItemtViewState();
+  State<ItemView> createState() => _ItemViewState();
 }
 
-class _ItemtViewState extends State<ItemtView> {
+class _ItemViewState extends State<ItemView> {
   final ItemCtl itemCtl = Get.find<ItemCtl>();
   final CategoryCtl categoryCtl = Get.find<CategoryCtl>();
   final UnitCtl unitCtl = Get.find<UnitCtl>();
@@ -57,7 +57,7 @@ class _ItemtViewState extends State<ItemtView> {
         itemCtl.selectPage(p0);
       },
       pagination: itemCtl.pagination,
-      title: "Mahsulotlar",
+      title: "products".tr,
       children: [
         Obx(
           () {
@@ -106,7 +106,6 @@ class _ItemtViewState extends State<ItemtView> {
                               Get.dialog(ItemEditDialog()).then(
                                 (value) => itemCtl.selectItem(null),
                               );
-
                             },
                             permission:
                                 Permissions.create_item.name.toLowerCase(),

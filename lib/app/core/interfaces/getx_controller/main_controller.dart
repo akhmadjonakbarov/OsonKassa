@@ -41,11 +41,8 @@ abstract class MainController<T> extends GetxController {
 class PaginationController extends GetxController {
   var page = 1.obs;
   var pagination = PaginationModel.empty().obs;
+
   void selectPage(int pageValue) {
     page(pageValue);
   }
-}
-
-abstract class SearchController extends GetxController {
-  searchItem();
 }

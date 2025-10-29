@@ -11,7 +11,7 @@ import '../../../../core/network/status_codes.dart';
 import '../../../../core/validator/response_validator.dart';
 import '../../../shared/models/api_data.dart';
 import '../../../shared/models/pagination_model.dart';
-import '../models/item.dart';
+import '../domain/models/item.dart';
 
 class ItemRepo
     implements
@@ -35,6 +35,7 @@ class ItemRepo
       log(e.response!.statusCode.toString());
       log(e.toString());
       if (e.response != null) {
+        print(e.response.toString());
         switch (e.response!.statusCode) {
           case StatusCodes.CONFLICT_409:
             throw BarcodeAlreadyExistException(

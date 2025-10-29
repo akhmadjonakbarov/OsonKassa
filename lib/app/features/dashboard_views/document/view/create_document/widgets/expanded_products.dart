@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
 
 import '../../../../../../utils/texts/display_texts.dart';
-import '../../../../item/models/item.dart';
+import '../../../../item/domain/models/item.dart';
 import 'expanded_dop_down.dart';
 
 class ExpandedProducts extends StatelessWidget {

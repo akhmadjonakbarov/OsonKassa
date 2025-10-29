@@ -4,7 +4,7 @@ import '../../../../core/interfaces/api/delete.dart';
 import '../../../../core/interfaces/api/get_all.dart';
 import '../../../../core/interfaces/api/update.dart';
 import '../../../shared/models/api_data.dart';
-import '../models/item.dart';
+import '../domain/models/item.dart';
 
 class ItemService {
   final Add<Map<String, dynamic>> _addRepo;

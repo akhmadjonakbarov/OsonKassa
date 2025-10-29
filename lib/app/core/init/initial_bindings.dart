@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/type/presentation/controller/type_controller.dart';
 
 import '../../features/auth/logic/controllers/auth_ctl.dart';
 import '../../features/customer_detail/logic/customer_detail_ctl.dart';
@@ -12,5 +13,6 @@ class InitialBindings extends Bindings {
     Get.lazyPut(() => AuthCtl(), fenix: true);
     Get.lazyPut(() => ReportCtl(), fenix: true);
     Get.lazyPut(() => CustomerDetailCtl(), fenix: true);
+    Get.lazyPut(() => TypeController(), fenix: true);
   }
 }

@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import '../../currency/models/currency.dart';
-import '../../item/models/item.dart';
+import '../../item/domain/models/item.dart';
 
 class StoreItem {
   int? id;
   Item? item;
+  String? itemType;
   Currency? currency;
   double? currencyRateValue;
   double? salePrice;
@@ -15,18 +16,18 @@ class StoreItem {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  StoreItem({
-    this.id,
-    this.item,
-    this.currency,
-    this.salePrice,
-    this.incomePrice,
-    this.salePercentage,
-    this.qty,
-    this.createdAt,
-    this.updatedAt,
-    this.currencyRateValue,
-  });
+  StoreItem(
+      {this.id,
+      this.item,
+      this.currency,
+      this.salePrice,
+      this.incomePrice,
+      this.salePercentage,
+      this.qty,
+      this.createdAt,
+      this.updatedAt,
+      this.currencyRateValue,
+      this.itemType});
 
   StoreItem copyWith({
     int? id,
@@ -39,6 +40,7 @@ class StoreItem {
     double? qty,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? itemType,
   }) =>
       StoreItem(
         id: id ?? this.id,
@@ -51,6 +53,7 @@ class StoreItem {
         qty: qty ?? this.qty,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
+        itemType: itemType ?? this.itemType,
       );
 
   factory StoreItem.fromRawJson(String str) =>
@@ -59,6 +62,7 @@ class StoreItem {
   String toRawJson() => json.encode(toJson());
 
   factory StoreItem.fromJson(Map<String, dynamic> json) => StoreItem(
+        itemType: json["item_type"],
         id: json["id"],
         item: json["item"] == null ? null : Item.fromJson(json["item"]),
         currency: json["currency"] == null
@@ -78,6 +82,7 @@ class StoreItem {
       );
 
   Map<String, dynamic> toJson() => {
+        "item_type": itemType,
         "id": id,
         "item": item?.toJson(),
         "currency": currency?.toJson(),
