@@ -83,24 +83,25 @@ class CategoryRepository
         ApiData(items: [], pagination: PaginationModel.empty());
     List<CategoryModel> categories = [];
     PaginationModel pagination = PaginationModel.empty();
+
     try {
       Response response =
-          await dio.get('$_baseURL/all?page=$page&pageSize=$pageSize');
+          await dio.get('$_baseURL/all?page=$page&page_size=$pageSize');
       if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
+        var resData = response.data['data']['items'];
         var paginationData = response.data['data']['pagination'];
         for (var element in resData) {
           CategoryModel categoryModel = CategoryModel.fromMap(element);
           categories.add(categoryModel);
         }
-        if (ResponseValidator.isMap(paginationData)) {
-          pagination = PaginationModel.fromMap(paginationData);
-        }
+        pagination = PaginationModel.fromMap(paginationData);
       }
+      print(categories);
       data.items = categories;
       data.pagination = pagination;
       return data;
-    } catch (e) {
+    } on DioException catch (e) {
+      print(e);
       rethrow;
     }
   }
