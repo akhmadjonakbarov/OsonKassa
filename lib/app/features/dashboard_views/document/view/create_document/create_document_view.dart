@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/shared/widgets/buttons/primary_button.dart';
 
 import '../../../../../core/enums/product_doc_type.dart';
 import '../../../../../core/validator/number_validator.dart';
@@ -186,7 +187,7 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
                                   ),
                                   child: ListTile(
                                     title: Text(
-                                      "${index + 1}. (${item.category}) ${item.name}",
+                                      "${index + 1}. (${item.category}) ${item.name} ${item.type == null ? '' : "${item.type}"}",
                                       style: textStyleBlack18.copyWith(
                                         color: exists
                                             ? Colors.white
@@ -231,28 +232,33 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
           Row(
             children: [
               Expanded(
-                child: CustomButton2(
-                  text: 'add'.tr,
-                  iconColor: Colors.white,
-                  buttonBgColor: Colors.pinkAccent,
-                  onClick: addProductBadge,
-                  buttonSize: Size(constraints.maxWidth * 0.1, 45),
-                  textStyle: textStyleBlack18.copyWith(color: Colors.white),
-                ),
-              ),
+                  child: Obx(
+                () => PrimaryButton(
+                    backgroundColor: Colors.green,
+                    onPressed: addProductBadge,
+                    child: Text(
+                      'add'.tr,
+                      style: textStyleBlack18.copyWith(
+                        color: Colors.white,
+                      ),
+                    )),
+              )),
               SizedBox(
                 width: constraints.maxHeight * 0.02,
               ),
               Expanded(
-                child: CustomButton2(
-                  text: 'save'.tr,
-                  iconColor: Colors.white,
-                  buttonBgColor: Colors.blue,
-                  onClick: _submitForm,
-                  buttonSize: Size(constraints.maxWidth * 0.1, 45),
-                  textStyle: textStyleBlack18.copyWith(color: Colors.white),
+                  child: Obx(
+                () => PrimaryButton(
+                  isLoading: documentCtl.isSaving.value,
+                  onPressed: _submitForm,
+                  child: Text(
+                    'save'.tr,
+                    style: textStyleBlack18.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-              )
+              ))
             ],
           )
         ],
