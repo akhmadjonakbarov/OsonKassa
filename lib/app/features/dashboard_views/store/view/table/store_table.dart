@@ -31,6 +31,7 @@ class _DebtTableState extends State<StoreTable> {
         columns: [
           TranslatedTexts.table.index.tr,
           TranslatedTexts.table.name.tr,
+          "type".tr,
           TranslatedTexts.table.category.tr,
           TranslatedTexts.table.incomePrice.tr,
           TranslatedTexts.table.salePrice.tr,
@@ -49,9 +50,10 @@ class _DebtTableState extends State<StoreTable> {
                 )),
                 DataCell(
                   CenterText(
-                    text: product.item!.name!,
+                    text: "${product.item!.name!}",
                   ),
                 ),
+                DataCell(CenterText(text: product.itemType ?? "--")),
                 DataCell(
                   CenterText(
                     text: product.item!.category!,
