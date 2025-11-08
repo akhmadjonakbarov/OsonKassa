@@ -19,7 +19,7 @@ class DocItemRepository
       Response response = await dio.get("$_baseUrl/all?document_id=$id");
 
       if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
+        var resData = response.data;
         for (var itemData in resData) {
           DocumentItem productDocItem = DocumentItem.fromJson(itemData);
           documentItems.add(productDocItem);
