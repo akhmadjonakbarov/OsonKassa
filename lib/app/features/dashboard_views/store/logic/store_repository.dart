@@ -62,7 +62,7 @@ class StoreRepository
       PaginationModel pagination = PaginationModel.empty();
 
       Response response =
-          await dio.get("$_baseURL/all?page=$page&size=$pageSize");
+          await dio.get("$_baseURL/all?page=$page&page_size=$pageSize");
       if (response.statusCode == StatusCodes.OK_200) {
         var resData = response.data['data']['list'];
         var paginationData = response.data['data']['pagination'];
