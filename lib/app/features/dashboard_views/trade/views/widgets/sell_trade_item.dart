@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/models/order_item.dart';
 
 import '../../../../../styles/text_styles.dart';
@@ -104,7 +105,7 @@ class SellProductItem extends StatelessWidget {
             onPressed: deleteItem,
             icon: const Icon(Icons.close_rounded, size: 20),
             color: Colors.redAccent,
-            tooltip: "O‘chirish",
+            tooltip: "delete".tr,
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
           ),
