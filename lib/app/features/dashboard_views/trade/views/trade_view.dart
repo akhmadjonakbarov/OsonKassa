@@ -1,20 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/logic/order_controller.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/views/widgets/order_item_list.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/views/widgets/product_search_bar.dart';
-import 'package:osonkassa/app/styles/app_colors.dart';
-import 'package:osonkassa/design_system/buttons/primary_button.dart';
+
 import 'package:osonkassa/design_system/themes/responsive_font_size.dart';
 import 'package:osonkassa/design_system/themes/text_styles.dart';
-
 import '../../../../core/printer/pos_printer_manager.dart';
 import '../../../../styles/text_styles.dart';
-import '../../../../translation/translated_texts.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../shared/export_commons.dart';
+import '../../../shared/widgets/buttons/primary_button.dart';
 import '../../customer/logic/customer_ctl.dart';
 import '../../customer/models/customer.dart';
 import '../../note/logic/note_controller.dart';
@@ -23,7 +20,7 @@ import '../logic/trade_ctl.dart';
 import 'widgets/dialog_widgets/list_products_dialog.dart';
 
 import 'widgets/dialog_widgets/payment_dialog.dart';
-import 'widgets/sell_trade_item.dart';
+
 import 'widgets/total_calculator.dart';
 
 class TradeView extends StatefulWidget {
@@ -34,7 +31,6 @@ class TradeView extends StatefulWidget {
 }
 
 class _TradeViewState extends State<TradeView> {
-  // Controllers
   final TradeCtl tradeCtl = Get.find<TradeCtl>();
   final CustomerCtl clientCtl = Get.find<CustomerCtl>();
   final StoreCtl storeCtl = Get.find<StoreCtl>();
@@ -42,7 +38,6 @@ class _TradeViewState extends State<TradeView> {
   final CustomerCtl customerCtl = Get.find<CustomerCtl>();
   final OrderController orderController = Get.find<OrderController>();
 
-  // TextEditingController
   TextEditingController barCodeController = TextEditingController();
   TextEditingController searchController = TextEditingController();
 
@@ -51,9 +46,8 @@ class _TradeViewState extends State<TradeView> {
 
   @override
   void initState() {
-    fetch();
     _initPrinter();
-
+    fetch();
     super.initState();
   }
 
@@ -64,11 +58,6 @@ class _TradeViewState extends State<TradeView> {
     customerCtl.fetchItems();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
   void _initPrinter() async {
     _printer = PosPrinterManager(printerIp: '192.168.123.100');
     await _printer.initPrinter();
@@ -77,7 +66,6 @@ class _TradeViewState extends State<TradeView> {
   reset() async {
     storeCtl.clearList();
     noteCtl.fetchItems();
-
     tradeCtl.clearData();
   }
 
@@ -274,10 +262,8 @@ class _TradeViewState extends State<TradeView> {
           ),
           const SizedBox(height: 12),
           PrimaryButton(
-            width: double.infinity,
-            height: 35,
             backgroundColor: Colors.green,
-            onClick: orderController.createOrder,
+            onPressed: orderController.createOrder,
             child: const Icon(Icons.add, size: 28, color: Colors.white),
           ),
           const SizedBox(height: 20),
@@ -331,16 +317,8 @@ class _TradeViewState extends State<TradeView> {
               children: [
                 TotalCalculate(constraints: constraints),
                 SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      elevation: 0,
-                    ),
+                  width: 250,
+                  child: PrimaryButton(
                     onPressed: () async {
                       await showDialog<Customer>(
                         context: context,
