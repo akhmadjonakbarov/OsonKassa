@@ -339,6 +339,8 @@ class AppTranslations extends Translations {
           'add new document': 'Yangi hujjat qo‘shish',
           'trade': 'Savdo',
           'payment': "To'lov",
+          'return': 'Qaytim',
+          'full info about products': 'Mahsulotlar haqida to\'liq ma\'lumot',
         },
         'ru_RU': {
           // General
