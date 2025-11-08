@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/shared/widgets/buttons/primary_button.dart';
 
 import '../../../../config/app_paths.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -312,9 +313,13 @@ class _HeaderState extends State<Header> {
                 const SizedBox(
                   width: 15,
                 ),
-                BasicButton(
-                  text: TranslatedTexts.report.reports.tr,
-                  onClick: () {
+                PrimaryButton(
+                  child: Text(
+                    'reports'.tr,
+                    style: TextStyles.buttonTextStyle(
+                        fontSize: screenSize.height / 54),
+                  ),
+                  onPressed: () {
                     if (widget.reportCtl.reports.isNotEmpty) {
                       Get.toNamed(AppPaths.reportDocs);
                     } else {
@@ -323,10 +328,6 @@ class _HeaderState extends State<Header> {
                           type: TypeOfSnackBar.alert);
                     }
                   },
-                  textStyle: TextStyles.buttonTextStyle(
-                      fontSize: screenSize.height / 54),
-                  height: screenSize.height * 0.1 / 2.5,
-                  width: screenSize.width * 0.06,
                 ),
               ],
             ),
