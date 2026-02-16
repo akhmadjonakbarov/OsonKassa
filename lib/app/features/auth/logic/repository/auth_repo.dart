@@ -6,7 +6,8 @@ import '../../../../core/network/status_codes.dart';
 import '../../models/user.dart';
 
 class AuthRepo {
-  Future<User?> login({required String email, required String password}) async {
+  Future<Map<String, dynamic>> login(
+      {required String email, required String password}) async {
     try {
       User? userModel;
       Response response = await dio
@@ -16,8 +17,9 @@ class AuthRepo {
 
         userModel = User.fromMap(userData);
       }
+      print(response.data);
 
-      return userModel;
+      return {"user": userModel, "token": response.data['access_token']};
     } on DioException catch (error) {
       if (error.response!.statusCode == StatusCodes.BAD_REQUEST_400) {
         String errorMessage = "";

@@ -8,7 +8,7 @@ import '../../../../core/interfaces/api/delete.dart';
 import '../../../../core/interfaces/api/get_all.dart';
 import '../../../../core/interfaces/api/update.dart';
 import '../../../../core/network/status_codes.dart';
-import '../../../../core/validator/response_validator.dart';
+
 import '../../../shared/models/api_data.dart';
 import '../../../shared/models/pagination_model.dart';
 import '../domain/models/item.dart';
@@ -23,7 +23,7 @@ class ItemRepo
 
   ItemRepo(this.dio);
 
-  final String _baseURL = "/item";
+  final String _baseURL = "/items";
 
   @override
   Future<bool> add(itemData) async {
@@ -34,24 +34,7 @@ class ItemRepo
     } on DioException catch (e) {
       log(e.response!.statusCode.toString());
       log(e.toString());
-      if (e.response != null) {
-        print(e.response.toString());
-        switch (e.response!.statusCode) {
-          case StatusCodes.CONFLICT_409:
-            throw BarcodeAlreadyExistException(
-              message: "This barcode is already",
-            );
-          case StatusCodes.BAD_REQUEST_400:
-            throw InvalidDataException(
-              message: e.response!.data['data']['error'],
-            );
-          default:
-            throw Exception("Unknown exception");
-        }
-      } else {
-        // Something else went wrong (e.g. no response from the server)
-        throw Exception("Network error or no response from the server.");
-      }
+      return false;
     } catch (e) {
       rethrow;
     }
@@ -119,26 +102,27 @@ class ItemRepo
   Future<ApiData> getAll(int page, int pageSize) async {
     ApiData<Item> data =
         ApiData(pagination: PaginationModel.empty(), items: []);
-    PaginationModel pagination = PaginationModel.empty();
+
     try {
       List<Item> products = [];
       Response response = await dio.get(
-        '$_baseURL/all?page=$page&size=$pageSize',
+        '$_baseURL/?page=$page&size=$pageSize',
       );
 
       if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
-        var paginationData = response.data['data']['pagination'];
+        var resData = response.data['items'];
+
         for (var element in resData) {
           Item item = Item.fromJson(element);
           products.add(item);
         }
-        if (ResponseValidator.isMap(paginationData)) {
-          pagination = PaginationModel.fromMap(paginationData);
-        }
       }
       data.items = products;
-      data.pagination = pagination;
+      data.pagination = PaginationModel(
+          total: response.data['total'],
+          pages: response.data['pages'],
+          page: response.data['page'],
+          size: response.data['size']);
 
       return data;
     } catch (e) {

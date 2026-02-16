@@ -3,10 +3,8 @@ import '../../../../styles/app_colors.dart';
 import '../../../../styles/themes.dart';
 import 'widgets/chart/daily_sale_chart.dart';
 import 'widgets/chart/weekly_profit.dart';
-import '../../../../utils/media/get_screen_size.dart';
-import '../logic/statistics_ctl.dart';
 
-import 'widgets/profit_card_info.dart';
+import '../logic/statistics_ctl.dart';
 
 class StatisticsView extends StatelessWidget {
   const StatisticsView({super.key, required this.statisticsCtl});

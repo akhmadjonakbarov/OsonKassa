@@ -14,6 +14,7 @@ import 'document_service.dart';
 class DocumentCtl extends MainController<Document> {
   var error = ''.obs;
   var isToday = true.obs;
+  var isSaving = false.obs;
 
   late final DocumentRepository documentRepository;
   late final DocumentService documentService;
@@ -55,16 +56,18 @@ class DocumentCtl extends MainController<Document> {
 
   @override
   void addItem(item) async {
+    isSaving.value = true;
     try {
       setLoading(true);
 
       bool isSuccess = await documentService.addDocument(item);
       if (isSuccess) {
         UserNotifier.showSnackBar(
-          label: "Product Document qo'shildi",
+          label: "document was saved".tr,
           type: TypeOfSnackBar.success,
         );
         fetchItems();
+        isSaving.value = false;
       }
       setLoading(false);
     } catch (e) {

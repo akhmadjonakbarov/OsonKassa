@@ -109,7 +109,7 @@ class ItemCtl extends MainController<Item> {
   @override
   void updateItem(Item item) async {
     try {
-      bool isSuccess = await _productService.updateItem(item);
+      bool isSuccess = await _productRepo.update(item);
       if (isSuccess) {
         UserNotifier.showSnackBar(
           label: AlertTexts.updateAlert(item.name!),
@@ -238,7 +238,6 @@ class ItemCtl extends MainController<Item> {
       fetchItems();
     }
   }
-
 
   void deleteProduct(int id, String? name) async {
     try {

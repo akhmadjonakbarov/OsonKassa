@@ -19,7 +19,7 @@ class CurrencyRepository
 
   CurrencyRepository(this.dio);
 
-  static const String baseUrl = '/currency';
+  static const String baseUrl = '/currencies';
 
   @override
   Future<bool> add(Map<String, dynamic> currencyData) async {
@@ -76,12 +76,12 @@ class CurrencyRepository
       List<Currency> currencies = [];
       PaginationModel pagination = PaginationModel.empty();
       Response response = await dio.get(
-        '$baseUrl/all?page=$page&size=$pageSize',
+        '$baseUrl/?page=$page&size=$pageSize',
       );
 
       if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
-        var paginationData = response.data['data']['pagination'];
+        var resData = response.data['items'];
+
         for (var currency in resData) {
           if (ResponseValidator.isMap(currency)) {
             currencies.add(Currency.fromJson(currency));
@@ -89,12 +89,9 @@ class CurrencyRepository
             throw NotMapDataFormat();
           }
         }
-        if (ResponseValidator.isMap(paginationData)) {
-          pagination = PaginationModel.fromMap(paginationData);
-        }
 
         data.items = currencies;
-        data.pagination = pagination;
+        data.pagination = PaginationModel.fromMap(response.data);
 
         return data;
       } else {

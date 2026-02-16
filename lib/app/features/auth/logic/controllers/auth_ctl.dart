@@ -12,6 +12,7 @@ import '../services/auth_service.dart';
 class AuthCtl extends GetxController {
   var error = ''.obs;
   var userModel = User.empty().obs;
+  var accessToken = "".obs;
 
   final AuthService _authService = AuthService(authRepo: AuthRepo());
   final SecureStorage _secureStorage = SecureStorage();
@@ -19,11 +20,14 @@ class AuthCtl extends GetxController {
   void auth() async {
     try {
       String? userModelData = await _secureStorage.read("userModel");
-      if (userModelData != null) {
+      String? _accessToken = await _secureStorage.read("token");
+
+      if (userModelData != null && _accessToken != null) {
         User user = User.fromJson(userModelData);
         Get.toNamed(AppPaths.dashboard);
 
         userModel(user);
+        accessToken.value = _accessToken;
       }
     } catch (e) {
       print(e);
@@ -33,18 +37,22 @@ class AuthCtl extends GetxController {
 
   void login({required String email, required String password}) async {
     try {
-      String? userModelData;
-      User? user = await _authService.login(login: email, password: password);
+      Map<String, dynamic> userMap =
+          await _authService.login(login: email, password: password);
+      final user = userMap['user'];
       if (user != null) {
-        userModelData = user.toJson();
+        final userModelData = user.toJson();
         await _secureStorage.write("userModel", userModelData);
+        await _secureStorage.write("token", userMap['token']);
         Get.toNamed(AppPaths.dashboard);
         userModel(user);
+        accessToken.value = userMap['token'];
         LogHelper.logInfo(user.toString());
       } else {
         Get.snackbar("Error", "Wrong login or password");
       }
     } catch (e) {
+      print(e);
       Get.snackbar("Error", e.toString());
     }
   }

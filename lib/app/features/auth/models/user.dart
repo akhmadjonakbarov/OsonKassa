@@ -87,7 +87,7 @@ class User {
       ),
       createdAt: DateTime.parse(map['created_at']),
       updatedAt: DateTime.parse(map['updated_at']),
-      token: map['token'] as String,
+      token: '',
     );
   }
 

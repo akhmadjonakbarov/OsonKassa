@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/formatter_functions/formatter_currency.dart';
-import '../../../../../../utils/texts/display_texts.dart';
 import '../../../../../shared/widgets/header_title.dart';
 
 class HeaderCurrency extends StatelessWidget {

@@ -23,7 +23,7 @@ class ClientRepository
     try {
       List<Customer> clients = [];
       Response response = await dio.get(
-        '$_baseUrl/all',
+        _baseUrl,
       );
 
       if (response.statusCode == StatusCodes.OK_200) {

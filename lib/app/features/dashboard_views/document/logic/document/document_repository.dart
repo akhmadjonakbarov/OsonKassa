@@ -87,18 +87,14 @@ class DocumentRepository
       List<Document> currencies = [];
       PaginationModel pagination = PaginationModel.empty();
       Response response = await dio.get(
-        '$_baseUrl/all?page=$page&size=$pageSize',
+        '$_baseUrl/all?page=$page&page_size=$pageSize',
       );
 
       if (response.statusCode == StatusCodes.OK_200) {
         var resData = response.data['data']['list'];
         var paginationData = response.data['data']['pagination'];
         for (var currency in resData) {
-          if (ResponseValidator.isMap(currency)) {
-            currencies.add(Document.fromJson(currency));
-          } else {
-            throw NotMapDataFormat();
-          }
+          currencies.add(Document.fromJson(currency));
         }
         if (ResponseValidator.isMap(paginationData)) {
           pagination = PaginationModel.fromMap(paginationData);

@@ -6,7 +6,8 @@ class AuthService {
 
   AuthService({required this.authRepo});
 
-  Future<User?> login({required String login, required String password}) async {
+  Future<Map<String, dynamic>> login(
+      {required String login, required String password}) async {
     try {
       return await authRepo.login(email: login, password: password);
     } catch (e) {

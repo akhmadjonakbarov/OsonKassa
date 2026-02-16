@@ -5,7 +5,6 @@ import '../../../../core/interfaces/api/delete.dart';
 import '../../../../core/interfaces/api/get_all.dart';
 import '../../../../core/interfaces/api/update.dart';
 import '../../../../core/network/status_codes.dart';
-import '../../../../core/validator/response_validator.dart';
 import '../../../shared/models/api_data.dart';
 import '../../../shared/models/pagination_model.dart';
 import '../models/category_models.dart';

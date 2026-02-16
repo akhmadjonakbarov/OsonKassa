@@ -59,11 +59,13 @@ class Role {
           (x) => EmployeeModel.fromMap(x as Map<String, dynamic>),
         ),
       ),
-      permissions: List<PermissionModel>.from(
-        (map['permissions']).map<PermissionModel>(
-          (x) => PermissionModel.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      permissions: map['permissions'] == null
+          ? []
+          : List<PermissionModel>.from(
+              (map['permissions']).map<PermissionModel>(
+                (x) => PermissionModel.fromMap(x as Map<String, dynamic>),
+              ),
+            ),
       createdAt: DateTime.parse(map['created_at']),
       updatedAt: DateTime.parse(map['updated_at']),
     );
@@ -186,47 +188,29 @@ class EmployeeModel {
 }
 
 class SalaryTypeModel {
-  final int id;
   final String typeOfSalary;
-  final DateTime createdAt;
-  final DateTime updatedAt;
 
   SalaryTypeModel({
-    required this.id,
     required this.typeOfSalary,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   SalaryTypeModel copyWith({
-    int? id,
     String? typeOfSalary,
-    DateTime? createdAt,
-    DateTime? updatedAt,
   }) {
     return SalaryTypeModel(
-      id: id ?? this.id,
       typeOfSalary: typeOfSalary ?? this.typeOfSalary,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'type_of_salary': typeOfSalary,
-      'created_at': createdAt.toString(),
-      'updated_at': updatedAt.toString(),
     };
   }
 
   factory SalaryTypeModel.fromMap(Map<String, dynamic> map) {
     return SalaryTypeModel(
-      id: map['id'] as int,
       typeOfSalary: map['type_of_salary'] as String,
-      createdAt: DateTime.parse(map['created_at']),
-      updatedAt: DateTime.parse(map['updated_at']),
     );
   }
 
@@ -234,29 +218,6 @@ class SalaryTypeModel {
 
   factory SalaryTypeModel.fromJson(String source) =>
       SalaryTypeModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  String toString() {
-    return 'SalaryTypeModel(id: $id, typeOfSalary: $typeOfSalary, createdAt: $createdAt, updatedAt: $updatedAt)';
-  }
-
-  @override
-  bool operator ==(covariant SalaryTypeModel other) {
-    if (identical(this, other)) return true;
-
-    return other.id == id &&
-        other.typeOfSalary == typeOfSalary &&
-        other.createdAt == createdAt &&
-        other.updatedAt == updatedAt;
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        typeOfSalary.hashCode ^
-        createdAt.hashCode ^
-        updatedAt.hashCode;
-  }
 }
 
 class PermissionModel {

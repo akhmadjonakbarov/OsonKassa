@@ -5,7 +5,6 @@ import '../../../../../../core/printer/pos_printer_manager.dart';
 import '../../../../../../styles/text_styles.dart';
 import '../../../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../../../utils/media/get_screen_size.dart';
-import '../../../../../../utils/texts/display_texts.dart';
 import '../../../../../../utils/texts/table_texts.dart';
 import '../../../../../shared/export_commons.dart';
 import '../../../../../shared/widgets/delete_dialog.dart';
@@ -228,20 +227,8 @@ import '../../../models/document_item.dart';
 //   }
 // }
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../../../../../../core/printer/pos_printer_manager.dart';
-import '../../../../../../styles/text_styles.dart';
-import '../../../../../../utils/formatter_functions/formatter_currency.dart';
-import '../../../../../../utils/media/get_screen_size.dart';
-import '../../../../../../utils/texts/display_texts.dart';
-import '../../../../../../utils/texts/table_texts.dart';
-import '../../../../../shared/export_commons.dart';
-import '../../../../../shared/widgets/delete_dialog.dart';
-import '../../../../note/logic/note_controller.dart';
-import '../../../logic/doc_item/doc_item_ctl.dart';
-import '../../../models/document_item.dart';
+
 
 class DocItemTableDialog extends StatefulWidget {
   final PosPrinterManager printerManager;
