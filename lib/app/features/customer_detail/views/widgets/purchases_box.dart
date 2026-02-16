@@ -96,7 +96,7 @@ class PurchasesBox extends StatelessWidget {
         )),
         DataCell(
           CenterText(
-            text: formatPriceAtUZS(purchase.products!
+            text: formatPriceAtUZS(purchase.purchaseDocument!.products!
                 .fold(
                   0.0,
                   (previousValue, element) => previousValue =

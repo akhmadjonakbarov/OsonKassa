@@ -6,7 +6,7 @@ class TradeRepository {
   Dio dio;
   TradeRepository(this.dio);
 
-  static const String _baseURL = "/document/sell";
+  static const String _baseURL = "/documents/sell";
   Future<bool> sell(Map<String, dynamic> sellProductsData) async {
     try {
       Response response = await dio.post(_baseURL, data: sellProductsData);

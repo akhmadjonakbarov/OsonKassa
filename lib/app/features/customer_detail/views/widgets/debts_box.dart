@@ -97,7 +97,7 @@ class DebtsBox extends StatelessWidget {
           text: formatDateToUzbek(purchase.createdAt.toString()),
         )),
         DataCell(CenterText(
-          text: formatPriceAtUZS(purchase.products!
+          text: formatPriceAtUZS(purchase.purchaseDocument!.products!
               .fold(
                 0.0,
                 (previousValue, element) => previousValue =

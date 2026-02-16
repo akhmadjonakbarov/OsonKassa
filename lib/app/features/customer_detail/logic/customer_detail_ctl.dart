@@ -114,7 +114,7 @@ class CustomerDetailCtl extends GetxController {
       double totalPrice = 0.0;
       final debts = await customerDetailService.getDebts();
       for (Purchase debt in debts) {
-        for (var product in debt.products!) {
+        for (var product in debt.purchaseDocument!.products!) {
           totalPrice = totalPrice + (product.salePrice! * product.qty!);
         }
       }

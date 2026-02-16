@@ -16,31 +16,34 @@ class CustomDataTable extends StatelessWidget {
     final screenSize = getScreenSize(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: DataTable(
-        border: TableBorder.all(
-          borderRadius: BorderRadius.circular(10),
+      child: ClipRRect(
+        // borderRadius: BorderRadiusGeometry.circular(10),
+        child: DataTable(
+          border: TableBorder.all(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          showCheckboxColumn: false,
+          headingTextStyle:
+              screenSize.width <= 1370 ? null : textStyleBlack18Bold,
+          dataTextStyle: textStyleBlack14.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+          columnSpacing: 20,
+          headingRowHeight: 40,
+          dataRowHeight: 35,
+          columns: columns
+              .map(
+                (e) => DataColumn(
+                    label: Expanded(
+                        child: Text(
+                      e,
+                      textAlign: TextAlign.center,
+                    )),
+                    headingRowAlignment: MainAxisAlignment.center),
+              )
+              .toList(),
+          rows: rows,
         ),
-        showCheckboxColumn: false,
-        headingTextStyle:
-            screenSize.width <= 1370 ? null : textStyleBlack18Bold,
-        dataTextStyle: textStyleBlack14.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-        columnSpacing: 20,
-        headingRowHeight: 40,
-        dataRowHeight: 35,
-        columns: columns
-            .map(
-              (e) => DataColumn(
-                  label: Expanded(
-                      child: Text(
-                    e,
-                    textAlign: TextAlign.center,
-                  )),
-                  headingRowAlignment: MainAxisAlignment.center),
-            )
-            .toList(),
-        rows: rows,
       ),
     );
   }

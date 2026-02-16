@@ -19,7 +19,7 @@ class DocumentRepository
 
   DocumentRepository({required this.dio});
 
-  static const String _baseUrl = "/document";
+  static const String _baseUrl = "/documents";
 
   @override
   Future<bool> add(productDocData) async {
@@ -87,7 +87,7 @@ class DocumentRepository
       List<Document> currencies = [];
       PaginationModel pagination = PaginationModel.empty();
       Response response = await dio.get(
-        '$_baseUrl/all?page=$page&page_size=$pageSize',
+        '$_baseUrl/?page=$page&page_size=$pageSize',
       );
 
       if (response.statusCode == StatusCodes.OK_200) {

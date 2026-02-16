@@ -36,7 +36,7 @@ class PurchaseItemDialog extends StatelessWidget {
     totalIncomePrice = 0.0;
     totalSellingPrice = 0.0;
     totalProfit = 0.0;
-    for (var docItem in purchase.products!) {
+    for (var docItem in purchase.purchaseDocument!.products!) {
       final qty = docItem.qty ?? 0;
       final income = docItem.incomePrice ?? 0;
       final selling = docItem.salePrice ?? 0;
@@ -119,10 +119,10 @@ class PurchaseItemDialog extends StatelessWidget {
               // dataRowMaxHeight: size.width * 0.028,
               columns: _columns(),
               rows: [
-                ...purchase.products!.asMap().entries.map(
+                ...purchase.purchaseDocument!.products!.asMap().entries.map(
                   (e) {
                     int index = e.key;
-                    PurchaseItem docItem = e.value;
+                    Product docItem = e.value;
 
                     return DataRow(
                       cells: [
@@ -133,7 +133,7 @@ class PurchaseItemDialog extends StatelessWidget {
                         DataCell(Container(
                           alignment: Alignment.center,
                           child: Text(
-                              "${docItem.name!}${docItem.itemType != null ? ' (${docItem.itemType})' : ''}"),
+                              "${docItem.purchaseItem!.name}${docItem.purchaseItem!.itemType != null ? ' (${docItem.purchaseItem!.itemType})' : ''}"),
                         )),
                         DataCell(Container(
                           alignment: Alignment.center,
@@ -151,7 +151,7 @@ class PurchaseItemDialog extends StatelessWidget {
                           Container(
                             alignment: Alignment.center,
                             child: Text(
-                              "${docItem.qty} ${docItem.unit!}",
+                              "${docItem.qty} ${docItem.purchaseItem!.unit!}",
                               style: screenSize.width <= 1366
                                   ? textStyleBlack15
                                   : textStyleBlack18Bold,
