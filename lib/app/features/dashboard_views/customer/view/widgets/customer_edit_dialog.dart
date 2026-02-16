@@ -9,7 +9,7 @@ import '../../../../../translation/translated_texts.dart';
 import '../../../../shared/widgets/buttons.dart' show DialogTextButton;
 
 import '../../logic/customer_ctl.dart';
-import '../../models/customer.dart';
+import '../../domain/models/customer.dart';
 
 class CustomerEditDialog extends StatefulWidget {
   const CustomerEditDialog({

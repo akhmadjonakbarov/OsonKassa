@@ -5,7 +5,7 @@ import '../../../../styles/text_styles.dart';
 import '../../../../translation/translated_texts.dart';
 import '../../../../utils/formatter_functions/formatter_currency.dart';
 import '../../../../utils/formatter_functions/formatter_date.dart';
-import '../../../dashboard_views/customer/models/customer.dart';
+import '../../../dashboard_views/customer/domain/models/customer.dart';
 import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/grid_box.dart';
 import '../../logic/customer_detail_ctl.dart';

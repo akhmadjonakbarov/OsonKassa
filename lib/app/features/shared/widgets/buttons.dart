@@ -10,7 +10,6 @@ import 'package:osonkassa/app/styles/icons.dart';
 import 'package:osonkassa/app/styles/themes.dart';
 import 'package:osonkassa/app/utils/helper/button_size_manager.dart';
 import 'package:osonkassa/app/utils/media/get_screen_size.dart';
-import 'package:osonkassa/app/utils/texts/button_texts.dart';
 
 import '../../../core/permission/permission_checker.dart';
 import '../../../styles/text_styles.dart';
@@ -523,8 +522,7 @@ class CheckedAddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     if (PermissionChecker.hasPermission(roles, permission)) {
       return AddButton(
-        height: ButtonSizeManager.height(context,
-            height: 0.1 / 2.5),
+        height: ButtonSizeManager.height(context, height: 0.1 / 2.5),
         width: ButtonSizeManager.width(context, width: 0.11),
         onClick: onClick,
         textStyle: TextStyles.buttonTextStyle(),

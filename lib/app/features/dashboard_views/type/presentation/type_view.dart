@@ -5,11 +5,9 @@ import 'package:osonkassa/app/features/dashboard_views/type/presentation/widgets
 
 import '../../../../core/permission/permissions.dart';
 import '../../../../utils/media/get_screen_size.dart';
-import '../../../../utils/texts/button_texts.dart';
 import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../shared/widgets/buttons.dart';
 import '../../../shared/widgets/content_view.dart';
-import '../../../shared/widgets/custom_textfields.dart';
 import '../../../shared/widgets/data_list.dart';
 
 class TypeView extends StatefulWidget {

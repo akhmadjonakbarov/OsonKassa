@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:osonkassa/design_system/themes/text_styles.dart';
 
 import '../../../styles/text_input_styles.dart';
 import '../../../styles/text_styles.dart';
-import '../../../utils/texts/alert_texts.dart';
 import '../../../utils/texts/button_texts.dart';
 import '../../../utils/texts/display_texts.dart';
 

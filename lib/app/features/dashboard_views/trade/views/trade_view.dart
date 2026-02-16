@@ -13,7 +13,7 @@ import '../../../../utils/media/get_screen_size.dart';
 import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/buttons/primary_button.dart';
 import '../../customer/logic/customer_ctl.dart';
-import '../../customer/models/customer.dart';
+import '../../customer/domain/models/customer.dart';
 import '../../note/logic/note_controller.dart';
 import '../../store/logic/store_ctl.dart';
 import '../logic/trade_ctl.dart';

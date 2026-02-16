@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/core/enums/type_of_snackbar.dart';
-import 'package:osonkassa/app/features/dashboard_views/customer/models/customer.dart';
+import 'package:osonkassa/app/features/dashboard_views/customer/domain/models/customer.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/logic/trade_repository.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/models/order.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/models/order_item.dart';

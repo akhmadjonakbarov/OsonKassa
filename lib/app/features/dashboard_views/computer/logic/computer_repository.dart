@@ -26,7 +26,6 @@ class ComputerRepository extends GetAllWithPagination<ApiData> {
       );
 
       if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
         var paginationData = response.data['data']['pagination'];
 
         if (ResponseValidator.isMap(paginationData)) {

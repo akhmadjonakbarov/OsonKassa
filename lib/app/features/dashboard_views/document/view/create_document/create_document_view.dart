@@ -232,17 +232,15 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
           Row(
             children: [
               Expanded(
-                  child: Obx(
-                () => PrimaryButton(
-                    backgroundColor: Colors.green,
-                    onPressed: addProductBadge,
-                    child: Text(
-                      'add'.tr,
-                      style: textStyleBlack18.copyWith(
-                        color: Colors.white,
-                      ),
-                    )),
-              )),
+                  child: PrimaryButton(
+                      backgroundColor: Colors.green,
+                      onPressed: addProductBadge,
+                      child: Text(
+                        'add'.tr,
+                        style: textStyleBlack18.copyWith(
+                          color: Colors.white,
+                        ),
+                      ))),
               SizedBox(
                 width: constraints.maxHeight * 0.02,
               ),

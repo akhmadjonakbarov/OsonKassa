@@ -7,7 +7,7 @@ import '../../../../core/enums/type_of_snackbar.dart';
 import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/interfaces/getx_controller/main_controller.dart';
-import '../models/customer.dart';
+import '../domain/models/customer.dart';
 import 'customer_repository.dart';
 import 'customer_services.dart';
 

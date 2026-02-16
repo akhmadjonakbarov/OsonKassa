@@ -10,7 +10,7 @@ class ProductRepositoryImpl extends ProductRepository {
 
   ProductRepositoryImpl({required this.dio});
 
-  final String _baseURL = "/item";
+  final String _baseURL = "/items";
 
   @override
   Future<List<Item>> getProducts() {

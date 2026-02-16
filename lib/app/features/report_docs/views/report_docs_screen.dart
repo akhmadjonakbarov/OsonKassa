@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/media/paddings.dart';
-import '../../../utils/texts/display_texts.dart';
 import '../../shared/widgets/app_bar.dart';
 import '../logic/report_ctl.dart';
 import 'widgets/report_list.dart';

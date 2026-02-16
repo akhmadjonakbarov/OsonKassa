@@ -8,7 +8,7 @@ import 'package:osonkassa/app/translation/translated_texts.dart';
 import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart';
 import 'package:osonkassa/app/utils/formatter_functions/formatter_date.dart';
 
-import '../../../dashboard_views/customer/models/customer.dart';
+import '../../../dashboard_views/customer/domain/models/customer.dart';
 import '../../../shared/widgets/grid_box.dart';
 import '../../../shared/widgets/loading.dart';
 import '../../../shared/widgets/no_data.dart';

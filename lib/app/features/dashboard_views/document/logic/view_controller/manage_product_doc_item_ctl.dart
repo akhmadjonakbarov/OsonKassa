@@ -131,9 +131,10 @@ class ManageProductDocItemCtl extends GetxController {
     );
   }
 
-  Future<void> setCurrency({required Currency cry}) async {
+  setCurrency({required Currency cry}) {
     LogHelper.logInfo("Currency was selected. ${cry.toString()}");
     currency.value = cry;
+    update();
   }
 
   void reset() {

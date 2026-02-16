@@ -74,7 +74,7 @@ class CurrencyRepository
         ApiData(pagination: PaginationModel.empty(), items: []);
     try {
       List<Currency> currencies = [];
-      PaginationModel pagination = PaginationModel.empty();
+
       Response response = await dio.get(
         '$baseUrl/?page=$page&size=$pageSize',
       );

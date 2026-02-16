@@ -11,7 +11,7 @@ import '../../../../customer_detail/logic/customer_detail_ctl.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
 import '../../logic/customer_ctl.dart';
-import '../../models/customer.dart';
+import '../../domain/models/customer.dart';
 import '../widgets/customer_edit_dialog.dart';
 
 class CustomerTable extends StatefulWidget {
@@ -33,7 +33,6 @@ class _CustomerTableState extends State<CustomerTable> {
         padding: EdgeInsets.zero,
         decoration: const BoxDecoration(),
         child: CustomDataTable(
-
           columns: [
             TranslatedTexts.table.index.tr,
             TranslatedTexts.table.name.tr,

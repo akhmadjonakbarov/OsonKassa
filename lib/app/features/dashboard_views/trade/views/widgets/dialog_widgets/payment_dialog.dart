@@ -1,4 +1,4 @@
-import 'package:osonkassa/app/features/dashboard_views/customer/models/customer.dart';
+import 'package:osonkassa/app/features/dashboard_views/customer/domain/models/customer.dart';
 import 'package:osonkassa/app/features/shared/widgets/buttons.dart';
 import 'package:osonkassa/app/styles/text_styles.dart';
 import 'package:flutter/material.dart';

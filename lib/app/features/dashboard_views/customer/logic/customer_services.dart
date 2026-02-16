@@ -1,5 +1,5 @@
 import '../../../../core/interfaces/api/api_interfaces.dart';
-import '../models/customer.dart';
+import '../domain/models/customer.dart';
 
 class ClientService {
   final Add<Map<String, dynamic>> _addRepository;

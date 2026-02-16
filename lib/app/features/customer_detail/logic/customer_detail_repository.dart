@@ -11,11 +11,11 @@ class PurchaseRepository {
     required this.dio,
   });
 
-  static const _baseUrl = '/purchase';
+  static const _baseUrl = '/purchases';
 
   Future<List<Purchase>> getPurchases() async {
     List<Purchase> purchases = [];
-    Response response = await dio.get('$_baseUrl/all');
+    Response response = await dio.get('$_baseUrl/');
     if (response.statusCode == StatusCodes.OK_200) {
       final purchasesMap = response.data;
       for (var purchase in purchasesMap) {

@@ -7,7 +7,6 @@ import 'package:osonkassa/app/features/dashboard_views/store/models/store_item.d
 import 'package:osonkassa/app/features/dashboard_views/trade/models/order_item.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/services/order_service.dart';
 import 'package:osonkassa/app/features/shared/widgets/buttons.dart';
-import 'package:osonkassa/app/utils/helper/log_helper.dart';
 
 import '../../../../styles/text_styles.dart';
 import '../models/order.dart';

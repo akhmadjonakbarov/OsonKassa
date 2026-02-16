@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/customer_detail/views/widgets/payment_histories_box.dart';
 
-import '../../dashboard_views/customer/models/customer.dart';
+import '../../dashboard_views/customer/domain/models/customer.dart';
 import '../../shared/widgets/app_bar.dart';
 import '../logic/customer_detail_ctl.dart';
 import 'widgets/debts_box.dart';

@@ -4,7 +4,7 @@ import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/network/status_codes.dart';
 import '../../../../core/validator/response_validator.dart';
-import '../models/customer.dart';
+import '../domain/models/customer.dart';
 
 const String _baseUrl = '/customers';
 
@@ -27,13 +27,9 @@ class ClientRepository
       );
 
       if (response.statusCode == StatusCodes.OK_200) {
-        var resData = response.data['data']['list'];
-        if (ResponseValidator.isNotEmptyAndIsList(resData)) {
-          for (var client in resData) {
-            if (ResponseValidator.isMap(client)) {
-              clients.add(Customer.fromJson(client));
-            }
-          }
+        var resData = response.data;
+        for (var client in resData) {
+          clients.add(Customer.fromJson(client));
         }
       }
       return clients;

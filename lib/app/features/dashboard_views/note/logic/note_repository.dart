@@ -15,7 +15,7 @@ class NoteRepository implements GetAll<Note> {
     try {
       List<Note> spikas = [];
       Response response = await dio.get(
-        '$baseUrl/all',
+        baseUrl,
       );
 
       if (response.statusCode == 200) {
