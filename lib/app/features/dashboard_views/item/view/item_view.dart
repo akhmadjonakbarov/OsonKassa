@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
+import 'package:osonkassa/app/core/display/user_notifier.dart';
 
 import '../../../../core/permission/permissions.dart';
 import '../../../../utils/media/get_screen_size.dart';
@@ -12,6 +13,7 @@ import '../../../unit/logic/unit_controller.dart';
 import '../../category/logic/category_controller.dart';
 import '../../company/logic/company_ctl.dart';
 import '../logic/item_ctl.dart';
+import '../logic/product_events.dart';
 import 'table/item_table.dart';
 import 'widgets/filter_by_category.dart';
 import 'widgets/item_edit_dialog.dart';
@@ -35,12 +37,32 @@ class _ItemViewState extends State<ItemView> {
 
   @override
   void initState() {
+    super.initState();
+
     companyCtl.fetchItems();
     categoryCtl.fetchItems();
     itemCtl.fetchItems();
     itemCtl.removeSelectedCategory();
     unitCtl.fetchItems();
-    super.initState();
+    ever(itemCtl.events, (ProductEvents? event) {
+      if (event is ProductUpdate) {
+        UserNotifier.showSnackBar();
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    // once(itemCtl.events, (ProductEvents? event) {
+    //   if (event is ProductUpdate) {
+    //     Get.snackbar(
+    //       "Success",
+    //       "Product updated successfully!",
+    //       snackPosition: SnackPosition.BOTTOM,
+    //     );
+    //   }
+    // });
+    super.didChangeDependencies();
   }
 
   @override
