@@ -99,8 +99,9 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
   void _save() {
     if (!formKey.currentState!.validate()) return;
 
-    final selectedItem = itemCtl.selectedItem.value;
-    if (selectedItem != null) {
+    final selectedProduct = itemCtl.selectedItem.value;
+
+    if (selectedProduct != null) {
       // final updatedItem = itemCtl.selectedItem.value!.copyWith(
       //   name: nameController.text.trim(),
       //   barcode: barcodeController.text.trim(),
@@ -129,7 +130,7 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
             .join(','), // Join names for multiple types
       );
       itemCtl.updateProduct(newProduct.toMapForCreate(
-        itemId: selectedItem.id!,
+        itemId: selectedProduct.id!,
         categoryId: categoryData['id'],
         unitId: unitData['id'],
         typeIds: typeData.map((e) => int.parse(e['id'].toString())).toList(),
