@@ -334,6 +334,8 @@ class AppTranslations extends Translations {
           "for_debt": "Qarzga",
           "select_customer_required": "Mijozni tanlashingiz shart",
           "select_customer_optional": "Mijozni tanlash ixtiyoriy",
+          "select customer": "Mijoz tanlang",
+          "enter amount of money": "Pul miqdorini kiriting",
           'store': 'Ombor',
           'note': 'Spiska',
           'add new document': 'Yangi hujjat qo‘shish',
@@ -341,6 +343,10 @@ class AppTranslations extends Translations {
           'payment': "To'lov",
           'return': 'Qaytim',
           'full info about products': 'Mahsulotlar haqida to\'liq ma\'lumot',
+          'pay debt': 'Qarz to\'lash',
+
+          'please enter amount of money': 'Iltimos pul miqdorini kiriting',
+          'no exists': 'Mavjud emas'
         },
         'ru_RU': {
           // General
