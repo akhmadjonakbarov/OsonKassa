@@ -22,11 +22,14 @@ import '../../company/logic/company_ctl.dart';
 import '../domain/models/item.dart';
 import 'item_repo.dart';
 import 'item_service.dart';
+import 'product_events.dart';
 
 class ItemCtl extends MainController<Item> {
   var categoryName = ''.obs;
   var sellPercentage = 0.0.obs;
   Rxn<Item> selectedItem = Rxn(null);
+
+  final Rxn<ProductEvents> events = Rxn<ProductEvents>();
 
   void setLoading(bool value) {
     isLoading.value = value;
@@ -71,6 +74,7 @@ class ItemCtl extends MainController<Item> {
       list(data.items.cast<Item>());
       pagination(data.pagination);
     } catch (e) {
+      print(e);
       handleError(e.toString());
     } finally {
       setLoading(false);
@@ -122,23 +126,29 @@ class ItemCtl extends MainController<Item> {
     } catch (e) {
       handleError(e.toString());
     }
+    events.value = ProductUpdate();
+    events.refresh();
   }
 
   void updateProduct(Map<String, dynamic> updatedProduct) async {
     try {
       bool isSuccess = await productRepository.updateProduct(updatedProduct);
-      if (isSuccess) {
-        UserNotifier.showSnackBar(
-          label: AlertTexts.updateAlert(updatedProduct['name']),
-          type: TypeOfSnackBar.update,
-        );
-        fetchItems();
-      }
+      // if (isSuccess) {
+      //   UserNotifier.showSnackBar(
+      //     label: AlertTexts.updateAlert(updatedProduct['name']),
+      //     type: TypeOfSnackBar.update,
+      //   );
+      //   fetchItems();
+      // }
+      fetchItems();
     } on BarcodeAlreadyExistException {
       handleError(AlertTexts.barcode_unique);
     } catch (e) {
       handleError(e.toString());
     }
+
+    events.value = ProductUpdate();
+    events.refresh();
   }
 
   void filterByCategory(String name) async {
