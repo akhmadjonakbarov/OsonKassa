@@ -45,7 +45,7 @@ class ClientRepository
         '$_baseUrl/delete/$id',
       );
       if (response.statusCode == StatusCodes.NOT_FOUND_404) {
-        throw DataNotFoundException(message: "Builder not found");
+        throw DataNotFoundException(message: "Customer not found");
       }
       return response.statusCode == StatusCodes.OK_200;
     } catch (e) {
