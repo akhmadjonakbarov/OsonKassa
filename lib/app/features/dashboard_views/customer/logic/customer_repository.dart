@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/network/status_codes.dart';
-import '../../../../core/validator/response_validator.dart';
+
 import '../domain/models/customer.dart';
 
 const String _baseUrl = '/customers';

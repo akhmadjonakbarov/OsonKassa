@@ -8,7 +8,7 @@ class Customer {
   String? phoneNumber;
   String? phoneNumber2;
   String? address;
-  double? debtCost;
+  double? totalDebt;
 
   Customer({
     this.id,
@@ -18,7 +18,7 @@ class Customer {
     this.phoneNumber,
     this.phoneNumber2,
     this.address,
-    this.debtCost,
+    this.totalDebt,
   });
 
   Customer copyWith({
@@ -29,7 +29,7 @@ class Customer {
     String? phoneNumber,
     String? phoneNumber2,
     String? address,
-    double? debtCost,
+    double? totalDebt,
   }) =>
       Customer(
         id: id ?? this.id,
@@ -39,7 +39,7 @@ class Customer {
         phoneNumber: phoneNumber ?? this.phoneNumber,
         phoneNumber2: phoneNumber2 ?? this.phoneNumber2,
         address: address ?? this.address,
-        debtCost: debtCost ?? this.debtCost,
+        totalDebt: totalDebt ?? this.totalDebt,
       );
 
   factory Customer.fromRawJson(String str) =>
@@ -59,7 +59,7 @@ class Customer {
         phoneNumber: json["phone_number"],
         phoneNumber2: json["phone_number2"],
         address: json["address"],
-        debtCost: json["debt_cost"]?.toDouble(),
+        totalDebt: json["total_debt"]?.toDouble(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,6 +70,6 @@ class Customer {
         "phone_number": phoneNumber,
         "phone_number2": phoneNumber2,
         "address": address,
-        "debt_cost": debtCost,
+        "total_debt": totalDebt,
       };
 }

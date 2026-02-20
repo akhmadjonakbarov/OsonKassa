@@ -51,7 +51,7 @@ class _SideBarState extends State<SideBar> {
               CustomButton(
                 isSelecte:
                     widget.dashboardController.isSelected(AppViews.dashboard),
-                buttonSize: Size(0, 55),
+                buttonSize: const Size(0, 55),
                 text: ButtonTexts.dashboard,
                 textStyle: textStyleWhite18W800,
                 icon: AppIcons.house,

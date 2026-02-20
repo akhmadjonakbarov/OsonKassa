@@ -96,7 +96,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
             TextField(
               decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.payments_outlined),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   hint: Text("enter sum".tr)),
               onChanged: (value) {
                 orderController.calculateReturnedMoney(value);

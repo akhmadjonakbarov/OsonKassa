@@ -24,7 +24,7 @@ class AuthCtl extends GetxController {
 
       if (userModelData != null && _accessToken != null) {
         User user = User.fromJson(userModelData);
-        Get.toNamed(AppPaths.dashboard);
+        Get.toNamed(AppPaths.splash);
 
         userModel(user);
         accessToken.value = _accessToken;
@@ -44,7 +44,7 @@ class AuthCtl extends GetxController {
         final userModelData = user.toJson();
         await _secureStorage.write("userModel", userModelData);
         await _secureStorage.write("token", userMap['token']);
-        Get.toNamed(AppPaths.dashboard);
+        Get.toNamed(AppPaths.splash);
         userModel(user);
         accessToken.value = userMap['token'];
         LogHelper.logInfo(user.toString());

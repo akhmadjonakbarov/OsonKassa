@@ -90,10 +90,7 @@ class ItemCtl extends MainController<Item> {
     try {
       bool isCreated = await _productRepo.add(item);
       if (isCreated) {
-        UserNotifier.showSnackBar(
-          label: AlertTexts.addAlert(item['name']),
-          type: TypeOfSnackBar.success,
-        );
+        events.value = ProductCreated();
         fetchItems();
       }
     } on BarcodeAlreadyExistException {
@@ -126,29 +123,22 @@ class ItemCtl extends MainController<Item> {
     } catch (e) {
       handleError(e.toString());
     }
-    events.value = ProductUpdate();
-    events.refresh();
+    // events.value = ProductUpdate();
+    // // events.refresh();
   }
 
   void updateProduct(Map<String, dynamic> updatedProduct) async {
     try {
-      bool isSuccess = await productRepository.updateProduct(updatedProduct);
-      // if (isSuccess) {
-      //   UserNotifier.showSnackBar(
-      //     label: AlertTexts.updateAlert(updatedProduct['name']),
-      //     type: TypeOfSnackBar.update,
-      //   );
-      //   fetchItems();
-      // }
-      fetchItems();
+      bool isUpdated = await productRepository.updateProduct(updatedProduct);
+      if (isUpdated) {
+        events.value = ProductUpdated();
+        fetchItems();
+      }
     } on BarcodeAlreadyExistException {
       handleError(AlertTexts.barcode_unique);
     } catch (e) {
       handleError(e.toString());
     }
-
-    events.value = ProductUpdate();
-    events.refresh();
   }
 
   void filterByCategory(String name) async {

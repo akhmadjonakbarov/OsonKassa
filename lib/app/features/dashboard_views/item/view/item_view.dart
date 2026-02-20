@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:multi_dropdown/multiselect_dropdown.dart';
-import 'package:osonkassa/app/core/display/user_notifier.dart';
+import 'package:osonkassa/app/styles/text_styles.dart';
 
 import '../../../../core/permission/permissions.dart';
 import '../../../../utils/media/get_screen_size.dart';
@@ -45,8 +45,41 @@ class _ItemViewState extends State<ItemView> {
     itemCtl.removeSelectedCategory();
     unitCtl.fetchItems();
     ever(itemCtl.events, (ProductEvents? event) {
-      if (event is ProductUpdate) {
-        UserNotifier.showSnackBar();
+      if (event is ProductUpdated) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "product was updated".tr,
+              style: textStyleWhite18,
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+      if (event is ProductDeleted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "product was deleted".tr,
+              style: textStyleWhite18,
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      if (event is ProductCreated) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "product was created".tr,
+              style: textStyleWhite18,
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.green,
+          ),
+        );
       }
     });
   }

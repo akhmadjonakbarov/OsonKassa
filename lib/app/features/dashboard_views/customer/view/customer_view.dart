@@ -1,6 +1,9 @@
+// import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/features/dashboard_views/customer/view/controllers/transaction_controller.dart';
 import 'package:osonkassa/app/styles/app_colors.dart';
+import 'package:osonkassa/app/utils/globals.dart';
 import 'package:osonkassa/design_system/buttons/primary_button.dart';
 import 'package:osonkassa/design_system/themes/text_styles.dart';
 
@@ -14,7 +17,9 @@ import '../../../auth/logic/controllers/auth_ctl.dart';
 import '../../../customer_detail/logic/customer_detail_ctl.dart';
 import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/content_view.dart';
+import '../domain/models/customer.dart';
 import '../logic/customer_ctl.dart';
+import 'controllers/transaction_event.dart';
 import 'table/customer_table.dart';
 import 'widgets/customer_edit_dialog.dart';
 import 'widgets/customer_statistics.dart';
@@ -36,6 +41,14 @@ class CustomerView extends StatefulWidget {
 class _CustomerViewState extends State<CustomerView> {
   final GlobalKey _sortButtonKey = GlobalKey();
   late CustomerDetailCtl customerDetailCtl;
+  TransactionController transactionController =
+      Get.find<TransactionController>();
+
+  final TextEditingController transactionEditingController =
+      TextEditingController();
+  final payDebtFormKey = GlobalKey<FormState>();
+  String? selectedCustomer;
+  int? selectedCustomerId;
 
   @override
   void didChangeDependencies() {
@@ -47,8 +60,21 @@ class _CustomerViewState extends State<CustomerView> {
 
   @override
   void initState() {
-    widget.customerCtl.fetchItems();
     super.initState();
+    once(
+      transactionController.transactionEvents,
+      (event) {
+        if (event is TransactionCreated) {
+          messengerKey.currentState!.showSnackBar(
+            SnackBar(
+              content: Text("transaction created successfully".tr),
+              backgroundColor: AppColors.green,
+            ),
+          );
+        }
+      },
+    );
+    widget.customerCtl.fetchItems();
   }
 
   void _showPopupMenu(BuildContext context) async {
@@ -83,6 +109,118 @@ class _CustomerViewState extends State<CustomerView> {
     }
   }
 
+  void _payDebt() {
+    final isValid = payDebtFormKey.currentState!.validate();
+    if (!isValid) {
+      return;
+    }
+    double amount = double.tryParse(transactionEditingController.text) ?? 0;
+    // print("Money: $amount");
+    // print("Customer ID: $selectedCustomerId");
+    if (selectedCustomerId != null) {
+      transactionController.payDebt(transactionData: {
+        "customer_id": selectedCustomerId,
+        "amount": amount,
+      });
+    }
+  }
+
+  void _payTransaction() {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 400),
+                // FIX 1: Add ScrollView to prevent keyboard/content overflow
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(20),
+                  child: Form(
+                    key: payDebtFormKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("pay debt".tr,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
+                        SizedBox(
+                          height: 15,
+                        ),
+
+                        // FIX 2: Explicitly set width to fill the dialog
+                        DropdownMenu(
+                          width: MediaQuery.of(context).size.width > 400
+                              ? 360
+                              : MediaQuery.of(context).size.width * 0.7,
+                          label: Text('select customer'.tr),
+                          onSelected: (value) =>
+                              setDialogState(() => selectedCustomerId = value),
+                          dropdownMenuEntries:
+                              widget.customerCtl.customers.map((customer) {
+                            return DropdownMenuEntry(
+                              value: customer.id!,
+                              label: customer.fullName!,
+                              // FIX 3: Prevent long text overflow inside the menu
+                              labelWidget: Text(
+                                customer.fullName!,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        TextFormField(
+                          controller: transactionEditingController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            labelText: "enter amount of money".tr,
+                            border: const OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "please enter amount of money".tr;
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                                onPressed: () => Navigator.pop(ctx),
+                                child: Text("cancel".tr)),
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                                onPressed: () {
+                                  _payDebt();
+                                  Navigator.of(ctx).pop();
+                                },
+                                child: Text("pay".tr)),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Size screenSize = getScreenSize(context);
@@ -98,14 +236,14 @@ class _CustomerViewState extends State<CustomerView> {
           children: [
             Row(
               children: [
-                IconButton(
-                  key: _sortButtonKey, // Assign the key to the button
-                  onPressed: () => _showPopupMenu(context),
-                  icon: const Icon(
-                    Icons.sort_sharp,
-                    color: Colors.black,
-                  ),
-                ),
+                // IconButton(
+                //   key: _sortButtonKey, // Assign the key to the button
+                //   onPressed: () => _showPopupMenu(context),
+                //   icon: const Icon(
+                //     Icons.sort_sharp,
+                //     color: Colors.black,
+                //   ), variance: null,
+                // ),
                 SizedBox(
                   width: screenSize.width * 0.01,
                 ),
@@ -124,11 +262,11 @@ class _CustomerViewState extends State<CustomerView> {
             ),
             Row(
               children: [
-                PrimaryButton(
+                PButton(
                   height: ButtonSizeManager.height(context, height: 0.1 / 2.5),
                   width: ButtonSizeManager.width(context, width: 0.1 / 1.1),
                   backgroundColor: ButtonColors.primary,
-                  onClick: () {},
+                  onClick: _payTransaction,
                   child: Text(
                     "payment".tr,
                     style: context.titleMedium.copyWith(color: Colors.white),

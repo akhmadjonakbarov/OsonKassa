@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:osonkassa/app/core/display/user_notifier.dart';
+import 'package:osonkassa/app/features/dashboard_views/document/view/controllers/document_event.dart';
 import 'package:osonkassa/app/features/shared/widgets/buttons/primary_button.dart';
 
 import '../../../../../core/enums/product_doc_type.dart';
@@ -7,6 +9,7 @@ import '../../../../../core/validator/number_validator.dart';
 import '../../../../../styles/text_input_styles.dart';
 import '../../../../../styles/text_styles.dart';
 import '../../../../../styles/themes.dart';
+import '../../../../../utils/globals.dart';
 import '../../../../../utils/helper/log_helper.dart';
 import '../../../../../utils/texts/placeholder_texts.dart';
 import '../../../../shared/export_commons.dart';
@@ -44,6 +47,25 @@ class _CreateDocumentViewState extends State<CreateDocumentView> {
     await currencyCtl.fetchItems();
     await manageProductDocItemCtl.setCurrency(cry: currencyCtl.list.first);
     super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    once(
+      documentCtl.events,
+      (callback) {
+        if (callback is DocumentCreated) {
+          messengerKey.currentState?.showSnackBar(
+            const SnackBar(
+              content: Text('Document created successfully!'),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      },
+    );
   }
 
   reloadFetchItems() {

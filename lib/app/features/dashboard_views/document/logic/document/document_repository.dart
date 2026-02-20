@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:osonkassa/app/core/exceptions/validador_exceptions.dart';
 import 'package:osonkassa/app/features/shared/models/pagination_model.dart';
 import '../../../../../utils/helper/log_helper.dart';
 

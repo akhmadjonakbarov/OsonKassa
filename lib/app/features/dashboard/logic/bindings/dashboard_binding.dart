@@ -9,6 +9,7 @@ import '../../../dashboard_views/computer/logic/computer_ctl.dart';
 import '../../../dashboard_views/computer/logic/display/display_controller.dart';
 import '../../../dashboard_views/currency/logic/currency_controller.dart';
 import '../../../dashboard_views/customer/logic/customer_ctl.dart';
+import '../../../dashboard_views/customer/view/controllers/transaction_controller.dart';
 import '../../../dashboard_views/document/logic/doc_item/doc_item_ctl.dart';
 import '../../../dashboard_views/document/logic/document/document_ctl.dart';
 import '../../../dashboard_views/document/logic/view_controller/manage_product_doc_item_ctl.dart';
@@ -46,5 +47,6 @@ class DashboardBinding extends Bindings {
     Get.lazyPut(() => DisplayController());
     Get.lazyPut(() => OrderController());
     Get.lazyPut(() => PayController());
+    Get.lazyPut(() => TransactionController());
   }
 }

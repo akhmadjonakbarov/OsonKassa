@@ -52,6 +52,7 @@ class UserNotifier {
       margin: margin,
       forwardAnimationCurve: Curves.easeInOut,
       reverseAnimationCurve: Curves.easeInOut,
+      instantInit: false,
       titleText: Text(label,
           style: textStyleWhite18.copyWith(
             fontSize: 22,

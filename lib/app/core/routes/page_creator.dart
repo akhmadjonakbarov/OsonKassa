@@ -8,6 +8,7 @@ import '../../features/dashboard/view/dashboard_screen.dart';
 import '../../features/profile/profile_screen.dart';
 import '../../features/report_docs/views/report_docs_screen.dart';
 import '../../features/report_store/views/store_report_screen.dart';
+import '../../features/splash/splash_screen.dart';
 
 class PageCreator {
   static List<GetPage> pages = [
@@ -18,7 +19,6 @@ class PageCreator {
     GetPage(
       name: AppPaths.dashboard,
       page: () => const DashboardScreen(),
-      binding: DashboardBinding(),
     ),
     GetPage(
       name: AppPaths.storeStatistic,
@@ -35,6 +35,11 @@ class PageCreator {
     GetPage(
       name: AppPaths.clientDetail,
       page: () => const CustomerDetailScreen(),
+    ),
+    GetPage(
+      name: AppPaths.splash,
+      page: () => const SplashScreen(),
+      binding: DashboardBinding(),
     ),
   ];
 }

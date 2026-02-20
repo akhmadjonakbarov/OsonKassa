@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/logic/order_controller.dart';
+import 'package:osonkassa/app/features/dashboard_views/trade/views/controllers/payment_event.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/views/widgets/order_item_list.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/views/widgets/product_search_bar.dart';
 
@@ -9,6 +10,7 @@ import 'package:osonkassa/design_system/themes/responsive_font_size.dart';
 import 'package:osonkassa/design_system/themes/text_styles.dart';
 import '../../../../core/printer/pos_printer_manager.dart';
 import '../../../../styles/text_styles.dart';
+import '../../../../utils/globals.dart';
 import '../../../../utils/media/get_screen_size.dart';
 import '../../../shared/export_commons.dart';
 import '../../../shared/widgets/buttons/primary_button.dart';
@@ -16,6 +18,7 @@ import '../../customer/logic/customer_ctl.dart';
 import '../../customer/domain/models/customer.dart';
 import '../../note/logic/note_controller.dart';
 import '../../store/logic/store_ctl.dart';
+import '../logic/pay_controller.dart';
 import '../logic/trade_ctl.dart';
 import 'widgets/dialog_widgets/list_products_dialog.dart';
 
@@ -37,6 +40,7 @@ class _TradeViewState extends State<TradeView> {
   final NoteCtl noteCtl = Get.find<NoteCtl>();
   final CustomerCtl customerCtl = Get.find<CustomerCtl>();
   final OrderController orderController = Get.find<OrderController>();
+  final PayController payController = Get.find<PayController>();
 
   TextEditingController barCodeController = TextEditingController();
   TextEditingController searchController = TextEditingController();
@@ -48,6 +52,21 @@ class _TradeViewState extends State<TradeView> {
   void initState() {
     _initPrinter();
     fetch();
+    once(
+      payController.paymentEvents,
+      (callback) {
+        if (callback is PaymentSuccess) {
+          messengerKey.currentState?.showSnackBar(
+            SnackBar(
+              content: Text('payment completed successfully'.tr),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      },
+    );
+
     super.initState();
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import '../../../styles/colors.dart';
 import '../../../styles/text_styles.dart';
@@ -19,7 +18,7 @@ class TopBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 onTap: () {
-                  Get.back();
+                  Navigator.of(context).pop();
                 },
                 borderRadius: BorderRadius.circular(10),
                 child: const Padding(

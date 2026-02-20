@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/app/features/dashboard_views/type/data/repository/TypeRepositoryImpl.dart';
+import 'package:osonkassa/app/features/dashboard_views/type/data/repository/type_repository_impl.dart';
 import 'package:osonkassa/app/features/dashboard_views/type/domain/repository/type_repository.dart';
 import '../../../../../config/dio_provider.dart';
 import '../../../../shared/models/pagination_model.dart';

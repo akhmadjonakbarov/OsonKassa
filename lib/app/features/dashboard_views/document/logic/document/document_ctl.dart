@@ -8,6 +8,7 @@ import '../../../../../core/enums/type_of_snackbar.dart';
 import '../../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../../core/interfaces/getx_controller/main_controller.dart';
 import '../../models/document_model.dart';
+import '../../view/controllers/document_event.dart';
 import 'document_repository.dart';
 import 'document_service.dart';
 
@@ -15,6 +16,8 @@ class DocumentCtl extends MainController<Document> {
   var error = ''.obs;
   var isToday = true.obs;
   var isSaving = false.obs;
+
+  Rxn<DocumentEvent> events = Rxn<DocumentEvent>();
 
   late final DocumentRepository documentRepository;
   late final DocumentService documentService;
@@ -62,10 +65,8 @@ class DocumentCtl extends MainController<Document> {
 
       bool isSuccess = await documentService.addDocument(item);
       if (isSuccess) {
-        UserNotifier.showSnackBar(
-          label: "document was saved".tr,
-          type: TypeOfSnackBar.success,
-        );
+        events.value = DocumentCreated();
+
         fetchItems();
         isSaving.value = false;
       }

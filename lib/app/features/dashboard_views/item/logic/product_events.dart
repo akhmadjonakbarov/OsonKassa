@@ -1,3 +1,7 @@
 sealed class ProductEvents {}
 
-class ProductUpdate extends ProductEvents {}
+class ProductUpdated extends ProductEvents {}
+
+class ProductCreated extends ProductEvents {}
+
+class ProductDeleted extends ProductEvents {}

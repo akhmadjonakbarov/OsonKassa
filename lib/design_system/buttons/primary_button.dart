@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PrimaryButton extends StatelessWidget {
+class PButton extends StatelessWidget {
   final Widget? child;
   final Color? backgroundColor;
   final Function()? onClick;
@@ -8,7 +8,7 @@ class PrimaryButton extends StatelessWidget {
   final double? height;
   final double? width;
 
-  const PrimaryButton({
+  const PButton({
     super.key,
     this.backgroundColor,
     this.onClick,

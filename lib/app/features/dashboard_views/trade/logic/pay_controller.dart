@@ -5,6 +5,7 @@ import 'package:osonkassa/app/features/dashboard_views/customer/domain/models/cu
 import 'package:osonkassa/app/features/dashboard_views/trade/logic/trade_repository.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/models/order.dart';
 import 'package:osonkassa/app/features/dashboard_views/trade/models/order_item.dart';
+import 'package:osonkassa/app/features/dashboard_views/trade/views/controllers/payment_event.dart';
 
 import '../../../../config/dio_provider.dart';
 import '../../../../core/display/user_notifier.dart';
@@ -12,6 +13,8 @@ import '../../../../utils/texts/alert_texts.dart';
 
 class PayController extends GetxController {
   late TradeRepository tradeRepository;
+
+  Rxn<PaymentEvent> paymentEvents = Rxn<PaymentEvent>();
 
   @override
   void onInit() {
@@ -40,11 +43,9 @@ class PayController extends GetxController {
     try {
       bool isSuccess = await tradeRepository.sell(data);
       if (isSuccess) {
-        UserNotifier.showSnackBar(
-          label: AlertTexts.success_trade,
-          type: TypeOfSnackBar.success,
-        );
+        paymentEvents.value = PaymentSuccess();
       }
+
       return isSuccess;
     } catch (e) {
       return false;

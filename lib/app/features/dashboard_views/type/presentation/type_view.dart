@@ -33,91 +33,96 @@ class _CategoryViewState extends State<TypeView> {
   }) {
     final TextEditingController nameController = TextEditingController();
 
-    Get.defaultDialog(
-      title: "Add New Type",
-      titleStyle: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-      ),
-      radius: 14,
-      backgroundColor: Colors.white,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
-      content: Column(
-        children: [
-          TextField(
-            controller: nameController,
-            decoration: InputDecoration(
-              hintText: "Enter type name",
-              hintStyle: const TextStyle(color: Colors.grey),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.black12),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.blueAccent),
-              ),
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 12,
-              ),
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          title: Text(
+            "Add New Type".tr, // Assuming you're using a translation extension
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          backgroundColor: Colors.white,
+          contentPadding: const EdgeInsets.fromLTRB(
+              18, 8, 18, 16), // Bottom padding for better spacing
+          content: Column(
+            mainAxisSize: MainAxisSize
+                .min, // Vital: Keeps dialog from expanding to full screen
             children: [
-              // Cancel Button
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () => Get.back(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  hintText: "Enter type name",
+                  hintStyle: const TextStyle(color: Colors.grey),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.black12),
                   ),
-                  child: Text("cancel".tr),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.blueAccent),
+                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                 ),
               ),
-              const SizedBox(width: 12),
-
-              // Save Button
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    final name = nameController.text.trim();
-                    if (name.isEmpty) {
-                      Get.snackbar(
-                        "Validation",
-                        "Please enter a type name",
-                        snackPosition: SnackPosition.BOTTOM,
-                        backgroundColor: Colors.redAccent.withOpacity(0.8),
-                        colorText: Colors.white,
-                      );
-                      return;
-                    }
-
-                    onSubmit(name);
-                    Get.back();
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  // Cancel Button
+                  Expanded(
+                    child: TextButton(
+                      // Modern look uses TextButton for negative actions
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.red,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      child: Text("cancel".tr),
                     ),
                   ),
-                  child: Text(
-                    "save".tr,
-                    style: const TextStyle(color: Colors.white),
+                  const SizedBox(width: 12),
+                  // Save Button
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        final name = nameController.text.trim();
+                        if (name.isEmpty) {
+                          // Standard Flutter Snackbar
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Please enter a type name"),
+                              backgroundColor: Colors.redAccent,
+                              behavior: SnackBarBehavior.floating,
+                            ),
+                          );
+                          return;
+                        }
+                        onSubmit(name);
+                        Navigator.of(ctx).pop(); // Replaces Get.back()
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: Text("save".tr),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -138,7 +143,6 @@ class _CategoryViewState extends State<TypeView> {
               onClick: () => showAddTypeDialog(
                 onSubmit: (name) {
                   typeController.createType(name);
-                  Navigator.pop(context);
                 },
               ),
               permission: Permissions.create_category.name.toLowerCase(),

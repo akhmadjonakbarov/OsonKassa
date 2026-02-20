@@ -6,7 +6,7 @@ import 'package:osonkassa/app/utils/formatter_functions/formatter_currency.dart'
 import '../../../../../config/app_paths.dart';
 import '../../../../../translation/translated_texts.dart';
 import '../../../../../utils/formatter_functions/format_phone_number.dart';
-import '../../../../../utils/texts/display_texts.dart';
+
 import '../../../../customer_detail/logic/customer_detail_ctl.dart';
 import '../../../../shared/export_commons.dart';
 import '../../../../shared/widgets/delete_dialog.dart';
@@ -61,10 +61,10 @@ class _CustomerTableState extends State<CustomerTable> {
                     text: customer.phoneNumber2 != null &&
                             customer.phoneNumber2!.isNotEmpty
                         ? formatPhoneNumber(customer.phoneNumber2!)
-                        : DisplayTexts.no_extra_number)),
+                        : "no exists".tr)),
                 DataCell(CenterText(text: customer.address ?? "-")),
                 DataCell(CenterText(
-                  text: PriceFormatter.formatPrice(customer.debtCost!),
+                  text: PriceFormatter.formatPrice(customer.totalDebt!),
                   style: textStyleBlack18Bold,
                 )),
                 DataCell(
@@ -78,7 +78,7 @@ class _CustomerTableState extends State<CustomerTable> {
                         ),
                         onPressed: () {
                           widget.controller.selectCustomer(customer);
-                          Get.dialog(CustomerEditDialog());
+                          Get.dialog(const CustomerEditDialog());
                         },
                       ),
                       IconButton(
