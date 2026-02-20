@@ -7,4 +7,5 @@ class AppPaths {
   static const String profile = '/profile_page';
   static const String manageStore = '/manage_store';
   static const String createDocumentScreen = '/create_document_screen';
+  static const String splash = '/splash';
 }
