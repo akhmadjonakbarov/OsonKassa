@@ -1,0 +1,44 @@
+import 'package:intl/intl.dart';
+
+import '../texts/display_texts.dart';
+
+class PriceFormatter {
+  static final format = NumberFormat('#,###.#####', 'en_US');
+
+  static String formatPrice(double price) {
+    return format.format(price);
+  }
+
+  static String formatPriceWithWord(double amount) {
+    int millions = (amount / 1000000).floor();
+    int thousands = ((amount % 1000000) / 1000).floor();
+    int hundreds = (amount % 1000)
+        .floor(); // Get the remainder directly without dividing by 100
+
+    String millionsPart = millions > 0 ? '$millions ${DisplayTexts.mln} ' : '';
+    String thousandsPart =
+        thousands > 0 ? '$thousands ${DisplayTexts.thousand} ' : '';
+    String hundredsPart =
+        hundreds > 0 ? '$hundreds' : ''; // Only add the hundreds without 'yuz'
+
+    String result = millionsPart + thousandsPart + hundredsPart;
+
+    return result.isEmpty ? amount.toStringAsFixed(0) : result;
+  }
+}
+
+String formatUZSNumber(
+  double number, {
+  bool useSpaceAsSeparator = false,
+  bool isAddWord = false,
+}) {
+  final format = NumberFormat('#,###.#####', 'en_US');
+  String formattedNumber = format.format(number);
+
+  if (useSpaceAsSeparator) {
+    // Replace commas with spaces for certain locales
+    formattedNumber = formattedNumber.replaceAll(',', ' ');
+  }
+
+  return isAddWord ? "$formattedNumber ${DisplayTexts.uzs}" : formattedNumber;
+}
