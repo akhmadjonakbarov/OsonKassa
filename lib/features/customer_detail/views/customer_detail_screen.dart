@@ -40,6 +40,11 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
           children: [
             TopBar(
               text: customer!.fullName!,
+              onClick: () {
+                customerDetailCtl.loadCustomerDetails(customer!.id!);
+                customerDetailCtl.calculateTotalDebtsPrice();
+                customerDetailCtl.getDebtsByCustomerId(context, customer!.id!);
+              },
             ),
             Expanded(
               child: GridView(

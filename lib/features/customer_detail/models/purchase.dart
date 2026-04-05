@@ -9,17 +9,18 @@ class Purchase {
   dynamic paidDate;
   PurchaseDocument? purchaseDocument;
   double? discount;
+  final double remainMoney;
 
-  Purchase({
-    this.id,
-    this.createdAt,
-    this.updatedAt,
-    this.customerId,
-    this.isDebt,
-    this.paidDate,
-    this.purchaseDocument,
-    this.discount,
-  });
+  Purchase(
+      {this.id,
+      this.createdAt,
+      this.updatedAt,
+      this.customerId,
+      this.isDebt,
+      this.paidDate,
+      this.purchaseDocument,
+      this.discount,
+      this.remainMoney = 0.0});
 
   Purchase copyWith({
     int? id,
@@ -30,8 +31,10 @@ class Purchase {
     dynamic paidDate,
     PurchaseDocument? purchaseDocument,
     double? discount,
+    double? remainMoney,
   }) =>
       Purchase(
+        remainMoney: remainMoney ?? this.remainMoney,
         id: id ?? this.id,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
@@ -60,6 +63,7 @@ class Purchase {
             ? null
             : PurchaseDocument.fromJson(json["document"]),
         discount: json["discount"]?.toDouble(),
+        remainMoney: json["remain_money"]?.toDouble() ?? 0.0,
       );
 }
 

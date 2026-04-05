@@ -69,7 +69,7 @@ class DebtsBox extends StatelessWidget {
             columns: [
               TranslatedTexts.table.index.tr,
               TranslatedTexts.table.date.tr,
-              'total_price'.tr,
+              'debt'.tr,
               'discount'.tr,
               TranslatedTexts.table.buttons.tr
             ], // Your columns here
@@ -97,13 +97,7 @@ class DebtsBox extends StatelessWidget {
           text: formatDateToUzbek(purchase.createdAt.toString()),
         )),
         DataCell(CenterText(
-          text: PriceFormatter.formatPrice(purchase.purchaseDocument!.products!
-              .fold(
-                0.0,
-                (previousValue, element) => previousValue =
-                    previousValue + (element.salePrice! * element.qty!),
-              )
-              .toDouble()),
+          text: PriceFormatter.formatPrice(purchase.remainMoney),
         )),
         DataCell(CenterText(
           text: PriceFormatter.formatPrice(purchase.discount ?? 0.0),
@@ -111,7 +105,7 @@ class DebtsBox extends StatelessWidget {
         DataCell(
           Center(
             child: DialogTextButton(
-              text: ButtonTexts.pay,
+              text: 'pay'.tr,
               onClick: () {
                 showDialog(
                   context: context,
@@ -121,12 +115,11 @@ class DebtsBox extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        // Cancel
                         child: Text(TranslatedTexts.buttons.cancel.tr),
                       ),
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop(); // Close dialog
+                          Navigator.of(context).pop();
                           customerDetailCtl.pay(
                             customerId: client!.id!,
                             purchaseId: purchase.id!,

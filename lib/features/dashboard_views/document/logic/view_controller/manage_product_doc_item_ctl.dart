@@ -94,11 +94,6 @@ class ManageProductDocItemCtl extends GetxController {
                   update();
 
                   Get.back(); // Close dialog
-                  // UserNotifier.showSnackBar(
-                  //   type: TypeOfSnackBar.alert,
-                  //   label:
-                  //       AlertTexts.updateAlert(productDocItem['item']['name']),
-                  // );
                 },
                 textStyle: textStyleBlack14,
               )

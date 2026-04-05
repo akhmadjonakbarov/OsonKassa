@@ -3,7 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:osonkassa/features/customer_detail/models/payment_history.dart';
+
 import '../../../core/display/user_notifier.dart';
 import '../../../core/enums/type_of_snackbar.dart';
 import '../../../utils/helper/log_helper.dart';
@@ -96,6 +96,7 @@ class CustomerDetailCtl extends GetxController {
       final results = await Future.wait([
         customerDetailService.getPurchasesByCustomerId(customerId: customerId),
         customerDetailService.getDebtsByCustomerId(customerId: customerId),
+        getPaymentHistories(customerId)
       ]);
       purchases.value = results[0];
       debts.value = results[1];
@@ -113,27 +114,18 @@ class CustomerDetailCtl extends GetxController {
     }
   }
 
-  calculateTotalDebtsPrice(BuildContext context) async {
+  calculateTotalDebtsPrice() async {
     try {
       double totalPrice = 0.0;
       final debts = await customerDetailService.getDebts();
       for (Purchase debt in debts) {
-        for (var product in debt.purchaseDocument!.products!) {
-          totalPrice = totalPrice + (product.salePrice! * product.qty!);
-        }
+        totalPrice += debt.remainMoney;
       }
       totalDebtsPrice.value = totalPrice;
-    } catch (e) {
-      UserNotifier.showFlutterSnackBar(
-        context: context,
-        type: TypeOfSnackBar.error,
-        label: "Xatolik!",
-        text: e.toString(),
-      );
-    }
+    } catch (e) {}
   }
 
-  getPaymentHistories(int customerId) async {
+  Future getPaymentHistories(int customerId) async {
     try {
       transactions.value =
           await customerTransactionRepository.getTransactions(customerId);

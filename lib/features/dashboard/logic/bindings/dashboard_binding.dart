@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:osonkassa/features/dashboard_views/trade/logic/order_controller.dart';
-import 'package:osonkassa/features/dashboard_views/trade/logic/pay_controller.dart';
+import 'package:osonkassa/features/dashboard_views/trade/logic/payment_controller.dart';
 
 import '../../../action/logic/action_ctl.dart';
 import '../../../dashboard_views/category/logic/category_controller.dart';
@@ -17,7 +17,7 @@ import '../../../dashboard_views/item/logic/item_ctl.dart';
 import '../../../dashboard_views/note/logic/note_controller.dart';
 import '../../../dashboard_views/statistics/logic/statistics_ctl.dart';
 import '../../../dashboard_views/store/logic/store_ctl.dart';
-import '../../../dashboard_views/trade/logic/trade_ctl.dart';
+import '../../../dashboard_views/trade/logic/trade_controller.dart';
 import '../../../report_docs/logic/report_ctl.dart';
 import '../../../shared/export_commons.dart';
 import '../../../unit/logic/unit_controller.dart';
@@ -36,7 +36,7 @@ class DashboardBinding extends Bindings {
     Get.lazyPut(() => ItemCtl());
     Get.lazyPut(() => DocumentCtl());
     Get.lazyPut(() => DocItemCtl());
-    Get.lazyPut(() => TradeCtl());
+    Get.lazyPut(() => TradeController());
     Get.lazyPut(() => StoreCtl());
     Get.lazyPut(() => StatisticsCtl());
     Get.lazyPut(() => ManageProductDocItemCtl());
@@ -46,7 +46,7 @@ class DashboardBinding extends Bindings {
     Get.lazyPut(() => ComputerCtl());
     Get.lazyPut(() => DisplayController());
     Get.lazyPut(() => OrderController());
-    Get.lazyPut(() => PayController());
+    Get.lazyPut(() => PaymentController());
     Get.lazyPut(() => TransactionController());
   }
 }

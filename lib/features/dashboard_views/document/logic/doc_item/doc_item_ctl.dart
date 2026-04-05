@@ -7,7 +7,7 @@ import '../../../../../core/enums/type_of_snackbar.dart';
 import '../../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../../core/interfaces/getx_controller/main_controller.dart';
 import '../../../category/logic/category_controller.dart';
-import '../../../trade/logic/trade_ctl.dart';
+import '../../../trade/logic/trade_controller.dart';
 import '../../models/document_item.dart';
 import 'doc_item_repository.dart';
 import 'doc_item_service.dart';
@@ -20,7 +20,7 @@ class DocItemCtl extends MainController<DocumentItem> {
   late final DocItemRepository _docItemsRepository;
   late final DocItemService _docItemsService;
 
-  final TradeCtl tradeCtl = Get.find<TradeCtl>();
+  final TradeController tradeCtl = Get.find<TradeController>();
   final CategoryCtl categoryCtl = Get.find<CategoryCtl>();
 
   @override

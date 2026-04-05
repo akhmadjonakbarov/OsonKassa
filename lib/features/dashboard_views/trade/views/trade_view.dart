@@ -18,8 +18,8 @@ import '../../customer/view/controllers/customer_controller/customer_controller.
 import '../../customer/domain/models/customer.dart';
 import '../../note/logic/note_controller.dart';
 import '../../store/logic/store_ctl.dart';
-import '../logic/pay_controller.dart';
-import '../logic/trade_ctl.dart';
+import '../logic/payment_controller.dart';
+import '../logic/trade_controller.dart';
 import 'widgets/dialog_widgets/list_products_dialog.dart';
 
 import 'widgets/dialog_widgets/payment_dialog.dart';
@@ -34,13 +34,13 @@ class TradeView extends StatefulWidget {
 }
 
 class _TradeViewState extends State<TradeView> {
-  final TradeCtl tradeCtl = Get.find<TradeCtl>();
+  final TradeController tradeCtl = Get.find<TradeController>();
   final CustomerCtl clientCtl = Get.find<CustomerCtl>();
   final StoreCtl storeCtl = Get.find<StoreCtl>();
   final NoteCtl noteCtl = Get.find<NoteCtl>();
   final CustomerCtl customerCtl = Get.find<CustomerCtl>();
   final OrderController orderController = Get.find<OrderController>();
-  final PayController payController = Get.find<PayController>();
+  final PaymentController payController = Get.find<PaymentController>();
 
   TextEditingController barCodeController = TextEditingController();
   TextEditingController searchController = TextEditingController();

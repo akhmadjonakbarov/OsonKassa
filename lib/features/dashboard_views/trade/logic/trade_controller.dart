@@ -10,9 +10,8 @@ import '../../../report_docs/logic/report_ctl.dart';
 import 'trade_repository.dart';
 import 'trade_service.dart';
 
-class TradeCtl extends GetxController {
+class TradeController extends GetxController {
   var sellProducts = <StoreItem>[].obs;
-
 
   late TradeRepository tradeRepository;
   late TradeService tradeService;
@@ -65,6 +64,4 @@ class TradeCtl extends GetxController {
       );
     }
   }
-
-
 }

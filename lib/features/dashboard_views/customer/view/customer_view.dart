@@ -51,7 +51,7 @@ class _CustomerViewState extends State<CustomerView> {
   @override
   void didChangeDependencies() {
     customerDetailCtl = Get.find<CustomerDetailCtl>();
-    customerDetailCtl.calculateTotalDebtsPrice(context);
+    customerDetailCtl.calculateTotalDebtsPrice();
 
     super.didChangeDependencies();
   }
@@ -80,19 +80,8 @@ class _CustomerViewState extends State<CustomerView> {
           value: FilterField.name.name,
           child: const Text(ButtonTexts.sort_by_name),
         ),
-        // PopupMenuItem<String>(
-        //   value: FilterField.created_at.name,
-        //   child: const Text(ButtonTexts.sort_by_adding_time),
-        // ),
       ],
     );
-    // if (selected != null) {
-    //   if (selected == FilterField.created_at.name) {
-    //     widget.customerCtl.sortByCreatedAt();
-    //   } else if (selected == FilterField.name.name) {
-    //     widget.customerCtl.sortByName();
-    //   }
-    // }
   }
 
   void _payDebt() {
@@ -222,14 +211,6 @@ class _CustomerViewState extends State<CustomerView> {
           children: [
             Row(
               children: [
-                // IconButton(
-                //   key: _sortButtonKey, // Assign the key to the button
-                //   onPressed: () => _showPopupMenu(context),
-                //   icon: const Icon(
-                //     Icons.sort_sharp,
-                //     color: Colors.black,
-                //   ), variance: null,
-                // ),
                 SizedBox(
                   width: screenSize.width * 0.01,
                 ),
@@ -283,9 +264,10 @@ class _CustomerViewState extends State<CustomerView> {
                 style: textStyleBlack20.copyWith(fontSize: 25),
               ),
               CustomerStatistics(
-                  screenSize: screenSize,
-                  widget: widget,
-                  customerDetailCtl: customerDetailCtl),
+                screenSize: screenSize,
+                widget: widget,
+                customerDetailCtl: customerDetailCtl,
+              ),
             ],
           ),
         ),

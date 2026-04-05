@@ -19,7 +19,9 @@ class CenterText extends StatelessWidget {
       child: Text(
         text,
         textAlign: TextAlign.center,
-        style: style.copyWith(fontSize: screenSize.width <= 1370 ? 14 : 16),
+        style: style.copyWith(
+          fontSize: screenSize.width <= 1370 ? 14 : 17,
+        ),
       ),
     );
   }

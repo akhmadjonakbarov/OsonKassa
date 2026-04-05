@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../styles/app_colors.dart';
 import '../../../styles/text_styles.dart';
 import '../../../styles/themes.dart';
 import '../../../utils/media/get_screen_size.dart';
@@ -37,7 +38,7 @@ class ContentView extends StatelessWidget {
                   textStyle: textStyleBlack18.copyWith(
                       fontSize: 25,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white),
+                      color: AppColors.textPrimary),
                   isList: false,
                 ),
                 ...children
@@ -50,7 +51,10 @@ class ContentView extends StatelessWidget {
                 return CustomContainer(
                   height: screenSize.height * 0.1 / 1.8,
                   margin: const EdgeInsets.only(top: 5),
-                  decoration: Decorations.decoration(),
+                  decoration: Decorations.decoration(
+                    color: AppColors.cardBackground,
+                    boxShadow: BoxShadows.custom,
+                  ),
                   child: Pagination(
                     count: pagination.value.pages,
                     onClick: (index) {

@@ -10,7 +10,7 @@ import '../../../../core/interfaces/api/api_interfaces.dart';
 import '../../../../core/interfaces/getx_controller/main_controller.dart';
 import '../../../../utils/texts/alert_texts.dart';
 import '../../../shared/models/api_data.dart';
-import '../../trade/logic/trade_ctl.dart';
+import '../../trade/logic/trade_controller.dart';
 import 'store_repository.dart';
 import 'store_service.dart';
 
@@ -20,7 +20,7 @@ class StoreCtl extends MainController<StoreItem> {
   var storeProduct = StoreItem().obs;
   var productsInStore = <StoreItem>[].obs;
 
-  final TradeCtl tradeCtl = Get.find<TradeCtl>();
+  final TradeController tradeCtl = Get.find<TradeController>();
 
   late final StoreRepository _storeRepository;
   late final StoreService _storeService;

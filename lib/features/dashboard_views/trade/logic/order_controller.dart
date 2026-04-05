@@ -422,6 +422,8 @@ class OrderController extends GetxController {
 
   Future<void> closeOrder() async {
     OrderService.removeOrder(orders, selectedOrder.value!);
+    remainMoney.value = 0.0;
+    returnedMoney.value = 0.0;
     reOrder();
   }
 

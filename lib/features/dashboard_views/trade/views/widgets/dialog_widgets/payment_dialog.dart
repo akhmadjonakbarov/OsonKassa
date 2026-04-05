@@ -4,7 +4,7 @@ import 'package:osonkassa/styles/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:osonkassa/features/dashboard_views/trade/logic/order_controller.dart';
-import 'package:osonkassa/features/dashboard_views/trade/logic/pay_controller.dart';
+import 'package:osonkassa/features/dashboard_views/trade/logic/payment_controller.dart';
 import 'package:osonkassa/features/dashboard_views/trade/models/order.dart';
 
 import '../../../../../../utils/formatter_functions/formatter_currency.dart';
@@ -24,7 +24,7 @@ class _PaymentDialogState extends State<PaymentDialog> {
   Customer? selectedCustomer;
   bool isDebt = false;
 
-  final PayController payController = Get.find<PayController>();
+  final PaymentController payController = Get.find<PaymentController>();
   final OrderController orderController = Get.find<OrderController>();
 
   @override

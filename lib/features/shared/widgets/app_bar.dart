@@ -5,7 +5,8 @@ import '../../../styles/text_styles.dart';
 
 class TopBar extends StatelessWidget {
   final String text;
-  const TopBar({super.key, required this.text});
+  const TopBar({super.key, required this.text, this.onClick});
+  final Function()? onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,9 @@ class TopBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               child: InkWell(
                 onTap: () {
+                  if (onClick != null) {
+                    onClick!();
+                  }
                   Navigator.of(context).pop();
                 },
                 borderRadius: BorderRadius.circular(10),

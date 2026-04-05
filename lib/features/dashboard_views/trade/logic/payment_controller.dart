@@ -10,7 +10,7 @@ import 'package:osonkassa/features/dashboard_views/trade/views/controllers/payme
 import '../../../../config/dio_provider.dart';
 import '../../../../utils/globals.dart';
 
-class PayController extends GetxController {
+class PaymentController extends GetxController {
   late TradeRepository tradeRepository;
 
   Rxn<PaymentEvent> paymentEvents = Rxn<PaymentEvent>();
